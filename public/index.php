@@ -47,6 +47,17 @@
         </div>
     </nav>
 
+    <!-- Banner section -->
+
+    <section class="banner text-center my-5">
+        <div class="container">
+            <h1>Discover Unique Handmade Treasures</h1>
+            <p>Join our community and find your favorite artisans today!</p>
+            <a href="#" class="btn btn-primary btn-custom">Explore</a>
+            <a href="register.php" class="btn btn-outline-secondary">Sign Up</a>
+        </div>
+    </section>
+
 
 
  <!-- Bootstrap JS and Popper.js -->
