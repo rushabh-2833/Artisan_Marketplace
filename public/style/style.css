@@ -135,3 +135,93 @@ h2 {
     }
 }
 
+/* register login page */
+
+/* Register Container */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Register Card */
+.register-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+}
+
+/* Card Shadow */
+.shadow-lg {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Register Title */
+h2 {
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* Form Labels */
+.form-label {
+    color: #34495E;
+    font-size: 1rem;
+}
+
+/* Form Inputs */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #BDC3C7;
+    font-size: 1rem;
+}
+
+/* Input Group (for country code and mobile number) */
+.input-group-text {
+    background-color: #BDC3C7;
+    border: 1px solid #BDC3C7;
+}
+
+.country-code {
+    width: 20px;
+    border: none;
+}
+
+/* Submit Button */
+.btn-custom {
+    background-color: #12372A;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+}
+
+/* Login Link */
+.login-link {
+    color: #1ABC9C;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-link:hover {
+    color: #16A085;
+}
+
+/* Responsive Styling */
+@media only screen and (max-width: 576px) {
+    .register-card {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
