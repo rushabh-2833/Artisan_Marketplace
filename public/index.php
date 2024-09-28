@@ -136,6 +136,22 @@
     </section>
 
 
+     <!-- Newsletter Subscription -->
+     <section class="newsletter my-5 text-center">
+        <div class="container">
+            <h2>Subscribe to our newsletter</h2>
+            <p>Get the latest updates on features and releases</p>
+            <form>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Enter your email">
+                    <button class="btn btn-primary btn-custom" type="submit">Join</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
 
  <!-- Bootstrap JS and Popper.js -->
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
