@@ -14,8 +14,15 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-// Close the connection explicitly
-$conn->close();
-echo "Connection closed";
+$sql = "CREATE DATABASE IF NOT EXISTS artisan_marketplace";
+
+// Execute the query
+if ($conn->query($sql) === TRUE) {
+    echo "Database 'artisan_marketplace' created successfully.<br>";
+} else {
+    echo "Error creating database: " . $conn->error;
+}
+
+
 
 ?>
