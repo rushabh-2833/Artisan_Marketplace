@@ -1,0 +1,227 @@
+/* General Navbar Styling */
+.navbar {
+    background-color: #2C3E50;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.brand-name {
+    color: #ECF0F1;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: #ECF0F1 !important;
+    font-weight: semibold;
+    font-size: 2.5rem;
+    transition: color 0.3s ease;
+    font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #1ABC9C !important;
+}
+
+/* Mobile Menu Toggle */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"%3E%3Cpath stroke="%23ECF0F1" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+}
+
+.nav-link{
+    font-size: 20px !important;
+}
+
+/* Body Styling */
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #F7F7F7;
+}
+
+
+/* Login page css */
+
+
+/* Login Container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Login Card */
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+}
+
+/* Card Shadow */
+.shadow-lg {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Login Title */
+h2 {
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* Form Labels */
+.form-label {
+    color: #34495E;
+    font-size: 1rem;
+}
+
+/* Form Inputs */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #BDC3C7;
+    font-size: 1rem;
+}
+
+/* Submit Button */
+.btn-primary {
+    background-color: #436850;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #436850;
+}
+
+/* Register Link */
+.register-link {
+    color: #1ABC9C;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.register-link:hover {
+    color: #16A085;
+}
+
+/* Responsive Styling */
+@media only screen and (max-width: 576px) {
+    .login-card {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* register login page */
+
+/* Register Container */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Register Card */
+.register-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+}
+
+/* Card Shadow */
+.shadow-lg {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Register Title */
+h2 {
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* Form Labels */
+.form-label {
+    color: #34495E;
+    font-size: 1rem;
+}
+
+/* Form Inputs */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #BDC3C7;
+    font-size: 1rem;
+}
+
+/* Input Group (for country code and mobile number) */
+.input-group-text {
+    background-color: #BDC3C7;
+    border: 1px solid #BDC3C7;
+}
+
+.country-code {
+    width: 20px;
+    border: none;
+}
+
+/* Submit Button */
+.btn-custom {
+    background-color: #12372A;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+}
+
+/* Login Link */
+.login-link {
+    color: #1ABC9C;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-link:hover {
+    color: #16A085;
+}
+
+/* Responsive Styling */
+@media only screen and (max-width: 576px) {
+    .register-card {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
