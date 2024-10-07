@@ -39,7 +39,10 @@ $sql = "CREATE TABLE IF NOT EXISTS products (
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL,
     image_url VARCHAR(255),
+    approval_status ENUM('pending', 'approved', 'rejected') NOT NULL,
+    rejection_reason Text(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (artisan_id) REFERENCES users(id) ON DELETE CASCADE
 )";
