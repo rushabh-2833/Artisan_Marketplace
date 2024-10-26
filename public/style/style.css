@@ -250,7 +250,7 @@ h2 {
     font-size: 1.1rem;
     color: #34495E;
     max-width: 700px;
-    margin: 0 auto; /* Center the text */
+    margin: 0 auto;
 }
 
 /* Features Section Styling */
@@ -290,7 +290,7 @@ h2 {
     color: #2C3E50;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin: 20px; /* Adds spacing between cards */
+    margin: 20px; 
 }
 .service-card h3 {
     color: #436850;
@@ -353,7 +353,7 @@ h2 {
     border-radius: 8px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    margin: 20px; /* Adds spacing between team member cards */
+    margin: 20px; 
 }
 .team-section .card:hover {
     transform: translateY(-10px);
