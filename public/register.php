@@ -151,6 +151,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <!-- Register Button -->
                     <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <!-- Already have an account? Link -->
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="login.php">Log in now</a>.</p>
+                    </div>
                 </form>
             </div>
         </div>
