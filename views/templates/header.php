@@ -50,6 +50,13 @@ $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, defau
                     <li class="nav-item"><a class="nav-link" href="product.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
                 <?php endif; ?>
+
+                <?php if ($user_role) : ?>
+                    <!-- Sign Out Link for Logged-In Users -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Sign Out</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
