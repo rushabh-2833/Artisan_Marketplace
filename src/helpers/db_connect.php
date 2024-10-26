@@ -4,35 +4,28 @@ $username = "admin";
 $password = "Cap-Project24";
 $dbname = "artisan_marketplace"; // Use the created database
 
-// Reconnect and select the database
+// Connect to the database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Drop tables if they exist
-$conn->query("DROP TABLE IF EXISTS order_items");
-$conn->query("DROP TABLE IF EXISTS orders");
-$conn->query("DROP TABLE IF EXISTS products");
-$conn->query("DROP TABLE IF EXISTS users");
-
-// Create 'users' table first
+// Create 'users' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS users (
-    id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(15),
+    address TEXT,
     role ENUM('admin', 'artisan', 'customer') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'users' created successfully.<br>";
-} else {
-    echo "Error creating table 'users': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
-// Create 'products' table after 'users'
+// Create 'products' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS products (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     artisan_id INT(11),
@@ -42,17 +35,13 @@ $sql = "CREATE TABLE IF NOT EXISTS products (
     stock INT NOT NULL,
     image_url VARCHAR(255),
     approval_status ENUM('pending', 'approved', 'rejected') NOT NULL,
-    rejection_reason Text(500),
+    rejection_reason TEXT(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (artisan_id) REFERENCES users(id) ON DELETE CASCADE
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'products' created successfully.<br>";
-} else {
-    echo "Error creating table 'products': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
-// Create 'orders' table after 'users'
+// Create 'orders' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS orders (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     customer_id INT(11),
@@ -61,13 +50,9 @@ $sql = "CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE CASCADE
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'orders' created successfully.<br>";
-} else {
-    echo "Error creating table 'orders': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
-// Create 'order_items' table after 'orders' and 'products'
+// Create 'order_items' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS order_items (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     order_id INT(11),
@@ -78,12 +63,7 @@ $sql = "CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'order_items' created successfully.<br>";
-} else {
-    echo "Error creating table 'order_items': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
-// Close the connection
-$conn->close();
+// Remove or comment out success echo statements
 ?>
