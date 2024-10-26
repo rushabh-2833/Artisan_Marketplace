@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../src/helpers/db_connect.php'; 
+include '../src/helpers/db_connect.php';
 
 $login_error = '';
 
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $login_error = "Password is required.";
     } else {
         // Check if email exists in the database
-        $stmt = $conn->prepare("SELECT id, first_name, last_name, password FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, first_name, last_name, password, role FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -31,9 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Set session variables for logged-in user
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
+                $_SESSION['user_role'] = $user['role']; // Store the role in session
 
-                // Redirect to a dashboard or homepage
-                header("Location: dashboard.php"); // Change this to your desired page
+                // Redirect based on user role
+                if ($user['role'] === 'admin') {
+                    header("Location: dashboard.php");
+                } elseif ($user['role'] === 'customer') {
+                    header("Location: home.php");
+                } elseif ($user['role'] === 'artisan') {
+                    header("Location: product_management.php");
+                } else {
+                    header("Location: home.php"); // Default redirection for any other roles
+                }
                 exit;
             } else {
                 $login_error = "Incorrect password. Please try again.";
