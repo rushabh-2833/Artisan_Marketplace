@@ -6,8 +6,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style/style.css">
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-</style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+    </style>
 </head>
 <body>
 <div class="register-container">
@@ -42,6 +42,16 @@
                     </div>
                 </div>
 
+                <!-- Role Selection Dropdown -->
+                <div class="mb-3">
+                    <label for="role" class="form-label">Select Role</label>
+                    <select class="form-select" id="role" name="role" required>
+                        <option value="">Choose...</option>
+                        <option value="customer">Customer</option>
+                        <option value="artisan">Artisan</option>
+                    </select>
+                </div>
+
                 <!-- Password -->
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
@@ -66,10 +76,7 @@
     </div>
 </div>
 
-
-
-
- <!-- Bootstrap JS and Popper.js -->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
