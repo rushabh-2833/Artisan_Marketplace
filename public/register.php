@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="">Choose...</option>
                             <option value="artisan" <?php if (isset($role) && $role === 'artisan') echo 'selected'; ?>>Artisan</option>
                             <option value="customer" <?php if (isset($role) && $role === 'customer') echo 'selected'; ?>>Customer</option>
+                            <option value="admin" <?php if (isset($role) && $role === 'admin') echo 'selected'; ?>>Admin</option>
                         </select>
                         <div class="invalid-feedback">
                             <?php echo $role_error; ?>
