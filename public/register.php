@@ -123,9 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="role" class="form-label">Select Role</label>
                         <select class="form-select <?php echo (!empty($role_error)) ? 'is-invalid' : ''; ?>" id="role" name="role" required>
                             <option value="">Choose...</option>
-                            <option value="admin" <?php if ($role === 'admin') echo 'selected'; ?>>Admin</option>
-                            <option value="artisan" <?php if ($role === 'artisan') echo 'selected'; ?>>Artisan</option>
-                            <option value="customer" <?php if ($role === 'customer') echo 'selected'; ?>>Customer</option>
+                            <option value="artisan" <?php if (isset($role) && $role === 'artisan') echo 'selected'; ?>>Artisan</option>
+                            <option value="customer" <?php if (isset($role) && $role === 'customer') echo 'selected'; ?>>Customer</option>
                         </select>
                         <div class="invalid-feedback">
                             <?php echo $role_error; ?>
