@@ -23,11 +23,7 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     role ENUM('admin', 'artisan', 'customer') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'users' exists or created successfully.<br>";
-} else {
-    echo "Error creating table 'users': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create 'products' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS products (
@@ -43,11 +39,7 @@ $sql = "CREATE TABLE IF NOT EXISTS products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (artisan_id) REFERENCES users(id) ON DELETE CASCADE
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'products' exists or created successfully.<br>";
-} else {
-    echo "Error creating table 'products': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create 'orders' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS orders (
@@ -58,11 +50,7 @@ $sql = "CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE CASCADE
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'orders' exists or created successfully.<br>";
-} else {
-    echo "Error creating table 'orders': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create 'order_items' table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS order_items (
@@ -75,11 +63,7 @@ $sql = "CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'order_items' exists or created successfully.<br>";
-} else {
-    echo "Error creating table 'order_items': " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
-
+// Remove or comment out success echo statements
 ?>
