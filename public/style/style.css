@@ -225,3 +225,160 @@ h2 {
         font-size: 1.5rem;
     }
 }
+
+/* about us */
+
+
+/* General Styling for the About Us Page */
+
+/* Section Styling */
+.about-section, .features-section, .services-section, .contact-section, .team-section {
+    padding: 50px 0;
+}
+
+/* About Section Styling */
+.about-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.about-section h2 {
+    color: #12372A;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.about-section p {
+    font-size: 1.1rem;
+    color: #34495E;
+    max-width: 700px;
+    margin: 0 auto; /* Center the text */
+}
+
+/* Features Section Styling */
+.features-section {
+
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 25px;
+}
+.features-section h2 {
+    color: #12372A;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.features-section p {
+    font-size: 1.1rem;
+    color: #34495E;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Services Section Styling */
+.services-section {
+    
+    text-align: center;
+    margin-bottom: 40px;
+}
+.services-section h2 {
+    color: #12372A;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.service-card {
+
+    border-radius: 8px;
+    padding: 30px;
+    color: #2C3E50;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 20px; /* Adds spacing between cards */
+}
+.service-card h3 {
+    color: #436850;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.service-card p {
+    font-size: 1rem;
+    color: #34495E;
+}
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Contact Section Styling */
+.contact-section {
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+}
+.contact-section h2 {
+    color: #12372A;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.contact-section p {
+    font-size: 1.1rem;
+    color: #34495E;
+    margin-bottom: 20px;
+}
+.btn-contact {
+    background-color: #12372A;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+.btn-contact:hover {
+    background-color: #436850;
+}
+
+/* Team Section Styling */
+.team-section {
+    text-align: center;
+    padding-bottom: 60px;
+}
+.team-section h2 {
+    color: #12372A;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.team-section .card {
+    
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin: 20px; /* Adds spacing between team member cards */
+}
+.team-section .card:hover {
+    transform: translateY(-10px);
+}
+.team-section .card img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+}
+.team-section .card-title {
+    color: #12372A;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 15px;
+}
+.team-section .card-text {
+    color: #34495E;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+/* Responsive Adjustments */
+@media only screen and (max-width: 576px) {
+    .service-card, .team-section .card {
+        margin-bottom: 20px;
+    }
+}
