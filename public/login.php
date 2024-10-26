@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Redirect based on user role
                 if ($user['role'] === 'admin') {
-                    header("Location: dashboard.php");
+                    header("Location: ../views/admin-dashboard.php");
                 } elseif ($user['role'] === 'customer') {
                     header("Location: index.php");
                 } elseif ($user['role'] === 'artisan') {
