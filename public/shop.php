@@ -1,3 +1,6 @@
+<?php include '../views/templates/header.php'; ?>
+
+
 <table>
     <tr>
         <th>Product</th>
