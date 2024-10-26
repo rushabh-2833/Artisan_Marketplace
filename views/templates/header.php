@@ -33,21 +33,22 @@ $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, defau
                 
                 <?php elseif ($user_role === 'customer') : ?>
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.php">Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
 
                 <?php elseif ($user_role === 'artisan') : ?>
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="product_management.php">Product Management</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
                 
                 <?php else : ?>
                     <!-- Default Links for Visitors (Not Logged In) -->
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.php">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
                 <?php endif; ?>
 
