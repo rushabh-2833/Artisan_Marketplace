@@ -1,3 +1,5 @@
+<?php include '../views/templates/header.php'; ?>
+
 <?php
 session_start();
 require __DIR__ . '/../../vendor/autoload.php'; // AWS SDK for PHP

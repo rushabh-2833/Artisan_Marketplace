@@ -53,5 +53,8 @@ $result = $stmt->get_result();
             </tbody>
         </table>
     </div>
+
+    <a href="../public/artisan/rejected_products.php" class="btn btn-warning">View Rejected Products</a>
+
 </body>
 </html>
