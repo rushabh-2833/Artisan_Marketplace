@@ -29,7 +29,8 @@ $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, defau
                 <?php if ($user_role === 'admin') : ?>
                     <li class="nav-item"><a class="nav-link" href="../views/admin-dashboard.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="home.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.php">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/shop.php">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/admin/admin_approve_products.php">Product Approval</a></li>
                 
                 <?php elseif ($user_role === 'customer') : ?>
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
