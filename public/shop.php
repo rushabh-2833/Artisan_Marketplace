@@ -1,5 +1,4 @@
 <?php
-session_start();
 include '../views/templates/header.php';
 include '../src/helpers/db_connect.php'; // Adjust path if needed
 

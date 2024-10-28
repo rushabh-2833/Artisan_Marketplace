@@ -1,16 +1,11 @@
 <?php
-session_start();
+include '../src/helpers/db_connect.php';
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'artisan') {
-    header("Location: login.php");
-    exit;
-}
-
-$artisan_id = $_SESSION['user_id'];
 $product_id = $_GET['product_id'];
+$artisan_id = $_SESSION['user_id'];
 
-$conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
-$sql = "DELETE FROM products WHERE id = ? AND artisan_id = ? AND approval_status != 'approved'";
+// Delete query with condition to ensure the product belongs to the artisan
+$sql = "DELETE FROM products WHERE id = ? AND artisan_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $product_id, $artisan_id);
 
@@ -20,5 +15,10 @@ if ($stmt->execute()) {
     echo "Error: " . $stmt->error;
 }
 
+$stmt->close();
 $conn->close();
+
+// Redirect back to product management page
+header("Location: product_management.php");
+exit;
 ?>

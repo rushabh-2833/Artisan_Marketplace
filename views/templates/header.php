@@ -28,7 +28,7 @@ $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, defau
             <ul class="navbar-nav ms-auto">
                 <?php if ($user_role === 'admin') : ?>
                     <li class="nav-item"><a class="nav-link" href="../views/admin-dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="home.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/admin/admin_approve_products.php">Product Approval</a></li>
                 
@@ -41,8 +41,8 @@ $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, defau
                     <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
 
                 <?php elseif ($user_role === 'artisan') : ?>
-                    <li class="nav-item"><a class="nav-link" href="../views/home.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../shop.php">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="product_management.php">Product Management</a></li>
                     <li class="nav-item"><a class="nav-link" href="../views/artisan-dashboard.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
@@ -50,7 +50,7 @@ $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, defau
                 <?php else : ?>
                     <!-- Default Links for Visitors (Not Logged In) -->
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="shop.php">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
                 <?php endif; ?>
 

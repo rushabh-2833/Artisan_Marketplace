@@ -1,7 +1,8 @@
 <?php include '../views/templates/header.php'; ?>
 
 <?php
-session_start();
+
+
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'artisan') {
     header("Location: login.php");
     exit;
@@ -29,7 +30,7 @@ $product_id = $_GET['product_id'] ?? null;
     } elseif ($action === 'edit' && $product_id) {
         include '../public/artisan/edit_product.php'; // Display edit product form
     } elseif ($action === 'delete' && $product_id) {
-        include 'delete_product.php'; // Handle delete product action
+        include '../public/artisan/delete_product.php'; // Handle delete product action
     } else {
         // Default action: List products with Edit and Delete options
         include '../public/artisan/list_products.php';
