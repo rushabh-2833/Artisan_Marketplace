@@ -1,33 +1,6 @@
 <?php
 session_start();
-include '../src/helpers/db_connect.php';
-include '../views/templates/header.php';
-
-// If the user is logged in, load the cart from the database
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-
-    // Fetch cart items from the database
-    $stmt = $conn->prepare("SELECT products.id, products.name, products.price, products.image_url, cart.quantity 
-                            FROM cart 
-                            JOIN products ON cart.product_id = products.id 
-                            WHERE cart.user_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Load items into the session cart
-    $_SESSION['cart'] = [];
-    while ($item = $result->fetch_assoc()) {
-        $_SESSION['cart'][$item['id']] = [
-            'name' => $item['name'],
-            'price' => $item['price'],
-            'image_url' => $item['image_url'],
-            'quantity' => $item['quantity']
-        ];
-    }
-    $stmt->close();
-}
+include '../views/templates/header.php'; // Include header
 
 // Check if the cart is empty
 if (empty($_SESSION['cart'])) {
@@ -45,7 +18,7 @@ $totalPrice = 0;
         <thead>
             <tr>
                 <th>Product</th>
-                <th>Image</th>
+                <th>Image</th> <!-- Added Image column -->
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
@@ -61,7 +34,7 @@ $totalPrice = 0;
                 <td><?php echo htmlspecialchars($item['name']); ?></td>
                 <td>
                     <img src="<?php echo htmlspecialchars($item['image_url']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" style="width: 50px; height: auto;">
-                </td>
+                </td> <!-- Display product image -->
                 <td>$<?php echo number_format($item['price'], 2); ?></td>
                 <td>
                     <form action="update_cart.php" method="POST" class="d-flex align-items-center">
@@ -73,7 +46,7 @@ $totalPrice = 0;
                 </td>
                 <td>$<?php echo number_format($itemTotal, 2); ?></td>
                 <td>
-                    <form action="remove_cart.php" method="POST">
+                    <form action="remove_from_cart.php" method="POST">
                         <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
                         <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                     </form>
@@ -85,4 +58,4 @@ $totalPrice = 0;
     <h4 class="text-right">Grand Total: $<?php echo number_format($totalPrice, 2); ?></h4>
 </div>
 
-<?php include '../views/templates/footer.php'; ?>
+<?php include '../views/templates/footer.php'; // Include footer if applicable ?>
