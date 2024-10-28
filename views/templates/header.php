@@ -2,7 +2,9 @@
 session_start();
 $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, default to null if not
 $initials = $_SESSION['user_initials'] ?? ''; // Retrieve initials from session
-$cartItemCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0; // Calculate total items in cart
+
+// Calculate the cart item count
+$cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0;
 ?>
 
 <!DOCTYPE html>
@@ -15,36 +17,26 @@ $cartItemCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['ca
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
     <title>Artisan Marketplace</title>
     <style>
-        /* Adjust styles for the profile icon */
+        /* Profile icon styling */
         .profile-icon {
-            width: 40px;  
-            height: 40px; 
-            background-color: #ffffff; 
-            color: #fff; 
-            border-radius: 50%; 
-            display: flex;
-            align-items: center; 
-            justify-content: center; 
-            margin-left: 15px; 
-            cursor: pointer; 
-        }
-        /* Styles for cart icon */
-        .cart-icon {
-            color: #fff;
-            font-size: 20px;
-            position: relative;
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: red;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
             color: #fff;
             border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        /* Badge styling for cart count */
+        .cart-icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: #dc3545;
+            color: white;
         }
     </style>
 </head>
@@ -53,9 +45,7 @@ $cartItemCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['ca
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="index.php">
-            Artisan Marketplace
-        </a>
+        <a class="navbar-brand" href="index.php">Artisan Marketplace</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -73,13 +63,13 @@ $cartItemCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['ca
                     <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-                    
+
                     <!-- Cart Icon with Item Count -->
-                    <li class="nav-item">
-                        <a href="cart.php" class="cart-icon">
+                    <li class="nav-item position-relative cart-icon">
+                        <a class="nav-link" href="cart.php">
                             <i class="fas fa-shopping-cart"></i>
-                            <?php if ($cartItemCount > 0): ?>
-                                <span class="cart-count"><?php echo $cartItemCount; ?></span>
+                            <?php if ($cart_count > 0): ?>
+                                <span class="badge rounded-pill"><?php echo $cart_count; ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -114,3 +104,8 @@ $cartItemCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['ca
         </div>
     </div>
 </nav>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
