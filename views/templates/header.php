@@ -2,6 +2,7 @@
 session_start();
 $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, default to null if not
 $initials = $_SESSION['user_initials'] ?? ''; // Retrieve initials from session
+$cartItemCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0; // Calculate total items in cart
 ?>
 
 <!DOCTYPE html>
@@ -16,16 +17,34 @@ $initials = $_SESSION['user_initials'] ?? ''; // Retrieve initials from session
     <style>
         /* Adjust styles for the profile icon */
         .profile-icon {
-            width: 40px;  /* Adjust as needed */
-            height: 40px; /* Adjust as needed */
-            background-color: #ffffff; /* No background color */
-            color: #fff; /* Icon color */
-            border-radius: 50%; /* Makes it circular */
+            width: 40px;  
+            height: 40px; 
+            background-color: #ffffff; 
+            color: #fff; 
+            border-radius: 50%; 
             display: flex;
-            align-items: center; /* Center the icon vertically */
-            justify-content: center; /* Center the icon horizontally */
-            margin-left: 15px; /* Space from other nav items */
-            cursor: pointer; /* Change cursor to pointer */
+            align-items: center; 
+            justify-content: center; 
+            margin-left: 15px; 
+            cursor: pointer; 
+        }
+        /* Styles for cart icon */
+        .cart-icon {
+            color: #fff;
+            font-size: 20px;
+            position: relative;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: red;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -53,8 +72,17 @@ $initials = $_SESSION['user_initials'] ?? ''; // Retrieve initials from session
                     <li class="nav-item"><a class="nav-link" href="shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
+                    
+                    <!-- Cart Icon with Item Count -->
+                    <li class="nav-item">
+                        <a href="cart.php" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <?php if ($cartItemCount > 0): ?>
+                                <span class="cart-count"><?php echo $cartItemCount; ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
 
                     <!-- Profile Dropdown for Customers -->
                     <li class="nav-item dropdown">
@@ -86,6 +114,3 @@ $initials = $_SESSION['user_initials'] ?? ''; // Retrieve initials from session
         </div>
     </div>
 </nav>
-
-<?php 
-
