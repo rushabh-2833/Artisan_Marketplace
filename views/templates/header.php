@@ -1,7 +1,6 @@
 <?php 
-session_start();
-$user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, default to null if not
-<?php 
+ // Check if user_role is set, default to null if not
+
 session_start();
 $user_role = $_SESSION['user_role'] ?? null;
 $user_logged_in = isset($_SESSION['user_id']); // Check if the user is logged in
@@ -127,7 +126,7 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
             <i class="fas fa-user-circle"></i> Account
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-            <li><a class="dropdown-item" href="/artisan_marketplace/public/personal_info.php">Personal Information</a></li>
+            <li><a class="dropdown-item" href="/artisan_marketplace/public/profile.php">Personal Information</a></li>
             <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment Methods</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign Out</a></li>

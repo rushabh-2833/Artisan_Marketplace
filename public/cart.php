@@ -1,5 +1,4 @@
 <?php
-session_start();
 include '../src/helpers/db_connect.php';
 include '../views/templates/header.php';
 
@@ -73,7 +72,7 @@ $totalPrice = 0;
                 </td>
                 <td>$<?php echo number_format($itemTotal, 2); ?></td>
                 <td>
-                    <form action="remove_cart.php" method="POST">
+                    <form action="remove_from_cart.php" method="POST">
                         <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
                         <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                     </form>
