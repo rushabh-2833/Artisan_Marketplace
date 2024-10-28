@@ -16,6 +16,7 @@ $result = $stmt->get_result();
     <?php while ($product = $result->fetch_assoc()): ?>
         <tr>
             <td><?php echo $product['name']; ?></td>
+            <td><?php echo htmlspecialchars($product['price']); ?></td>
             <td><?php echo ucfirst($product['approval_status']); ?></td>
             <td>
                 <a href="product_management.php?action=edit&product_id=<?php echo $product['id']; ?>">Edit</a>

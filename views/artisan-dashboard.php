@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../views/templates/header.php';
 
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'artisan') {
     header("Location: login.php");
