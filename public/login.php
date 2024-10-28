@@ -31,7 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Set session variables for logged-in user
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
-                $_SESSION['user_role'] = $user['role']; // Store the role in session
+                $_SESSION['user_role'] = $user['role'];
+
+                // Load cart items from the database
+                $stmt = $conn->prepare("SELECT product_id, quantity FROM cart WHERE user_id = ?");
+                $stmt->bind_param("i", $user['id']);
+                $stmt->execute();
+                $cartItems = $stmt->get_result();
+
+                // Initialize session cart array
+                $_SESSION['cart'] = [];
+                while ($item = $cartItems->fetch_assoc()) {
+                    $_SESSION['cart'][$item['product_id']] = [
+                        'quantity' => $item['quantity']
+                    ];
+                }
 
                 // Redirect based on user role
                 if ($user['role'] === 'admin') {
@@ -41,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($user['role'] === 'artisan') {
                     header("Location: product_management.php");
                 } else {
-                    header("Location: home.php"); // Default redirection for any other roles
+                    header("Location: home.php");
                 }
                 exit;
             } else {

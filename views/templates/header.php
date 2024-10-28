@@ -1,7 +1,15 @@
-<?php
+<?php 
 session_start();
 $user_role = $_SESSION['user_role'] ?? null; // Check if user_role is set, default to null if not
+<?php 
+session_start();
+$user_role = $_SESSION['user_role'] ?? null;
 $user_logged_in = isset($_SESSION['user_id']); // Check if the user is logged in
+$initials = $_SESSION['user_initials'] ?? ''; // Retrieve initials from session
+
+// Calculate the cart item count
+$cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +22,31 @@ $user_logged_in = isset($_SESSION['user_id']); // Check if the user is logged in
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
     <title>Artisan Marketplace</title>
+    <style>
+        /* Profile icon styling */
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        /* Badge styling for cart count */
+        .cart-icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
@@ -22,10 +54,7 @@ $user_logged_in = isset($_SESSION['user_id']); // Check if the user is logged in
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="index.php">
-            <img src="path/to/logo.png" alt="Logo" width="40" height="40">
-            Artisan Marketplace
-        </a>
+        <a class="navbar-brand" href="index.php">Artisan Marketplace</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -37,12 +66,50 @@ $user_logged_in = isset($_SESSION['user_id']); // Check if the user is logged in
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/admin/admin_approve_products.php">Product Approval</a></li>
                 <?php elseif ($user_role === 'customer') : ?>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/about.php">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/checkout.php">Checkout</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/cart.php">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/contact.php">Contact</a></li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/artisan_marketplace/public/index.php">Artisan Marketplace</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <!-- Navigation Links -->
+                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
+                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/about.php">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/checkout.php">Checkout</a></li>
+                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/contact.php">Contact</a></li>
+
+                <!-- Cart Icon with Item Count -->
+                <li class="nav-item position-relative cart-icon">
+                    <a class="nav-link" href="/artisan_marketplace/public/cart.php">
+                        <i class="fas fa-shopping-cart"></i>
+                        <?php if ($cart_count > 0): ?>
+                            <span class="badge rounded-pill bg-danger"><?php echo $cart_count; ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+
+                <!-- Profile Dropdown for Customers -->
+                <?php if ($user_logged_in): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo $initials; ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
+                            <li><a class="dropdown-item" href="payment_methods.php">Payment Methods</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="logout.php">Sign Out</a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</nav>
+
                 <?php elseif ($user_role === 'artisan') : ?>
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
@@ -54,30 +121,27 @@ $user_logged_in = isset($_SESSION['user_id']); // Check if the user is logged in
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/login.php">Login</a></li>
                 <?php endif; ?>
-
-                <!-- Profile Dropdown for Logged-In Users -->
-                <?php if ($user_logged_in) : ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user-circle"></i> Account
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                            <a class="dropdown-item" href="personal_info.php">Personal Information</a>
-                            <a class="dropdown-item" href="payment_methods.php">Payment Methods</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/artisan_marketplace/public/logout.php">Sign Out</a>
-                        </div>
-                    </li>
-                <?php endif; ?>
+<?php if ($user_logged_in) : ?>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle"></i> Account
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+            <li><a class="dropdown-item" href="/artisan_marketplace/public/personal_info.php">Personal Information</a></li>
+            <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment Methods</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign Out</a></li>
+        </ul>
+    </li>
+<?php endif; ?>
             </ul>
         </div>
     </div>
 </nav>
-
-
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
+
