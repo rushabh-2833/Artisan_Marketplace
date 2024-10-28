@@ -41,7 +41,7 @@ $result = $stmt->get_result();
                         <td><?php echo ucfirst($product['approval_status']); ?></td>
                         <td>
                             <?php if (in_array($product['approval_status'], ['pending', 'rejected'])): ?>
-                                <a href="edit_product.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="../public/product_management.php?action=edit&product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
                                 <a href="delete_product.php?product_id=<?php echo $product['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
                             <?php endif; ?>
                             <?php if ($product['approval_status'] == 'rejected'): ?>
