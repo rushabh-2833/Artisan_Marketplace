@@ -1,6 +1,5 @@
 <?php include 'C:/xampp/htdocs/Artisan_Marketplace/views/templates/header.php'; ?>
 <?php
-session_start();
 
 // Check if user is an artisan
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'artisan') {

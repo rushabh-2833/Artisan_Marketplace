@@ -1,5 +1,5 @@
-<?php
-session_start();
+<?php 
+include 'C:/xampp/htdocs/Artisan_Marketplace/views/templates/header.php'; 
 
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: login.php");
@@ -25,23 +25,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     header("Location: admin_approve_products.php");
 }
-
 ?>
 
-<table>
-    <tr><th>Product</th><th>Description</th><th>Action</th></tr>
-    <?php while ($product = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?php echo $product['name']; ?></td>
-            <td><?php echo $product['description']; ?></td>
-            <td>
-                <form method="POST">
-                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                    <button name="action" value="approve">Approve</button>
-                    <button name="action" value="reject">Reject</button>
-                    <input type="text" name="rejection_reason" placeholder="Reason for rejection">
-                </form>
-            </td>
-        </tr>
-    <?php endwhile; ?>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Approve Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Pending Product Approvals</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($product = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($product['name']); ?></td>
+                    <td><?php echo htmlspecialchars($product['description']); ?></td>
+                    <td>
+                        <form method="POST" class="d-flex align-items-center">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm me-2">Approve</button>
+                            <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm me-2">Reject</button>
+                            <input type="text" name="rejection_reason" class="form-control form-control-sm" placeholder="Reason for rejection" style="width: 200px;">
+                        </form>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
