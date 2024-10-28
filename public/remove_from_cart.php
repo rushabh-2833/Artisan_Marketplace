@@ -27,3 +27,4 @@ if (isset($_POST['product_id'])) {
     header("Location: cart.php");
     exit;
 }
+?>
