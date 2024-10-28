@@ -13,16 +13,17 @@ if (isset($_POST['product_id'])) {
 
     // Check if the product is already in the cart
     if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id]['quantity'] += 1; // Increment quantity
+        // Increment quantity if already in the cart
+        $_SESSION['cart'][$product_id]['quantity'] += 1;
     } else {
-        // Fetch product details for the cart item
+        // Fetch product details for the cart item from the database
         $stmt = $conn->prepare("SELECT id, name, price, image_url FROM products WHERE id = ? AND approval_status = 'approved'");
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $product = $result->fetch_assoc();
 
-        // Add product to cart
+        // Add product to cart with quantity set to 1
         $_SESSION['cart'][$product_id] = [
             'name' => $product['name'],
             'price' => $product['price'],
@@ -31,9 +32,11 @@ if (isset($_POST['product_id'])) {
         ];
     }
 
-    // Redirect back to the shop page with a success message
-    header("Location: shop.php?added_to_cart=true");
-    exit;
+    // Set a success message in session
+    $_SESSION['message'] = "Item added to cart successfully!";
+    
+    // Redirect back to the shop page
+    header("Location: shop.php");
+    exit();
 }
 ?>
-
