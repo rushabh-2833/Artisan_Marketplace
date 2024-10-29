@@ -64,30 +64,40 @@ $result = $stmt->get_result();
     </form>
 
     <!-- Product Grid -->
-    <div class="row">
-        <?php if ($result->num_rows > 0): ?>
-            <?php while ($product = $result->fetch_assoc()): ?>
-                <div class="col-md-4">
-                    <div class="product-card text-center">
-                        <div class="product-image">
-                            <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                        </div>
-                        <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
-                        <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
-                        <form action="add_to_cart.php" method="POST">
-                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                            <button type="submit" class="btn btn-success">Add to Cart</button>
-                        </form>
+<div class="row">
+    <?php if ($result->num_rows > 0): ?>
+        <?php while ($product = $result->fetch_assoc()): ?>
+            <div class="col-md-4">
+                <div class="product-card text-center">
+                    <div class="product-image">
+                        <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                     </div>
+                    <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
+                    
+                    <!-- Add to Cart Button -->
+                    <form action="add_to_cart.php" method="POST">
+                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                        <button type="submit" class="btn btn-success">Add to Cart</button>
+                    </form>
+
+                    <!-- Heart Icon for Wishlist -->
+                    <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
+                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                        <button type="submit" class="btn btn-outline-danger wishlist-button">
+                            <i class="fas fa-heart <?php echo in_array($product['id'], array_column($_SESSION['wishlist'], 'product_id')) ? 'filled' : ''; ?>"></i>
+                        </button>
+                    </form>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="col-12 text-center">
-                <p>No products found in this price range. Please adjust your filter.</p>
             </div>
-        <?php endif; ?>
-    </div>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <div class="col-12 text-center">
+            <p>No products found in this price range. Please adjust your filter.</p>
+        </div>
+    <?php endif; ?>
 </div>
+
 
 <?php
 // Close the statement and connection at the end
