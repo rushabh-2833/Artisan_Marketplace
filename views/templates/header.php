@@ -67,7 +67,6 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
                 <?php elseif ($user_role === 'customer') : ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/artisan_marketplace/public/index.php">Artisan Marketplace</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -120,9 +119,10 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
                     <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/login.php">Login</a></li>
                 <?php endif; ?>
-<?php if ($user_logged_in) : ?>
+    
+                <?php if ($user_logged_in) : ?>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 6px;">
             <i class="fas fa-user-circle"></i> Account
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
