@@ -4,6 +4,10 @@ include '../views/templates/header.php';
 include '../src/helpers/db_connect.php'; // Adjust path if needed
 
 
+if (!isset($_SESSION['wishlist'])) {
+    $_SESSION['wishlist'] = []; // Initialize as an empty array
+}
+
 // Check if connection is established
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
