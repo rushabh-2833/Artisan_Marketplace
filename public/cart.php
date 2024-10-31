@@ -81,7 +81,11 @@ $totalPrice = 0;
             <?php endforeach; ?>
         </tbody>
     </table>
-    <h4 class="text-right">Grand Total: $<?php echo number_format($totalPrice, 2); ?></h4>
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 class="text-right">Grand Total: $<?php echo number_format($totalPrice, 2); ?></h4>
+        <!-- Checkout Button -->
+        <a href="checkout.php" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
 </div>
 
 <?php include '../views/templates/footer.php'; ?>
