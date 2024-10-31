@@ -41,9 +41,6 @@ $sql = "CREATE TABLE IF NOT EXISTS products (
 )";
 $conn->query($sql);
 
-// Add 'category' column to 'products' table if it doesn't already exist
-$sql = "ALTER TABLE products ADD COLUMN IF NOT EXISTS category VARCHAR(100)";
-$conn->query($sql);
 
 
 // Create 'orders' table if it doesn't exist
