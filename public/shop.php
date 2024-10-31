@@ -8,6 +8,17 @@ if (!isset($_SESSION['wishlist'])) {
     $_SESSION['wishlist'] = []; // Initialize as an empty array
 }
 
+// Get the current user ID
+$user_id = $_SESSION['user_id'];
+
+// Fetch wishlist items from the database
+$wishlist_stmt = $conn->prepare("SELECT product_id FROM wishlist WHERE user_id = ?");
+$wishlist_stmt->bind_param("i", $user_id);
+$wishlist_stmt->execute();
+$wishlist_result = $wishlist_stmt->get_result();
+$wishlist_items = $wishlist_result->fetch_all(MYSQLI_ASSOC);
+$wishlist_product_ids = array_column($wishlist_items, 'product_id');
+
 // Check if connection is established
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
@@ -67,14 +78,20 @@ $result = $stmt->get_result();
         </div>
     </form>
 
-    <!-- Product Grid -->
-<div class="row">
+    <div class="row">
     <?php if ($result->num_rows > 0): ?>
         <?php while ($product = $result->fetch_assoc()): ?>
             <div class="col-md-4">
                 <div class="product-card text-center">
+                    <!-- Product Image with Heart Icon -->
                     <div class="product-image">
                         <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                            <button type="submit" class="wishlist-button">
+                                <i class="fas fa-heart heart-icon <?php echo in_array($product['id'], $wishlist_product_ids) ? 'filled' : ''; ?>"></i>
+                            </button>
+                        </form>
                     </div>
                     <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
                     <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
@@ -83,14 +100,6 @@ $result = $stmt->get_result();
                     <form action="add_to_cart.php" method="POST">
                         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                         <button type="submit" class="btn btn-success">Add to Cart</button>
-                    </form>
-
-                    <!-- Heart Icon for Wishlist -->
-                    <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
-                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                        <button type="submit" class="btn btn-outline-danger wishlist-button">
-                            <i class="fas fa-heart <?php echo in_array($product['id'], array_column($_SESSION['wishlist'], 'product_id')) ? 'filled' : ''; ?>"></i>
-                        </button>
                     </form>
                 </div>
             </div>
@@ -101,6 +110,82 @@ $result = $stmt->get_result();
         </div>
     <?php endif; ?>
 </div>
+
+
+<!-- Font Awesome for Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<!-- Styles for the Product Card and Heart Icon -->
+<style>
+    .product-card {
+        position: relative;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+        padding-top: 10px;
+    }
+
+    .product-image {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Heart Icon Style */
+    .wishlist-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .heart-icon {
+        font-size: 24px;
+        color: #ccc; /* Default color for empty heart */
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .heart-icon.filled {
+        color: red; /* Color when filled */
+    }
+
+    /* Hover effect for the card */
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Heartbeat animation on hover */
+    .wishlist-button:hover .heart-icon {
+        animation: heartbeat 0.6s ease infinite; /* Beat animation */
+    }
+
+    @keyframes heartbeat {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+    }
+</style>
+
+<!-- Script for Wishlist Toggle Animation -->
+<script>
+    document.querySelectorAll('.wishlist-button').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+            const heartIcon = this.querySelector('.heart-icon');
+            heartIcon.classList.toggle('filled'); // Toggle the filled class
+            this.closest('form').submit(); // Submit the form
+        });
+    });
+</script>
+
 
 
 <?php
