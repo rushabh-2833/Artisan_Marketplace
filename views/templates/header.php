@@ -1,5 +1,5 @@
-<?php 
- // Check if user_role is set, default to null if not
+<?php
+// Check if user_role is set, default to null if not
 
 session_start();
 $user_role = $_SESSION['user_role'] ?? null;
@@ -13,6 +13,7 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,8 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Font Awesome -->
     <title>Artisan Marketplace</title>
     <style>
         /* Profile icon styling */
@@ -37,6 +39,7 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
             margin-left: 15px;
             cursor: pointer;
         }
+
         /* Badge styling for cart count */
         .cart-icon .badge {
             position: absolute;
@@ -47,100 +50,130 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
         }
     </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
+    <!-- Navbar -->
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="index.php">Artisan Marketplace</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <?php if ($user_role === 'admin') : ?>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/views/admin-dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/admin/admin_approve_products.php">Product Approval</a></li>
-                <?php elseif ($user_role === 'customer') : ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Navigation Links -->
-                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
-                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/about.php">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/checkout.php">Checkout</a></li>
-                <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/contact.php">Contact</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">Artisan Marketplace</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <?php if ($user_role === 'admin'): ?>
+                        <li class="nav-item"><a class="nav-link"
+                                href="/artisan_marketplace/views/admin-dashboard.php">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link"
+                                href="/artisan_marketplace/public/admin/admin_approve_products.php">Product Approval</a>
+                        </li>
+                    <?php elseif ($user_role === 'customer'): ?>
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                            <div class="container">
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                                    aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarNav">
+                                    <ul class="navbar-nav ms-auto">
+                                        <!-- Navigation Links -->
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="/artisan_marketplace/public/index.php">Home</a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="/artisan_marketplace/public/shop.php">Product</a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="/artisan_marketplace/public/about.php">About</a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="/artisan_marketplace/public/checkout.php">Checkout</a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="/artisan_marketplace/public/contact.php">Contact</a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="/artisan_marketplace/public/wishlist.php">Wishlist</a></li>
 
-                <!-- Cart Icon with Item Count -->
-                <li class="nav-item position-relative cart-icon">
-                    <a class="nav-link" href="/artisan_marketplace/public/cart.php">
-                        <i class="fas fa-shopping-cart"></i>
-                        <?php if ($cart_count > 0): ?>
-                            <span class="badge rounded-pill bg-danger"><?php echo $cart_count; ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
+                                        <!-- Cart Icon with Item Count -->
+                                        <li class="nav-item position-relative cart-icon">
+                                            <a class="nav-link" href="/artisan_marketplace/public/cart.php">
+                                                <i class="fas fa-shopping-cart"></i>
+                                                <?php if ($cart_count > 0): ?>
+                                                    <span class="badge rounded-pill bg-danger"><?php echo $cart_count; ?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </li>
 
-                <!-- Profile Dropdown for Customers -->
-                <?php if ($user_logged_in): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $initials; ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
-                            <li><a class="dropdown-item" href="payment_methods.php">Payment Methods</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="logout.php">Sign Out</a></li>
-                        </ul>
-                    </li>
-                <?php endif; ?>
-            </ul>
+                                        <!-- Profile Dropdown for Customers -->
+                                        <?php if ($user_logged_in): ?>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" id="profileDropdown" role="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <?php echo $initials; ?>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                                    <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
+                                                    <li><a class="dropdown-item" href="payment_methods.php">Payment Methods</a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item text-danger" href="logout.php">Sign Out</a></li>
+                                                </ul>
+                                            </li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+
+                    <?php elseif ($user_role === 'artisan'): ?>
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link"
+                                href="/artisan_marketplace/public/product_management.php">Product Management</a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                href="/artisan_marketplace/views/artisan-dashboard.php">Dashboard</a></li>
+                    <?php else: ?>
+                        <!-- Default Links for Visitors (Not Logged In) -->
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/login.php">Login</a></li>
+                    <?php endif; ?>
+
+                    <?php if ($user_logged_in): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                style="margin-top: 6px;">
+                                <i class="fas fa-user-circle"></i> Account
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                                <li><a class="dropdown-item" href="/artisan_marketplace/public/profile.php">Personal
+                                        Information</a></li>
+                                <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment
+                                        Methods</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign
+                                        Out</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-                <?php elseif ($user_role === 'artisan') : ?>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/product_management.php">Product Management</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/views/artisan-dashboard.php">Dashboard</a></li>
-                <?php else : ?>
-                    <!-- Default Links for Visitors (Not Logged In) -->
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/login.php">Login</a></li>
-                <?php endif; ?>
-    
-                <?php if ($user_logged_in) : ?>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 6px;">
-            <i class="fas fa-user-circle"></i> Account
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-            <li><a class="dropdown-item" href="/artisan_marketplace/public/profile.php">Personal Information</a></li>
-            <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment Methods</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign Out</a></li>
-        </ul>
-    </li>
-<?php endif; ?>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
-</html>
 
+</html>

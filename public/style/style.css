@@ -1,0 +1,6 @@
+.wishlist-button {
+    color: #fff; /* Default color */
+}
+.wishlist-button.filled {
+    color: red; /* Color when filled */
+}
