@@ -51,6 +51,12 @@ $result = $stmt->get_result();
 <div class="container mt-5">
     <h2 class="text-center mb-4">Our Products</h2>
 
+      <!-- Search Box -->
+      <div class="mb-4">
+        <input type="text" id="searchBox" class="form-control" placeholder="Search products..." oninput="fetchSuggestions()">
+        <div id="suggestions" class="list-group" style="display: none;"></div>
+    </div>
+
     <!-- Display success message if product was added -->
     <?php if (isset($_SESSION['message'])): ?>
         <div class="alert alert-success text-center">
@@ -176,6 +182,7 @@ $result = $stmt->get_result();
 
 <!-- Script for Wishlist Toggle Animation -->
 <script>
+    // Wishlist Toggle Animation
     document.querySelectorAll('.wishlist-button').forEach(button => {
         button.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent form submission
@@ -184,6 +191,37 @@ $result = $stmt->get_result();
             this.closest('form').submit(); // Submit the form
         });
     });
+
+    // AJAX Search Suggestions
+    function fetchSuggestions() {
+        const searchBox = document.getElementById('searchBox');
+        const suggestionsDiv = document.getElementById('suggestions');
+        const searchTerm = searchBox.value.trim();
+
+        if (searchTerm.length === 0) {
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
+
+        fetch(`search_suggestions.php?term=${searchTerm}`)
+            .then(response => response.json())
+            .then(suggestions => {
+                suggestionsDiv.innerHTML = '';
+                if (suggestions.length > 0) {
+                    suggestions.forEach(suggestion => {
+                        const item = document.createElement('a');
+                        item.href = `shop.php?search=${encodeURIComponent(suggestion)}`;
+                        item.classList.add('list-group-item', 'list-group-item-action');
+                        item.textContent = suggestion;
+                        suggestionsDiv.appendChild(item);
+                    });
+                    suggestionsDiv.style.display = 'block';
+                } else {
+                    suggestionsDiv.style.display = 'none';
+                }
+            })
+            .catch(error => console.error('Error fetching suggestions:', error));
+    }
 </script>
 
 
