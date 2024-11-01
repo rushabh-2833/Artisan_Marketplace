@@ -1,6 +1,31 @@
 <?php
 include '../views/templates/header.php';
+include '../src/helpers/db_connect.php'; // Adjust path as needed
+
+// Check if a user type is selected
+$userType = $_GET['userType'] ?? ''; // Get the selected user type from the query string
+
+// Fetch users based on user type
+if ($userType === 'artisan') {
+    $sql = "SELECT * FROM users WHERE role = 'artisan'";
+} elseif ($userType === 'customer') {
+    $sql = "SELECT * FROM users WHERE role = 'customer'";
+} else {
+    // Default: Fetch all users
+    $sql = "SELECT * FROM users";
+}
+
+$result = $conn->query($sql);
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
 
 <div class="container mt-5">
     <h2>Admin Dashboard</h2>
@@ -8,11 +33,13 @@ include '../views/templates/header.php';
     <!-- Dropdown for selecting user type -->
     <div class="mb-4">
         <label for="userType" class="form-label">Select User Type:</label>
-        <select class="form-select" id="userType" onchange="fetchUsers()">
-            <option value="">Select user type</option>
-            <option value="artisan">Artisan</option>
-            <option value="customer">Customer</option>
-        </select>
+        <form method="GET" action="">
+            <select class="form-select" id="userType" name="userType" onchange="this.form.submit()">
+                <option value="">All Users</option>
+                <option value="artisan" <?php if ($userType === 'artisan') echo 'selected'; ?>>Artisan</option>
+                <option value="customer" <?php if ($userType === 'customer') echo 'selected'; ?>>Customer</option>
+            </select>
+        </form>
     </div>
     
     <!-- Table to display users -->
@@ -27,39 +54,23 @@ include '../views/templates/header.php';
             </tr>
         </thead>
         <tbody>
-            <!-- User rows will be populated here by JavaScript -->
+            <?php while ($user = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($user['first_name']); ?></td>
+                    <td><?php echo htmlspecialchars($user['last_name']); ?></td>
+                    <td><?php echo htmlspecialchars($user['phone_number']); ?></td>
+                    <td><?php echo htmlspecialchars($user['email']); ?></td>
+                    <td>
+                        <a href="user_details.php?id=<?php echo $user['id']; ?>" class="btn btn-info btn-sm">View Details</a>
+                        <button onclick="deleteUser(<?php echo $user['id']; ?>)" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
         </tbody>
     </table>
 </div>
 
-<!-- JavaScript to handle dropdown selection and AJAX request -->
 <script>
-function fetchUsers() {
-    const userType = document.getElementById('userType').value;
-    
-    if (userType) {
-        fetch(`fetch_users.php?role=${userType}`)
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
-                tableBody.innerHTML = ''; // Clear previous rows
-
-                data.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user.first_name}</td>
-                        <td>${user.last_name}</td>
-                        <td>${user.phone_number}</td>
-                        <td>${user.email}</td>
-                        <td><button onclick="deleteUser(${user.id})" class="btn btn-danger btn-sm">Delete</button></td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching users:', error));
-    }
-}
-
 // Function to delete user
 function deleteUser(userId) {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -68,7 +79,7 @@ function deleteUser(userId) {
             .then(data => {
                 if (data.success) {
                     alert('User deleted successfully');
-                    fetchUsers(); // Refresh the user list
+                    location.reload(); // Refresh the page to see changes
                 } else {
                     alert('Failed to delete user');
                 }
@@ -77,3 +88,8 @@ function deleteUser(userId) {
     }
 }
 </script>
+
+<?php
+// Close the database connection
+$conn->close();
+?>

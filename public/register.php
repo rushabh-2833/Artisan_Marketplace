@@ -1,5 +1,6 @@
+<?php include '../views/templates/header.php'; ?>
 <?php
-session_start();
+
 include '../src/helpers/db_connect.php'; 
 
 // Variables for error messages and success feedback
@@ -19,14 +20,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $role = $_POST['role'];
 
     // Validate form inputs
-    if (empty($first_name)) $first_name_error = "First name is required.";
-    if (empty($last_name)) $last_name_error = "Last name is required.";
-    if (empty($email)) $email_error = "Email is required.";
-    if (empty($phone_number)) $phone_error = "Phone number is required.";
-    if (empty($address)) $address_error = "Address is required.";
-    if (empty($password)) $password_error = "Password is required.";
-    if ($password !== $confirm_password) $confirm_password_error = "Passwords do not match.";
-    if (empty($role)) $role_error = "Role is required.";
+   // Validate form inputs
+if (empty($first_name) || !preg_match("/^[a-zA-Z\s]+$/", $first_name)) {
+    $first_name_error = "Valid first name is required.";
+}
+if (empty($last_name) || !preg_match("/^[a-zA-Z\s]+$/", $last_name)) {
+    $last_name_error = "Valid last name is required.";
+}
+if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $email_error = "A valid email is required.";
+}
+if (empty($phone_number) || !preg_match("/^[0-9]{10}$/", $phone_number)) {
+    $phone_error = "A valid phone number is required (10 digits).";
+}
+if (empty($address) || !preg_match("/^[a-zA-Z0-9\s,.-]+$/", $address)) {
+    $address_error = "A valid address is required.";
+}
+if (empty($password)) {
+    $password_error = "Password is required.";
+} elseif (strlen($password) < 8) {
+    $password_error = "Password must be at least 8 characters long.";
+}
+if ($password !== $confirm_password) {
+    $confirm_password_error = "Passwords do not match.";
+}
+if (empty($role)) {
+    $role_error = "Role is required.";
+}
+
 
     // Proceed if there are no validation errors
     if (empty($first_name_error) && empty($last_name_error) && empty($email_error) && empty($phone_error) && empty($address_error) && empty($password_error) && empty($confirm_password_error) && empty($role_error)) {
@@ -58,6 +79,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Register</title>
 </head>
+<style>
+    #password-strength {
+        width: 100%;
+        margin-top: 10px;
+    }
+    #strength-bar {
+        height: 10px;
+        background-color: lightgray;
+        border-radius: 5px;
+    }
+    #strength-fill {
+        height: 100%;
+        width: 0;
+        border-radius: 5px;
+        transition: width 0.3s;
+    }
+</style>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -132,14 +170,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- Password -->
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control <?php echo (!empty($password_error)) ? 'is-invalid' : ''; ?>" id="password" name="password" required>
-                        <div class="invalid-feedback">
-                            <?php echo $password_error; ?>
-                        </div>
-                    </div>
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control <?php echo (!empty($password_error)) ? 'is-invalid' : ''; ?>" id="password" name="password" required>
+    <div class="invalid-feedback">
+        <?php echo $password_error; ?>
+    </div>
+
+    <!-- Password strength indicator -->
+    <div id="password-strength" class="mt-2">
+        <div id="strength-bar" style="height: 10px; width: 100%; background-color: lightgray; border-radius: 5px;">
+            <div id="strength-fill" style="height: 100%; width: 0; background-color: red; border-radius: 5px;"></div>
+        </div>
+        <div id="strength-text" class="mt-1">Weak</div> <!-- Strength text -->
+    </div>
+</div>
 
                     <!-- Confirm Password -->
                     <div class="mb-3">
@@ -163,5 +208,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Bootstrap JS from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const strengthFill = document.getElementById('strength-fill');
+    const strengthText = document.getElementById('strength-text');
+
+    passwordInput.addEventListener('input', function() {
+        const password = passwordInput.value;
+        let strength = '';
+        let strengthLevel = 0; // 0 for Weak, 1 for Normal, 2 for Strong
+
+        if (password.length < 6) {
+            strength = 'Weak';
+            strengthLevel = 0;
+            strengthFill.style.backgroundColor = 'red';
+        } else if (password.length < 10) {
+            strength = 'Normal';
+            strengthLevel = 1;
+            strengthFill.style.backgroundColor = 'orange';
+        } else {
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            const criteriaMet = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChars].filter(Boolean).length;
+
+            if (criteriaMet === 4) {
+                strength = 'Strong';
+                strengthLevel = 2;
+                strengthFill.style.backgroundColor = 'green';
+            } else if (criteriaMet >= 2) {
+                strength = 'Normal';
+                strengthLevel = 1;
+                strengthFill.style.backgroundColor = 'orange';
+            } else {
+                strength = 'Weak';
+                strengthLevel = 0;
+                strengthFill.style.backgroundColor = 'red';
+            }
+        }
+
+        // Update the fill width and strength text
+        strengthFill.style.width = `${(strengthLevel + 1) * 33.33}%`; // 0% for Weak, 66.66% for Normal, 100% for Strong
+        strengthText.textContent = strength;
+    });
+});
+</script>
+
+
+
 </body>
 </html>

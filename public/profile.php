@@ -1,5 +1,6 @@
+<?php include '../views/templates/header.php'; ?>
 <?php
-session_start();
+
 include '../src/helpers/db_connect.php'; // Include your database connection file
 
 // Check if the user is logged in
@@ -63,7 +64,5 @@ $stmt->close();
         <a href="edit_profile.php" class="btn btn-warning">Edit Profile</a> <!-- Positioned next to Back to Home -->
     </div>
 
-    <!-- Bootstrap JS from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </body>
 </html>
