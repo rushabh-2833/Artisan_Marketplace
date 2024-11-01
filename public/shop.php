@@ -9,7 +9,7 @@ if (!isset($_SESSION['wishlist'])) {
 }
 
 // Get the current user ID
-$user_id = $_SESSION['user_id'];
+
 
 // Fetch wishlist items from the database
 $wishlist_stmt = $conn->prepare("SELECT product_id FROM wishlist WHERE user_id = ?");

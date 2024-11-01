@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("si", $reason, $product_id);
     }
     $stmt->execute();
-    header("Location: admin_approve_products.php");
+   
 }
 ?>
 
