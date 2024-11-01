@@ -1,5 +1,8 @@
-
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require __DIR__ . '/../../vendor/autoload.php'; // AWS SDK for PHP
 use Aws\S3\S3Client;
 
@@ -27,7 +30,11 @@ $artisan_id = $_SESSION['user_id'];
 $product_id = $_GET['product_id'];
 
 $conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
-$sql = "SELECT * FROM products WHERE id = ? AND artisan_id = ? AND approval_status IN ('pending', 'rejected')";
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT * FROM products WHERE id = ? AND artisan_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $product_id, $artisan_id);
 $stmt->execute();
@@ -39,39 +46,48 @@ if (!$product) {
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $description = $_POST['description'];
+    $name = trim($_POST['name']);
+    $description = trim($_POST['description']);
     $price = $_POST['price'];
     $stock = $_POST['stock'];
     $imageUrl = $product['image_url']; // Default to current image
 
-    if (!empty($_FILES['image']['tmp_name'])) {
-        $image = $_FILES['image']['tmp_name'];
-        $imageName = $_FILES['image']['name'];
-
-        // Upload new image to S3
-        try {
-            $result = $s3->putObject([
-                'Bucket' => $bucketName,
-                'Key'    => 'products/' . $imageName,
-                'SourceFile' => $image,
-                'ACL'    => 'public-read',
-            ]);
-            $imageUrl = $result['ObjectURL'];
-        } catch (Exception $e) {
-            die("Error uploading image: " . $e->getMessage());
-        }
-    }
-
-    // Update product details in the database
-    $sql = "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, image_url = ?, approval_status = 'pending' WHERE id = ? AND artisan_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssdisii", $name, $description, $price, $stock, $imageUrl, $product_id, $artisan_id);
-
-    if ($stmt->execute()) {
-        echo "Product updated successfully and is pending approval!";
+    // Validate inputs
+    if (empty($name) || empty($description) || empty($price) || empty($stock)) {
+        $error_message = "All fields are required.";
+    } elseif (!is_numeric($price) || $price < 0) {
+        $error_message = "Price must be a valid number.";
+    } elseif (!is_numeric($stock) || $stock < 0) {
+        $error_message = "Stock must be a valid number.";
     } else {
-        echo "Error: " . $stmt->error;
+        if (!empty($_FILES['image']['tmp_name'])) {
+            $image = $_FILES['image']['tmp_name'];
+            $imageName = $_FILES['image']['name'];
+
+            // Upload new image to S3
+            try {
+                $result = $s3->putObject([
+                    'Bucket' => $bucketName,
+                    'Key'    => 'products/' . $imageName,
+                    'SourceFile' => $image,
+                    'ACL'    => 'public-read',
+                ]);
+                $imageUrl = $result['ObjectURL'];
+            } catch (Exception $e) {
+                $error_message = "Error uploading image: " . $e->getMessage();
+            }
+        }
+
+        // Update product details in the database
+        $sql = "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, image_url = ?, approval_status = 'pending' WHERE id = ? AND artisan_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssdisii", $name, $description, $price, $stock, $imageUrl, $product_id, $artisan_id);
+
+        if ($stmt->execute()) {
+            $success_message = "Product updated successfully and is pending approval!";
+        } else {
+            $error_message = "Error updating product: " . $stmt->error;
+        }
     }
 }
 
@@ -89,22 +105,28 @@ $conn->close();
     <div class="container mt-5">
         <h2 class="text-center mb-4">Edit Product</h2>
 
-        <form action="product_management.php?action=edit&product_id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data">
+        <?php if (isset($error_message)): ?>
+            <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
+        <?php elseif (isset($success_message)): ?>
+            <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
+        <?php endif; ?>
+
+        <form action="/artisan_marketplace/public/artisan/edit_product.php?product_id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="<?php echo $product['name']; ?>" required>
+                <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description" required><?php echo $product['description']; ?></textarea>
+                <textarea class="form-control" id="description" name="description" required><?php echo htmlspecialchars($product['description']); ?></textarea>
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
-                <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo $product['price']; ?>" required>
+                <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo htmlspecialchars($product['price']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="stock" class="form-label">Stock Quantity</label>
-                <input type="number" class="form-control" id="stock" name="stock" value="<?php echo $product['stock']; ?>" required>
+                <input type="number" class="form-control" id="stock" name="stock" value="<?php echo htmlspecialchars($product['stock']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Product Image</label>
@@ -113,6 +135,8 @@ $conn->close();
             </div>
             <button type="submit" class="btn btn-primary w-100">Update Product</button>
         </form>
+        <a href="/artisan_marketplace/public/product_management.php" class="btn btn-primary btn-sm me-2">Back</a>
+
     </div>
 </body>
 </html>

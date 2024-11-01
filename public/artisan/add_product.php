@@ -1,4 +1,3 @@
-
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -21,21 +20,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     // Use null coalescing to handle undefined array keys
-    $name = $_POST['name'] ?? null;
-    $description = $_POST['description'] ?? null;
-    $price = $_POST['price'] ?? null;
-    $stock = $_POST['stock'] ?? null;
+    $name = trim($_POST['name'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $price = trim($_POST['price'] ?? '');
+    $stock = trim($_POST['stock'] ?? '');
     $image = $_FILES['image']['tmp_name'] ?? null;
     $imageName = $_FILES['image']['name'] ?? null;
     $artisan_id = $_SESSION['user_id'] ?? null;
 
-    // Check required fields
-    if ($name && $description && $price && $stock && $image) {
+    $errors = [];
+
+    // Validation
+    if (empty($name) || !preg_match("/^[a-zA-Z0-9\s\-]+$/", $name) || strlen($name) < 1) {
+        $errors[] = "Product name is required and must only contain letters, numbers, spaces, and dashes. It cannot be just a dash.";
+    } elseif (preg_match("/^-+$/", $name)) {
+        // Check if the name is just dashes
+        $errors[] = "Product name cannot be just a dash.";
+    }
+    if (empty($description)) {
+        $errors[] = "Description is required.";
+    }
+    if (empty($price) || !is_numeric($price) || $price <= 0) {
+        $errors[] = "Price must be a positive number.";
+    }
+    if (empty($stock) || !is_numeric($stock) || $stock < 0) {
+        $errors[] = "Stock quantity must be a non-negative number.";
+    }
+    if ($image === null) {
+        $errors[] = "Image is required.";
+    } elseif ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+        $errors[] = "Error uploading image.";
+    }
+
+    // If there are no errors, proceed to upload the image and insert into the database
+    if (empty($errors)) {
         try {
             // Upload image to S3 without ACL
             $result = $s3->putObject([
                 'Bucket' => $bucketName,
-                'Key'    => 'products/' . $imageName,
+                'Key'    => 'products/' . basename($imageName),
                 'SourceFile' => $image,
             ]);
             $imageUrl = $result['ObjectURL'];
@@ -58,7 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
         $conn->close();
     } else {
-        echo "Please fill in all required fields and upload an image.";
+        // Display validation errors
+        foreach ($errors as $error) {
+            echo "<div class='alert alert-danger'>$error</div>";
+        }
     }
 }
 ?>

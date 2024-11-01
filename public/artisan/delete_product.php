@@ -18,7 +18,5 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 
-// Redirect back to product management page
-header("Location: product_management.php");
 exit;
 ?>

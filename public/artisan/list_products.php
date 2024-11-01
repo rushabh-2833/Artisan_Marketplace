@@ -2,10 +2,26 @@
 
 $conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
 
-// Ensure the user is logged in and has the correct role
+// Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
+}
+
+// Handle delete action
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product_id'])) {
+    $product_id = $_POST['delete_product_id'];
+
+    // Prepare and execute deletion
+    $stmt = $conn->prepare("DELETE FROM products WHERE id = ? AND artisan_id = ?");
+    $stmt->bind_param("ii", $product_id, $_SESSION['user_id']);
+    
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "Product deleted successfully.";
+    } else {
+        $_SESSION['message'] = "Error deleting product: " . $stmt->error;
+    }
+    $stmt->close();
 }
 
 // Fetch products for the logged-in artisan
@@ -29,6 +45,14 @@ $result = $stmt->get_result();
 <div class="container mt-5">
     <h2 class="text-center mb-4">Your Products</h2>
 
+    <!-- Display success or error message -->
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert alert-success text-center">
+            <?php echo $_SESSION['message']; ?>
+            <?php unset($_SESSION['message']); // Clear the message after displaying ?>
+        </div>
+    <?php endif; ?>
+
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
@@ -45,8 +69,11 @@ $result = $stmt->get_result();
                     <td><?php echo htmlspecialchars($product['price']); ?></td>
                     <td><?php echo ucfirst(htmlspecialchars($product['approval_status'])); ?></td>
                     <td>
-                        <a href="product_management.php?action=edit&product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-sm me-2">Edit</a>
-                        <a href="product_management.php?action=delete&product_id=<?php echo $product['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                    <a href="product_management.php?action=edit&product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-sm me-2">Edit</a>
+                        <form action="product_management.php" method="POST" style="display:inline;">
+                            <input type="hidden" name="delete_product_id" value="<?php echo $product['id']; ?>">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                        </form>
                     </td>
                 </tr>
             <?php endwhile; ?>
