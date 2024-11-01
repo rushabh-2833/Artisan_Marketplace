@@ -91,8 +91,6 @@ $cart_count = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'
                                         <li class="nav-item"><a class="nav-link"
                                                 href="/artisan_marketplace/public/about.php">About</a></li>
                                         <li class="nav-item"><a class="nav-link"
-                                                href="/artisan_marketplace/public/checkout.php">Checkout</a></li>
-                                        <li class="nav-item"><a class="nav-link"
                                                 href="/artisan_marketplace/public/contact.php">Contact</a></li>
                                         <li class="nav-item"><a class="nav-link"
                                                 href="/artisan_marketplace/public/wishlist.php">Wishlist</a></li>

@@ -1,5 +1,6 @@
+<?php include '../views/templates/header.php'; ?>
 <?php
-session_start();
+
 include '../src/helpers/db_connect.php'; 
 
 // Variables for error messages and success feedback
