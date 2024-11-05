@@ -228,3 +228,7 @@ h2 {
     padding: 8px 20px;
     border-radius: 5px;
 }
+
+.card-header{
+    background-color: #2e5e40 !important;
+}
