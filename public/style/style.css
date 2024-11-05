@@ -175,3 +175,56 @@ h2 {
 .btn-primary:hover {
     background-color: #2C3E50;
 }
+
+
+/* profile page */
+
+.profile-card {
+    max-width: 1000mx;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card .card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #2e5e40;
+}
+
+.profile-card .table th {
+    width: 40%;
+    color: #436850;
+    font-weight: 500;
+    padding: 15px;
+}
+
+.profile-card .table td {
+    font-size: 1rem;
+    color: #555;
+}
+
+.profile-card .btn-primary {
+    background-color: #436850;
+    border: none;
+    font-weight: bold;
+}
+
+.profile-card .btn-primary:hover {
+    background-color: #2C3E50;
+}
+
+.profile-card .btn-warning {
+    background-color: #ffbb33;
+    font-weight: bold;
+}
+
+.profile-card .btn-warning:hover {
+    background-color: #ffa500;
+}
+
+.card-body .d-flex .btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+}
