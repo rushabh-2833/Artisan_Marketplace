@@ -101,3 +101,77 @@ h2 {
     width: 100%;
     font-weight: bold;
 }
+
+
+/* aobut */
+/* General Styling */
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #34495E;
+}
+
+/* About Section */
+.about-section {
+    background-color: #F9F9F9;
+}
+
+/* Services Section */
+.services-section .service-card {
+    background-color: #FFFFFF;
+    transition: transform 0.3s ease;
+}
+
+.services-section .service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #12372A;
+}
+
+.service-description {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: #FFFFFF;
+}
+
+/* Team Section */
+.team-section {
+    background-color: #F9F9F9;
+}
+
+.team-img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #12372A;
+}
+
+.card-text {
+    color: #777;
+}
+
+.btn-primary {
+    background-color: #436850;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #2C3E50;
+}
