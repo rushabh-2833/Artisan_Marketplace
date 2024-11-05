@@ -1,7 +1,7 @@
     <?php include '../views/templates/header.php'; ?>
     <?php
 
-    include '../src/helpers/db_connect.php'; // Include your database connection file
+    include '../src/helpers/db_connect.php'; 
 
     // Check if the user is logged in
     $user_id = $_SESSION['user_id'] ?? null;
