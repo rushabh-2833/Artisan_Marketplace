@@ -64,5 +64,4 @@ $stmt->close();
         <a href="edit_profile.php" class="btn btn-warning">Edit Profile</a> <!-- Positioned next to Back to Home -->
     </div>
 
-    </body>
-</html>
+    <?php include '../views/templates/footer.php'; ?>

@@ -231,6 +231,5 @@ $result = $stmt->get_result();
 $stmt->close();
 $conn->close();
 ?>
-</body>
-</html>
+<?php include '../views/templates/footer.php'; ?>
             

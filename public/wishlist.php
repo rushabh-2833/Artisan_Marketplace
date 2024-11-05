@@ -115,5 +115,4 @@ $result = $stmt->get_result();
 $conn->close();
 ?>
 
-</body>
-</html>
+<?php include '../views/templates/footer.php'; ?>

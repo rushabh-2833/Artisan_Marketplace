@@ -114,5 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         this.style.display = 'none'; // Hide the edit button once clicked
     });
 </script>
-</body>
-</html>
+
+
+<?php include '../views/templates/footer.php'; ?>

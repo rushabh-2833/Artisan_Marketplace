@@ -93,3 +93,5 @@ function deleteUser(userId) {
 // Close the database connection
 $conn->close();
 ?>
+
+<?php include '../views/templates/footer.php'; ?>
