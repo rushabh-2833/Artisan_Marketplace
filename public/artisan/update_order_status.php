@@ -1,16 +1,23 @@
 <?php
+session_start();
+include '../../src/helpers/db_connect.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $order_id = $_POST['order_id'];
     $order_status = $_POST['order_status'];
 
-    $conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
+    // Check if the column name in the table is 'id' instead of 'order_id'
+    $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    if (!$stmt) {
+        die("SQL error: " . $conn->error);
+    }
 
-    $sql = "UPDATE orders SET order_status = ? WHERE order_id = ?";
-    $stmt = $conn->prepare($sql);
     $stmt->bind_param("si", $order_status, $order_id);
     $stmt->execute();
+    $stmt->close();
 
+    // Redirect back to the order management page
     header("Location: artisan_orders.php");
-    exit();
+    exit;
 }
 ?>
