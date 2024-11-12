@@ -1,19 +1,19 @@
 <?php
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include '../../views/templates/header.php';
 
+// Redirect if not artisan
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'artisan') {
     header("Location: login.php");
     exit;
 }
 
 $artisan_id = $_SESSION['user_id'];
-$conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
+include $_SERVER['DOCUMENT_ROOT'] . '/Artisan_Marketplace/src/helpers/db_connect.php';
 
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
-}
-
+// Fetch orders
 $sql = "
     SELECT o.id AS order_id, p.name AS product_name, 
            CONCAT(u.first_name, ' ', u.last_name) AS customer_name, 
@@ -25,10 +25,9 @@ $sql = "
     WHERE p.artisan_id = ?
     ORDER BY o.created_at DESC;
 ";
-
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
-    die("SQL error: " . $conn->error);
+    die("SQL preparation failed: " . $conn->error);
 }
 $stmt->bind_param("i", $artisan_id);
 $stmt->execute();
