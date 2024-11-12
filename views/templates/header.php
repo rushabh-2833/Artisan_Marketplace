@@ -43,6 +43,20 @@ if ($user_logged_in) {
 }
     
 }
+$pending_orders_count = 0;
+if ($user_logged_in) {
+    $sql = "SELECT COUNT(*) AS pending_count FROM orders WHERE customer_id = ? AND status = 'pending'";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result) {
+            $data = $result->fetch_assoc();
+            $pending_orders_count = $data['pending_count'] ?? 0;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -209,6 +223,9 @@ if ($user_logged_in) {
 <li>
     <a class="dropdown-item" href="order_history.php">
         Order History
+        <?php if ($pending_orders_count > 0): ?>
+            <span class="badge bg-warning"><?php echo $pending_orders_count; ?></span>
+        <?php endif; ?>
     </a>
 </li>
 
