@@ -4,6 +4,61 @@
 .wishlist-button.filled {
     color: red; 
 }
+/* Login */
+
+/* Login Page Styling */
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif;
+}
+
+.form-label {
+    color: #34495e;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #bdc3c7;
+}
+
+.btn-primary {
+    background-color: #436850;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2e5e40;
+}
+
+.register-link {
+    color: #1abc9c;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.register-link:hover {
+    color: #16a085;
+}
 
 
 /* General Styling */
@@ -45,4 +100,135 @@
 .contact-form button {
     width: 100%;
     font-weight: bold;
+}
+
+
+/* aobut */
+/* General Styling */
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #34495E;
+}
+
+/* About Section */
+.about-section {
+    background-color: #F9F9F9;
+}
+
+/* Services Section */
+.services-section .service-card {
+    background-color: #FFFFFF;
+    transition: transform 0.3s ease;
+}
+
+.services-section .service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #12372A;
+}
+
+.service-description {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: #FFFFFF;
+}
+
+/* Team Section */
+.team-section {
+    background-color: #F9F9F9;
+}
+
+.team-img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #12372A;
+}
+
+.card-text {
+    color: #777;
+}
+
+.btn-primary {
+    background-color: #436850;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #2C3E50;
+}
+
+
+/* profile page */
+
+.profile-card {
+    max-width: 1000mx;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card .card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #2e5e40;
+}
+
+.profile-card .table th {
+    width: 40%;
+    color: #436850;
+    font-weight: 500;
+    padding: 15px;
+}
+
+.profile-card .table td {
+    font-size: 1rem;
+    color: #555;
+}
+
+.profile-card .btn-primary {
+    background-color: #436850;
+    border: none;
+    font-weight: bold;
+}
+
+.profile-card .btn-primary:hover {
+    background-color: #2C3E50;
+}
+
+.profile-card .btn-warning {
+    background-color: #ffbb33;
+    font-weight: bold;
+}
+
+.profile-card .btn-warning:hover {
+    background-color: #ffa500;
+}
+
+.card-body .d-flex .btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+}
+
+.card-header{
+    background-color: #2e5e40 !important;
 }

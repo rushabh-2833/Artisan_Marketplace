@@ -26,5 +26,6 @@ unset($_SESSION['shipping_info']);
     <h2>Thank you for your order!</h2>
     <p>Your order has been successfully placed and is now being processed. You will receive an email confirmation shortly.</p>
     <a href="shop.php">Continue Shopping</a>
-</body>
-</html>
+
+    
+    <?php include '../views/templates/footer.php'; ?>
