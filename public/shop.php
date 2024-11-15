@@ -84,10 +84,11 @@ $result = $stmt->get_result();
         </div>
     </form>
 
-    <div class="row">
+    < class="row">
     <?php if ($result->num_rows > 0): ?>
         <?php while ($product = $result->fetch_assoc()): ?>
             <div class="col-md-4">
+            <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none">
                 <div class="product-card text-center">
                     <!-- Product Image with Heart Icon -->
                     <div class="product-image">
@@ -109,6 +110,7 @@ $result = $stmt->get_result();
                     </form>
                 </div>
             </div>
+        </a>
         <?php endwhile; ?>
     <?php else: ?>
         <div class="col-12 text-center">
