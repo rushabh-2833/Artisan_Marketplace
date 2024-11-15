@@ -9,20 +9,23 @@ include '../src/helpers/db_connect.php';
 // Check if the user is logged in
 $user_id = $_SESSION['user_id'] ?? null;
 
+if (!$user_id) {
+    header("Location: login.php");
+    exit;
+}
+
 // Initialize the saved address variable
 $saved_address = '';
 
 // Fetch the user's saved address from the database
-if ($user_id) {
-    $stmt = $conn->prepare("SELECT address FROM users WHERE id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        $saved_address = $row['address'];
-    }
-    $stmt->close();
+$stmt = $conn->prepare("SELECT address FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($row = $result->fetch_assoc()) {
+    $saved_address = $row['address'];
 }
+$stmt->close();
 
 // Check if the cart is empty and display a large message if it is
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
@@ -36,13 +39,39 @@ foreach ($_SESSION['cart'] as $item) {
     $total_price += $item['price'] * $item['quantity'];
 }
 
-// Handle form submission and redirect
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['shipping_info']) && !empty($_POST['shipping_info'])) {
-        // Save the shipping info in the session
-        $_SESSION['shipping_info'] = $_POST['shipping_info'];
-        // Redirect to order_summary.php
-        echo "<script>window.location.href = 'order_summary.php';</script>";
+        $shipping_info = $_POST['shipping_info'];
+
+        // Insert the order into the orders table
+        $stmt = $conn->prepare("INSERT INTO orders (customer_id, total_price, status) VALUES (?, ?, 'pending')");
+        $stmt->bind_param("id", $user_id, $total_price);
+        $stmt->execute();
+        $order_id = $stmt->insert_id; // Get the generated order ID
+        $stmt->close();
+
+        // Insert each cart item into the order_items table
+        foreach ($_SESSION['cart'] as $product_id => $item) {
+            $stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("iiid", $order_id, $product_id, $item['quantity'], $item['price']);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        // Clear the cart for this user in the session
+        unset($_SESSION['cart']);
+
+        // Clear the cart in the database
+        $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->close();
+
+        // Save the shipping information in the session
+        $_SESSION['shipping_info'] = $shipping_info;
+
+        
         exit;
     } else {
         echo "Shipping information is required.";
@@ -99,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Proceed to Order Summary</button>
+                <button type="submit" class="btn btn-primary w-100">Place Order</button>
             </form>
         </div>
     </div>
@@ -114,6 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         this.style.display = 'none'; // Hide the edit button once clicked
     });
 </script>
-
-
 <?php include '../views/templates/footer.php'; ?>
+</body>
+</html>
+

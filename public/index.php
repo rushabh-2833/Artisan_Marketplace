@@ -1,7 +1,40 @@
 <?php include '../views/templates/header.php'; ?>
+<?php
+
+include '../src/helpers/db_connect.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch unread notifications count
+$sql = "SELECT COUNT(*) AS unread_count FROM notifications WHERE user_id = ? AND is_read = FALSE";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$notification_data = $result->fetch_assoc();
+$unread_count = $notification_data['unread_count'] ?? 0;
+?>
+
+
+
 
 
     <!-- Banner section -->
+    <div class="container mt-5">
+        <h2>Customer Dashboard</h2>
+        <div>
+            <a href="notifications.php" class="btn btn-primary">
+                Notifications <?php if ($unread_count > 0): ?>
+                    <span class="badge bg-danger"><?php echo $unread_count; ?></span>
+                <?php endif; ?>
+            </a>
+        </div>
+    </div>
 
     <section class="banner text-center my-5">
         <div class="container">
