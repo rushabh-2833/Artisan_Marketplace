@@ -44,5 +44,4 @@ $product_id = $_GET['product_id'] ?? null;
         </div>
     <?php endif; ?>
 </div>
-</body>
-</html>
+<?php include '../views/templates/footer.php'; ?>

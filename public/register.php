@@ -259,5 +259,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-</body>
-</html>
+<?php include '../views/templates/footer.php'; ?>

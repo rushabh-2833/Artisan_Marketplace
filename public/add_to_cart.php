@@ -4,7 +4,9 @@ include '../src/helpers/db_connect.php'; // Database connection
 
 // Check if a product_id was submitted
 if (isset($_POST['product_id'])) {
-    $product_id = (int)$_POST['product_id']; // Sanitize product_id input
+$product_id = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0; // Sanitize and ensure product_id exists
+$quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1; // Default quantity to 1
+
 
     // Ensure the session cart exists
     if (!isset($_SESSION['cart'])) {
@@ -18,18 +20,15 @@ if (isset($_POST['product_id'])) {
         // Check if the product already exists in the session cart
         if (isset($_SESSION['cart'][$product_id])) {
             // Increment quantity if already in the cart
-            $_SESSION['cart'][$product_id]['quantity'] += 1;
+            $_SESSION['cart'][$product_id]['quantity'] += $quantity;
 
             // Update the quantity in the database
-            $stmt = $conn->prepare("
-                UPDATE cart 
-                SET quantity = quantity + 1 
-                WHERE user_id = ? AND product_id = ?
-            ");
-            if (!$stmt) {
-                die("Database error: " . $conn->error);
-            }
-            $stmt->bind_param("ii", $user_id, $product_id);
+$stmt = $conn->prepare("UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND product_id = ?");
+if (!$stmt) {
+    die("Database error: " . $conn->error);
+}
+$stmt->bind_param("iii", $quantity, $user_id, $product_id);
+
             $stmt->execute();
             $stmt->close();
         } else {
@@ -45,48 +44,55 @@ if (isset($_POST['product_id'])) {
             $stmt->bind_param("i", $product_id);
             $stmt->execute();
             $result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    $product = $result->fetch_assoc();
 
-            if ($result->num_rows > 0) {
-                $product = $result->fetch_assoc();
+    if (!$product) {
+        $_SESSION['message'] = "Invalid product.";
+        header("Location: shop.php");
+        exit();
+    }
 
-                // Add product to the session cart
-                $_SESSION['cart'][$product_id] = [
-                    'name' => $product['name'],
-                    'price' => $product['price'],
-                    'image_url' => $product['image_url'],
-                    'quantity' => 1
-                ];
+    // Add product to the session cart
+    $_SESSION['cart'][$product_id] = [
+        'name' => $product['name'],
+        'price' => $product['price'],
+        'image_url' => $product['image_url'],
+        'quantity' => isset($quantity) ? $quantity : 1 // Use dynamic quantity or default to 1
+    ];
 
-                // Insert the item into the database
-                $stmt = $conn->prepare("
-                    INSERT INTO cart (user_id, product_id, quantity) 
-                    VALUES (?, ?, 1) 
-                    ON DUPLICATE KEY UPDATE quantity = quantity + 1
-                ");
-                if (!$stmt) {
-                    die("Database error: " . $conn->error);
-                }
-                $stmt->bind_param("ii", $user_id, $product_id);
-                $stmt->execute();
-                $stmt->close();
-            } else {
-                // Handle the case where the product is not found
-                $_SESSION['error_message'] = "Product not found or not approved!";
-                header("Location: shop.php");
-                exit();
-            }
-        }
-    } else {
-        // If the user is not logged in, redirect to the login page
-        $_SESSION['error_message'] = "Please log in to add products to the cart!";
+    // Insert or update the item in the database
+    $stmt = $conn->prepare("
+        INSERT INTO cart (user_id, product_id, quantity) 
+        VALUES (?, ?, ?) 
+        ON DUPLICATE KEY UPDATE quantity = quantity + ?
+    ");
+    if (!$stmt) {
+        die("Database error: " . $conn->error);
+    }
+    $stmt->bind_param("iiii", $user_id, $product_id, $quantity, $quantity);
+    $stmt->execute();
+    $stmt->close();
+} else {
+    // Handle the case where the product is not found or not approved
+    $_SESSION['error_message'] = "Product not found or not approved!";
+    header("Location: shop.php");
+    exit();
+}
+
         header("Location: login.php");
         exit();
     }
 
     // Set a success message
     $_SESSION['message'] = "Item added to cart successfully!";
-    
-    // Redirect back to the shop page
+
+    // Redirect back to the referring page
+    $referrer = $_SERVER['HTTP_REFERER'] ?? 'shop.php'; // Fallback to shop.php if no referrer
+    header("Location: $referrer");
+    exit();
+} else {
+    $_SESSION['message'] = "No product selected.";
     header("Location: shop.php");
     exit();
 } else {
@@ -95,4 +101,6 @@ if (isset($_POST['product_id'])) {
     header("Location: shop.php");
     exit();
 }
+
 ?>
+

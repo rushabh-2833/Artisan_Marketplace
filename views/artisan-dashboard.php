@@ -55,6 +55,4 @@ $result = $stmt->get_result();
     </div>
 
     <a href="../public/artisan/rejected_products.php" class="btn btn-warning">View Rejected Products</a>
-
-</body>
-</html>
+    <?php include '../views/templates/footer.php'; ?>
