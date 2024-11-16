@@ -39,7 +39,7 @@ if (!$product) {
         </div>
         <div class="col-md-6">
             <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-            <p><?php echo htmlspecialchars($product['description']); ?></p>
+            <p><?php echo htmlspecialchars_decode($product['description']); ?></p>
             <p><strong>Price:</strong> $<?php echo number_format($product['price'], 2); ?></p>
             <p><strong>Stock:</strong> <?php echo $product['stock']; ?> available</p>
             <form action="add_to_cart.php" method="POST">
