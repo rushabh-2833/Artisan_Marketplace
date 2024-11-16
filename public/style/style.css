@@ -101,9 +101,6 @@ h2 {
     width: 100%;
     font-weight: bold;
 }
-
-
-/* aobut */
 /* General Styling */
 .section-title {
     font-size: 2rem;
@@ -176,11 +173,9 @@ h2 {
     background-color: #2C3E50;
 }
 
-
-/* profile page */
-
+/* Profile Page */
 .profile-card {
-    max-width: 1000mx;
+    max-width: 1000px;
     margin: 0 auto;
     border-radius: 8px;
     overflow: hidden;
@@ -229,6 +224,7 @@ h2 {
     border-radius: 5px;
 }
 
-.card-header{
+.card-header {
     background-color: #2e5e40 !important;
 }
+

@@ -36,6 +36,9 @@ if (empty($_SESSION['cart'])) {
 
 // Calculate total price
 $totalPrice = 0;
+// Calculate cart count for badge
+$cart_count = array_sum(array_column($_SESSION['cart'], 'quantity'));
+
 ?>
 
 <div class="container mt-5">

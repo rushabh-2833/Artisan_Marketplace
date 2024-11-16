@@ -24,17 +24,7 @@ $unread_count = $notification_data['unread_count'] ?? 0;
 
 
 
-    <!-- Banner section -->
-    <div class="container mt-5">
-        <h2>Customer Dashboard</h2>
-        <div>
-            <a href="notifications.php" class="btn btn-primary">
-                Notifications <?php if ($unread_count > 0): ?>
-                    <span class="badge bg-danger"><?php echo $unread_count; ?></span>
-                <?php endif; ?>
-            </a>
-        </div>
-    </div>
+    
 
     <section class="banner text-center my-5">
         <div class="container">
