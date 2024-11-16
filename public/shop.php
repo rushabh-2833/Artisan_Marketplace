@@ -84,40 +84,42 @@ $result = $stmt->get_result();
         </div>
     </form>
 
-    < class="row">
-    <?php if ($result->num_rows > 0): ?>
-        <?php while ($product = $result->fetch_assoc()): ?>
-            <div class="col-md-4">
+    <div class="row">
+<?php if ($result->num_rows > 0): ?>
+    <?php while ($product = $result->fetch_assoc()): ?>
+        <div class="col-md-4">
+            <!-- Wrap the entire card with a clickable link -->
             <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none">
-                <div class="product-card text-center">
+                <div class="product-card text-center" style="cursor: pointer;">
                     <!-- Product Image with Heart Icon -->
-                    <div class="product-image">
-                        <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                        <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
+                    <div class="product-image position-relative">
+                        <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="img-fluid">
+                        <form action="toggle_wishlist.php" method="POST" class="wishlist-form position-absolute top-0 end-0 p-2">
                             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                            <button type="submit" class="wishlist-button">
+                            <button type="submit" class="wishlist-button bg-transparent border-0">
                                 <i class="fas fa-heart heart-icon <?php echo in_array($product['id'], $wishlist_product_ids) ? 'filled' : ''; ?>"></i>
                             </button>
                         </form>
                     </div>
-                    <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <h5 class="mt-3 text-dark"><?php echo htmlspecialchars($product['name']); ?></h5>
                     <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
-                    
-                    <!-- Add to Cart Button -->
-                    <form action="add_to_cart.php" method="POST">
-                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                        <button type="submit" class="btn btn-success">Add to Cart</button>
-                    </form>
+
+                    <form action="add_to_cart.php" method="POST" class="mt-2">
+                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+            </form>
                 </div>
-            </div>
-        </a>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <div class="col-12 text-center">
-            <p>No products found in this price range. Please adjust your filter.</p>
+            </a>
+            <!-- Keep the "Add to Cart" button outside the clickable card -->
+            
         </div>
-    <?php endif; ?>
-</div>
+    <?php endwhile; ?>
+<?php else: ?>
+    <div class="col-12 text-center">
+        <p>No products found in this price range. Please adjust your filter.</p>
+    </div>
+<?php endif; ?>
+    </div>
 
 
 <!-- Font Awesome for Icons -->
