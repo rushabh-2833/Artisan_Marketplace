@@ -103,10 +103,12 @@ $result = $stmt->get_result();
                     <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
                     
                     <!-- Add to Cart Button -->
-                    <form action="add_to_cart.php" method="POST">
-                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                        <button type="submit" class="btn btn-success">Add to Cart</button>
-                    </form>
+<form action="add_to_cart.php" method="POST">
+    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+    <button type="submit" class="btn btn-success">Add to Cart</button>
+</form>
+
                 </div>
             </div>
         <?php endwhile; ?>

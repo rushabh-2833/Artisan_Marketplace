@@ -4,7 +4,7 @@ include '../src/helpers/db_connect.php'; // Database connection
 
 // Check if a product_id was submitted
 if (isset($_POST['product_id'])) {
-    $product_id = $_POST['product_id'];
+    $product_id = (int)$_POST['product_id']; // Sanitize product_id input
 
     // Ensure the session cart exists
     if (!isset($_SESSION['cart'])) {
@@ -13,7 +13,7 @@ if (isset($_POST['product_id'])) {
 
     // Check if the user is logged in
     if (isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id'];
+        $user_id = (int)$_SESSION['user_id']; // Sanitize user_id input
 
         // Check if the product already exists in the session cart
         if (isset($_SESSION['cart'][$product_id])) {
@@ -21,32 +21,66 @@ if (isset($_POST['product_id'])) {
             $_SESSION['cart'][$product_id]['quantity'] += 1;
 
             // Update the quantity in the database
-            $stmt = $conn->prepare("UPDATE cart SET quantity = quantity + 1 WHERE user_id = ? AND product_id = ?");
+            $stmt = $conn->prepare("
+                UPDATE cart 
+                SET quantity = quantity + 1 
+                WHERE user_id = ? AND product_id = ?
+            ");
+            if (!$stmt) {
+                die("Database error: " . $conn->error);
+            }
             $stmt->bind_param("ii", $user_id, $product_id);
             $stmt->execute();
             $stmt->close();
         } else {
             // Fetch product details from the database
-            $stmt = $conn->prepare("SELECT id, name, price, image_url FROM products WHERE id = ? AND approval_status = 'approved'");
+            $stmt = $conn->prepare("
+                SELECT id, name, price, image_url 
+                FROM products 
+                WHERE id = ? AND approval_status = 'approved'
+            ");
+            if (!$stmt) {
+                die("Database error: " . $conn->error);
+            }
             $stmt->bind_param("i", $product_id);
             $stmt->execute();
             $result = $stmt->get_result();
-            $product = $result->fetch_assoc();
 
-            // Add product to the session cart
-            $_SESSION['cart'][$product_id] = [
-                'name' => $product['name'],
-                'price' => $product['price'],
-                'image_url' => $product['image_url'],
-                'quantity' => 1
-            ];
+            if ($result->num_rows > 0) {
+                $product = $result->fetch_assoc();
 
-            // Insert the item into the database
-            $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE quantity = quantity + 1");
-            $stmt->bind_param("ii", $user_id, $product_id);
-            $stmt->execute();
-            $stmt->close();
+                // Add product to the session cart
+                $_SESSION['cart'][$product_id] = [
+                    'name' => $product['name'],
+                    'price' => $product['price'],
+                    'image_url' => $product['image_url'],
+                    'quantity' => 1
+                ];
+
+                // Insert the item into the database
+                $stmt = $conn->prepare("
+                    INSERT INTO cart (user_id, product_id, quantity) 
+                    VALUES (?, ?, 1) 
+                    ON DUPLICATE KEY UPDATE quantity = quantity + 1
+                ");
+                if (!$stmt) {
+                    die("Database error: " . $conn->error);
+                }
+                $stmt->bind_param("ii", $user_id, $product_id);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                // Handle the case where the product is not found
+                $_SESSION['error_message'] = "Product not found or not approved!";
+                header("Location: shop.php");
+                exit();
+            }
         }
+    } else {
+        // If the user is not logged in, redirect to the login page
+        $_SESSION['error_message'] = "Please log in to add products to the cart!";
+        header("Location: login.php");
+        exit();
     }
 
     // Set a success message
@@ -55,4 +89,10 @@ if (isset($_POST['product_id'])) {
     // Redirect back to the shop page
     header("Location: shop.php");
     exit();
+} else {
+    // Redirect back to shop page if no product_id is submitted
+    $_SESSION['error_message'] = "Invalid product ID!";
+    header("Location: shop.php");
+    exit();
 }
+?>

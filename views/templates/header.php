@@ -144,22 +144,38 @@ if ($user_logged_in) {
                                                 href="/artisan_marketplace/public/wishlist.php">Wishlist</a></li>
 
                                         <!-- Cart Icon with Item Count -->
-                                        <li class="nav-item position-relative cart-icon">
-                                            <a class="nav-link" href="/artisan_marketplace/public/cart.php">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                <?php if ($cart_count > 0): ?>
-                                                    <span class="badge rounded-pill bg-danger"><?php echo $cart_count; ?></span>
-                                                <?php endif; ?>
-                                            </a>
-                                        </li>
+<li class="nav-item position-relative cart-icon">
+    <a class="nav-link" href="/artisan_marketplace/public/cart.php">
+        <i class="fas fa-shopping-cart"></i>
+        <?php
+        // Display the cart count if items are present
+        $cart_count = 0;
+        if ($user_logged_in) {
+            $sql = "SELECT SUM(quantity) AS cart_count FROM cart WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
+            if ($stmt) {
+                $stmt->bind_param("i", $_SESSION['user_id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result) {
+                    $cart_data = $result->fetch_assoc();
+                    $cart_count = $cart_data['cart_count'] ?? 0;
+                }
+                $stmt->close();
+            }
+        }
+        ?>
+        <?php if ($cart_count > 0): ?>
+            <span class="badge bg-danger"><?php echo $cart_count; ?></span>
+        <?php endif; ?>
+    </a>
+</li>
+
 
                                         <!-- Profile Dropdown for Customers -->
                                         <?php if ($user_logged_in): ?>
                                             <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" id="profileDropdown" role="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <?php echo $initials; ?>
-                                                </a>
+                                               
                                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                                     <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
                                                     <li><a class="dropdown-item" href="payment_methods.php">Payment Methods</a>
@@ -190,8 +206,15 @@ if ($user_logged_in) {
                         </li>
                         <li class="nav-item"><a class="nav-link"
                                 href="/artisan_marketplace/public/product_management.php">Product Management</a></li>
-                                <li class="nav-item"><a class="nav-link"
-                                href="/artisan_marketplace/public/artisan/artisan_orders.php">Order Management</a></li>
+                                    <li class="nav-item">
+        <a class="nav-link" href="/artisan_marketplace/public/artisan/artisan_orders.php">
+            Order Management
+            <?php if ($notification_count > 0): ?>
+                <span class="badge bg-danger"><?php echo $notification_count; ?></span>
+            <?php endif; ?>
+        </a>
+    </li>
+
                         <li class="nav-item"><a class="nav-link"
                                 href="/artisan_marketplace/views/artisan-dashboard.php">Dashboard</a></li>
                     <?php else: ?>
