@@ -1,11 +1,15 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include '../views/templates/header.php';
+// Include necessary files
 include '../src/helpers/db_connect.php';
+include '../views/templates/header.php';
 
 // Check if the user is logged in
 $user_id = $_SESSION['user_id'] ?? null;
@@ -15,10 +19,8 @@ if (!$user_id) {
     exit;
 }
 
-// Initialize the saved address variable
+// Fetch the user's saved address
 $saved_address = '';
-
-// Fetch the user's saved address from the database
 $stmt = $conn->prepare("SELECT address FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -28,21 +30,21 @@ if ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// Check if the cart is empty and display a large message if it is
+// Check if the cart is empty
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     echo "<div class='text-center my-5'><h1 style='font-size: 2.5em; color: #333;'>Your cart is empty.</h1></div>";
     exit;
 }
 
-// Calculate total price from cart items
+// Calculate the total price of the cart
 $total_price = 0;
 foreach ($_SESSION['cart'] as $item) {
     $total_price += $item['price'] * $item['quantity'];
 }
 
 // Handle form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['shipping_info']) && !empty($_POST['shipping_info'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['shipping_info'])) {
         $shipping_info = $_POST['shipping_info'];
 
         // Insert the order into the orders table
@@ -60,23 +62,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->close();
         }
 
-        // Clear the cart for this user in the session
+        // Clear the cart in session and database
         unset($_SESSION['cart']);
-
-        // Clear the cart in the database
         $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $stmt->close();
 
-        // Save the shipping information in the session
+        // Save shipping information in the session and redirect
         $_SESSION['shipping_info'] = $shipping_info;
-
-        // Redirect to checkout confirmation page
         header("Location: checkout_confirmation.php");
         exit;
     } else {
-        echo "Shipping information is required.";
+        echo "<div class='text-center my-5'><h1 style='font-size: 2em; color: red;'>Shipping information is required!</h1></div>";
     }
 }
 ?>
@@ -122,12 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h4>Shipping Information</h4>
                 <div class="mb-3">
                     <label for="shipping_info" class="form-label"><strong>Your Default Address</strong></label>
-                    <div class="input-group">
-                        <textarea name="shipping_info" id="shipping_info" class="form-control" placeholder="Enter your address here..." required readonly><?php echo htmlspecialchars($saved_address); ?></textarea>
-                        <button type="button" id="edit_address_btn" class="btn btn-outline-secondary">Edit</button>
-                        <div class="invalid-feedback">
-                            Please enter your shipping address.
-                        </div>
+                    <textarea name="shipping_info" id="shipping_info" class="form-control" placeholder="Enter your address here..." required><?php echo htmlspecialchars($saved_address); ?></textarea>
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Place Order</button>
@@ -137,15 +132,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <script>
-    // Enable address editing when the "Edit" button is clicked
-    document.getElementById('edit_address_btn').addEventListener('click', function() {
-        const addressField = document.getElementById('shipping_info');
-        addressField.removeAttribute('readonly');
-        addressField.focus(); // Focus on the field for immediate editing
-        this.style.display = 'none'; // Hide the edit button once clicked
-    });
+    // Add client-side validation
+    (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
 </script>
 <?php include '../views/templates/footer.php'; ?>
 </body>
 </html>
-
