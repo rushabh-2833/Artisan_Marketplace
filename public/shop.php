@@ -84,43 +84,40 @@ $result = $stmt->get_result();
         </div>
     </form>
 
-    <div class="container">
-    <div class="row">
-        <?php if ($result->num_rows > 0): ?>
-            <?php while ($product = $result->fetch_assoc()): ?>
-                <div class="col-md-4 mb-4">
-                    <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none">
-                        <div class="product-card text-center">
-                            <!-- Product Image with Heart Icon -->
-                            <div class="product-image">
-                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="img-fluid">
-                                <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
-                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                    <button type="submit" class="wishlist-button">
-                                        <i class="fas fa-heart heart-icon <?php echo in_array($product['id'], $wishlist_product_ids) ? 'filled' : ''; ?>"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
-                            <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
-                            
-                            <!-- Add to Cart Button -->
-                            <form action="add_to_cart.php" method="POST">
-                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                <button type="submit" class="btn btn-success">Add to Cart</button>
-                            </form>
-                        </div>
-                    </a>
+    < class="row">
+    <?php if ($result->num_rows > 0): ?>
+        <?php while ($product = $result->fetch_assoc()): ?>
+            <div class="col-md-4">
+            <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none">
+                <div class="product-card text-center">
+                    <!-- Product Image with Heart Icon -->
+                    <div class="product-image">
+                        <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                            <button type="submit" class="wishlist-button">
+                                <i class="fas fa-heart heart-icon <?php echo in_array($product['id'], $wishlist_product_ids) ? 'filled' : ''; ?>"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
+                    
+                    <!-- Add to Cart Button -->
+                    <form action="add_to_cart.php" method="POST">
+                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                        <button type="submit" class="btn btn-success">Add to Cart</button>
+                    </form>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="col-12 text-center">
-                <p>No products found in this price range. Please adjust your filter.</p>
             </div>
-        <?php endif; ?>
-    </div>
+        </a>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <div class="col-12 text-center">
+            <p>No products found in this price range. Please adjust your filter.</p>
+        </div>
+    <?php endif; ?>
 </div>
-
 
 
 <!-- Font Awesome for Icons -->

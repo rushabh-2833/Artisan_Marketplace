@@ -1,4 +1,5 @@
 <?php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -71,7 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Save the shipping information in the session
         $_SESSION['shipping_info'] = $shipping_info;
 
-        
+        // Redirect to checkout confirmation page
+        header("Location: checkout_confirmation.php");
         exit;
     } else {
         echo "Shipping information is required.";
