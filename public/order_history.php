@@ -41,7 +41,8 @@ $sql = "
         o.created_at, 
         o.cancellation_reason, 
         o.updated_at AS cancellation_requested,
-        r.rating AS review_rating 
+        r.rating AS review_rating,
+        r.comment AS review_comment
     FROM orders o
     INNER JOIN order_items oi ON o.id = oi.order_id
     INNER JOIN products p ON oi.product_id = p.id
@@ -155,19 +156,35 @@ $result = $stmt->get_result();
                         </td>
                         <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                         <td>
-                            <?php if (!empty($row['review_rating'])): ?>
-                                <!-- Display Review Stars -->
-                                <span>
-                                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <i class="fas fa-star <?= $i <= $row['review_rating'] ? 'star' : 'empty-star'; ?>"></i>
-                                    <?php endfor; ?>
-                                </span>
-                            <?php elseif ($row['status'] === 'completed'): ?>
-                                <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
-                            <?php else: ?>
-                                Not Reviewed
-                            <?php endif; ?>
-                        </td>
+    <?php
+    // Check if the product has been reviewed by the user
+    $review_check_query = "
+        SELECT rating 
+        FROM reviews 
+        WHERE product_id = ? AND user_id = ?
+        LIMIT 1
+    ";
+    $review_check_stmt = $conn->prepare($review_check_query);
+    $review_check_stmt->bind_param("ii", $row['product_id'], $user_id);
+    $review_check_stmt->execute();
+    $review_check_result = $review_check_stmt->get_result();
+    $user_review = $review_check_result->fetch_assoc();
+
+    if ($user_review): ?>
+        <!-- Display Review Stars -->
+        <span>
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+                <i class="fas fa-star <?= $i <= $user_review['rating'] ? 'star' : 'empty-star'; ?>"></i>
+            <?php endfor; ?>
+        </span>
+    <?php elseif ($row['status'] === 'completed'): ?>
+        <!-- Show Review Button Only if No Review Exists -->
+        <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
+    <?php else: ?>
+        Not Reviewed
+    <?php endif; ?>
+</td>
+
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -193,7 +210,6 @@ $result = $stmt->get_result();
         <?php endif; ?>
     </div>
 </div>
-
 
 <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
