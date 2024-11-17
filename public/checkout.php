@@ -8,14 +8,19 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Include necessary files
-include '../src/helpers/db_connect.php';
-include '../views/templates/header.php';
+require_once '../src/helpers/db_connect.php';
 
 // Check if the user is logged in
 $user_id = $_SESSION['user_id'] ?? null;
 
 if (!$user_id) {
     header("Location: login.php");
+    exit;
+}
+
+// Check if the cart is empty
+if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+    echo "<div class='text-center my-5'><h1 style='font-size: 2.5em; color: #333;'>Your cart is empty.</h1></div>";
     exit;
 }
 
@@ -29,12 +34,6 @@ if ($row = $result->fetch_assoc()) {
     $saved_address = $row['address'];
 }
 $stmt->close();
-
-// Check if the cart is empty
-if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-    echo "<div class='text-center my-5'><h1 style='font-size: 2.5em; color: #333;'>Your cart is empty.</h1></div>";
-    exit;
-}
 
 // Calculate the total price of the cart
 $total_price = 0;
@@ -69,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $stmt->close();
 
-        // Save shipping information in the session and redirect
-        $_SESSION['shipping_info'] = $shipping_info;
+        // Redirect to confirmation page
         header("Location: checkout_confirmation.php");
         exit;
     } else {
@@ -78,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
