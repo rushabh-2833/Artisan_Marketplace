@@ -28,12 +28,22 @@ if ($conn->connect_error) {
 $price_min = $_GET['price_min'] ?? 0;
 $price_max = $_GET['price_max'] ?? 1000;
 
-// Fetch products with approval status 'approved' and within the price range
-$sql = "SELECT * FROM products WHERE approval_status = 'approved' AND price BETWEEN ? AND ?";
+// Fetch products with approval status 'approved' and within the price range, including average rating and review count
+$sql = "
+    SELECT 
+        p.*, 
+        COALESCE(AVG(r.rating), 0) AS average_rating, 
+        COUNT(r.rating) AS total_reviews 
+    FROM products p
+    LEFT JOIN reviews r ON p.id = r.product_id
+    WHERE p.approval_status = 'approved' AND p.price BETWEEN ? AND ?
+    GROUP BY p.id
+";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("dd", $price_min, $price_max);
 $stmt->execute();
 $result = $stmt->get_result();
+
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +55,14 @@ $result = $stmt->get_result();
     <style>
         .product-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
         .product-image img { max-width: 100%; height: auto; }
+
+        .star {
+    color: #f39c12;
+}
+.empty-star {
+    color: #ccc;
+}
+
     </style>
 </head>
 <body>
@@ -103,6 +121,14 @@ $result = $stmt->get_result();
                     </div>
                     <h5 class="mt-3 text-dark"><?php echo htmlspecialchars($product['name']); ?></h5>
                     <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
+
+                    <p>
+    <?php for ($i = 1; $i <= 5; $i++): ?>
+        <i class="fas fa-star <?php echo $i <= $product['average_rating'] ? 'star' : 'empty-star'; ?>"></i>
+    <?php endfor; ?>
+    (<?php echo number_format($product['average_rating'], 1); ?>)
+</p>
+
 
                     <form action="add_to_cart.php" method="POST" class="mt-2">
                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">

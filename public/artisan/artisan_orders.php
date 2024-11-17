@@ -77,41 +77,46 @@ $result = $stmt->get_result();
                 </tr>
             </thead>
             <tbody>
-                <?php while ($order = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo $order['order_id']; ?></td>
-                        <td><?php echo $order['product_name']; ?></td>
-                        <td><?php echo $order['customer_name']; ?></td>
-                        <td><?php echo $order['quantity']; ?></td>
-                        <td>$<?php echo $order['total_price']; ?></td>
-                        <td>
-                            <?php 
-                                echo ucfirst($order['status']);
-                                if ($order['status'] === 'cancelled' && !empty($order['cancellation_reason'])) {
-                                    echo " - Reason: " . htmlspecialchars($order['cancellation_reason']);
-                                }
-                            ?>
-                        </td>
-                        <td>
-                            <?php if ($order['status'] !== 'cancelled'): ?>
-                                <form method="POST" action="update_order_status.php">
-                                    <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                    <select name="order_status" class="form-select form-select-sm">
-                                        <option value="pending" <?php if ($order['status'] === 'pending') echo 'selected'; ?>>Pending</option>
-                                        <option value="accepted" <?php if ($order['status'] === 'accepted') echo 'selected'; ?>>Accepted</option>
-                                        <option value="rejected" <?php if ($order['status'] === 'rejected') echo 'selected'; ?>>Rejected</option>
-                                        <option value="shipped" <?php if ($order['status'] === 'shipped') echo 'selected'; ?>>Shipped</option>
-                                        <option value="completed" <?php if ($order['status'] === 'completed') echo 'selected'; ?>>Completed</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-sm mt-1">Update</button>
-                                </form>
-                            <?php else: ?>
-                                <span class="text-muted">No actions available</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
+    <?php while ($order = $result->fetch_assoc()): ?>
+        <tr>
+            <td><?php echo $order['order_id']; ?></td>
+            <td><?php echo htmlspecialchars($order['product_name']); ?></td>
+            <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
+            <td><?php echo htmlspecialchars($order['quantity']); ?></td>
+            <td>$<?php echo number_format($order['total_price'], 2); ?></td>
+            <td>
+                <?php 
+                    // Display status with additional text for completed orders
+                    if ($order['status'] === 'completed') {
+                        echo "<span class='text-success'>Completed Successfully</span>";
+                    } elseif ($order['status'] === 'cancelled' && !empty($order['cancellation_reason'])) {
+                        echo "<span class='text-danger'>Cancelled - Reason: " . htmlspecialchars($order['cancellation_reason']) . "</span>";
+                    } else {
+                        echo ucfirst(htmlspecialchars($order['status']));
+                    }
+                ?>
+            </td>
+            <td>
+                <?php if ($order['status'] !== 'completed' && $order['status'] !== 'cancelled'): ?>
+                    <form method="POST" action="update_order_status.php">
+                        <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                        <select name="order_status" class="form-select form-select-sm">
+                            <option value="pending" <?php if ($order['status'] === 'pending') echo 'selected'; ?>>Pending</option>
+                            <option value="accepted" <?php if ($order['status'] === 'accepted') echo 'selected'; ?>>Accepted</option>
+                            <option value="rejected" <?php if ($order['status'] === 'rejected') echo 'selected'; ?>>Rejected</option>
+                            <option value="shipped" <?php if ($order['status'] === 'shipped') echo 'selected'; ?>>Shipped</option>
+                            <option value="completed" <?php if ($order['status'] === 'completed') echo 'selected'; ?>>Completed</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm mt-1">Update</button>
+                    </form>
+                <?php else: ?>
+                    <span class="text-muted">No actions available</span>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+</tbody>
+
         </table>
     </div>
 </body>
