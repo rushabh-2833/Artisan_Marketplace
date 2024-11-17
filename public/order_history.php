@@ -33,16 +33,19 @@ $status_filter = isset($_GET['status']) && !empty($_GET['status']) ? $_GET['stat
 $sql = "
     SELECT 
         o.id AS order_id, 
+        p.id AS product_id, 
         p.name AS product_name, 
         oi.quantity, 
         oi.price, 
         o.status, 
         o.created_at, 
         o.cancellation_reason, 
-        o.updated_at AS cancellation_requested 
+        o.updated_at AS cancellation_requested,
+        r.rating AS review_rating 
     FROM orders o
     INNER JOIN order_items oi ON o.id = oi.order_id
     INNER JOIN products p ON oi.product_id = p.id
+    LEFT JOIN reviews r ON o.id = r.order_id AND p.id = r.product_id AND r.user_id = ?
     WHERE o.customer_id = ?
 ";
 
@@ -59,9 +62,9 @@ if (!$stmt) {
 
 // Bind parameters based on whether a filter is applied
 if ($status_filter) {
-    $stmt->bind_param("isii", $user_id, $status_filter, $orders_per_page, $offset);
+    $stmt->bind_param("iisii", $user_id, $user_id, $status_filter, $orders_per_page, $offset);
 } else {
-    $stmt->bind_param("iii", $user_id, $orders_per_page, $offset);
+    $stmt->bind_param("iiii", $user_id, $user_id, $orders_per_page, $offset);
 }
 $stmt->execute();
 $result = $stmt->get_result();
@@ -74,6 +77,16 @@ $result = $stmt->get_result();
     <title>Order History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .star {
+            color: #f39c12;
+            margin-right: 2px;
+        }
+        .empty-star {
+            color: #ccc;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -112,6 +125,7 @@ $result = $stmt->get_result();
                     <th>Price</th>
                     <th>Status</th>
                     <th>Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -124,11 +138,7 @@ $result = $stmt->get_result();
                         <td>
                             <?php 
                                 if ($row['status'] === 'cancelled') {
-                                    echo '<i class="bi bi-x-circle text-danger" data-bs-toggle="tooltip" title="Order cancelled"></i> ';
-                                    echo 'Cancelled';
-                                    if (!empty($row['cancellation_reason'])) {
-                                        echo '<br><small class="text-muted">Reason: ' . htmlspecialchars($row['cancellation_reason']) . '</small>';
-                                    }
+                                    echo '<i class="bi bi-x-circle text-danger" data-bs-toggle="tooltip" title="Order cancelled"></i> Cancelled';
                                 } elseif ($row['status'] === 'pending') {
                                     echo '<i class="bi bi-hourglass-split text-warning" data-bs-toggle="tooltip" title="Order pending"></i> Pending';
                                     echo '<a href="cancel_order.php?order_id=' . $row['order_id'] . '" class="btn btn-danger btn-sm ms-2">Cancel Order</a>';
@@ -144,6 +154,20 @@ $result = $stmt->get_result();
                             ?>
                         </td>
                         <td><?php echo htmlspecialchars($row['created_at']); ?></td>
+                        <td>
+                            <?php if (!empty($row['review_rating'])): ?>
+                                <!-- Display Review Stars -->
+                                <span>
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="fas fa-star <?= $i <= $row['review_rating'] ? 'star' : 'empty-star'; ?>"></i>
+                                    <?php endfor; ?>
+                                </span>
+                            <?php elseif ($row['status'] === 'completed'): ?>
+                                <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
+                            <?php else: ?>
+                                Not Reviewed
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
