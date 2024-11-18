@@ -408,3 +408,61 @@ a:hover {
     }
 }
 
+
+/* Product management */
+
+/* Page Heading */
+.page-heading {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #12372A;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn-custom {
+    background-color: #12372A;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+    transform: scale(1.05);
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+
+
+
+/* Table Styles */
+.table {
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-bordered th, .table-bordered td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 1rem;
+    padding: 0.5em 0.75em;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
