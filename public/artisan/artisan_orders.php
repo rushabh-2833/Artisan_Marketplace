@@ -44,7 +44,7 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Order Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../styles/artisan_order.css" rel="stylesheet"> <!-- Scoped styles -->
+    <link href="../style/style.css" rel="stylesheet"> <!-- Scoped styles -->
 </head>
 <body>
 <div class="container mt-5">
@@ -75,7 +75,7 @@ $result = $stmt->get_result();
                             if ($order['status'] === 'completed') {
                                 echo "<span class='badge bg-success'>Completed</span>";
                             } elseif ($order['status'] === 'cancelled' && !empty($order['cancellation_reason'])) {
-                                echo "<span class='badge bg-danger'>Cancelled</span> <small>" . htmlspecialchars($order['cancellation_reason']) . "</small>";
+                                echo "<span class='badge bg-danger'>Cancelled</span> <br> <small>" . htmlspecialchars($order['cancellation_reason']) . "</small>";
                             } else {
                                 echo "<span class='badge bg-secondary'>" . ucfirst(htmlspecialchars($order['status'])) . "</span>";
                             }

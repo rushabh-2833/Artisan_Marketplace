@@ -42,16 +42,11 @@ a:hover {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     border-radius: 6px;
-    padding: 10px 20px;
     text-transform: uppercase;
     transition: all 0.3s ease-in-out;
 }
 
-.btn-primary {
-    background-color: #12372A;
-    color: white;
-    border: none;
-}
+
 
 .btn-primary:hover {
     background-color: #436850;
@@ -98,10 +93,12 @@ h2 {
 .btn-primary {
     background-color: #436850;
     border: none;
-    font-size: 1.1rem;
+    font-size: 0.8rem;
+    padding: 5px 15px;
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
+ 
 
 .btn-primary:hover {
     background-color: #2e5e40;
@@ -413,10 +410,11 @@ a:hover {
 
 /* Page Heading */
 .page-heading {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #12372A;
-    margin-bottom: 20px;
+    font-size: 2rem !important;
+    font-weight: bold !important;
+    color: #12372A !important;
+    margin-bottom: 20px !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 /* Buttons */
@@ -456,8 +454,8 @@ a:hover {
 }
 
 .badge {
-    font-size: 1rem;
-    padding: 0.5em 0.75em;
+    font-size: 0.8rem;
+    padding:  5px 15px;
 }
 
 /* Cards */

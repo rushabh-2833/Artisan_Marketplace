@@ -21,7 +21,8 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Manage Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style/style.css" rel="stylesheet"> <!-- Link custom CSS -->
+    <link href="../public/style/style.css" rel="stylesheet"> 
+
 </head>
 <body>
 <div class="container mt-5">
