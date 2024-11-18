@@ -70,21 +70,37 @@ $result = $stmt->get_result();
     </div>
 
     <?php
-    // Display feedback for a product
     if (isset($_GET['view_feedback']) && isset($_GET['product_id'])):
         $product_id = $_GET['product_id'];
         $feedback_query = $conn->prepare("
-            SELECT r.rating, r.comment, r.created_at, CONCAT(u.first_name, ' ', u.last_name) AS user_name
+            SELECT r.rating, r.comment, r.created_at, CONCAT(u.first_name, ' ', u.last_name) AS user_name, p.name AS product_name
             FROM reviews r
             JOIN users u ON r.user_id = u.id
+            JOIN products p ON r.product_id = p.id
             WHERE r.product_id = ?
         ");
         $feedback_query->bind_param("i", $product_id);
         $feedback_query->execute();
         $feedback_result = $feedback_query->get_result();
+        $product_name = null;
+    
+        // Fetch product name if there's feedback
+        if ($feedback_result->num_rows > 0) {
+            $feedback_row = $feedback_result->fetch_assoc();
+            $product_name = $feedback_row['product_name'];
+            $feedback_result->data_seek(0); // Reset pointer to fetch all rows in the loop
+        } else {
+            // Fetch product name even if there's no feedback
+            $product_query = $conn->prepare("SELECT name FROM products WHERE id = ?");
+            $product_query->bind_param("i", $product_id);
+            $product_query->execute();
+            $product_name_result = $product_query->get_result();
+            $product_row = $product_name_result->fetch_assoc();
+            $product_name = $product_row['name'] ?? 'Unknown Product';
+        }
         ?>
         <div class="card p-4 shadow-sm mt-5">
-            <h3 class="text-center mb-4">Feedback for Product: <strong><?php echo htmlspecialchars($product['name']); ?></strong></h3>
+            <h3 class="text-center mb-4">Feedback for Product: <strong><?php echo htmlspecialchars($product_name); ?></strong></h3>
             <?php if ($feedback_result->num_rows > 0): ?>
                 <table class="table table-bordered">
                     <thead class="table-dark">
@@ -115,6 +131,7 @@ $result = $stmt->get_result();
             <?php endif; ?>
         </div>
     <?php endif; ?>
+    
 </div>
 
 <?php include '../views/templates/footer.php'; ?>
