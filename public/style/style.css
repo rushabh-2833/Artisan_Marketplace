@@ -11,6 +11,64 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
+/* genral css */
+
+/* General CSS */
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #12372A;
+}
+
+a {
+    color: #12372A;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #436850;
+}
+
+.btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #12372A;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #436850;
+}
+
+.btn-outline-primary {
+    color: #12372A;
+    border: 2px solid #12372A;
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: #12372A;
+    color: white;
+}
+
+
 
 
 .login-container {
