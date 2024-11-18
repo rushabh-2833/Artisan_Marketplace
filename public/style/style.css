@@ -787,3 +787,189 @@ footer {
 .profile-card h2{
     color: white !important ;
 }
+
+
+/* index.php */
+
+/* Hero Banner */
+.hero-banner {
+    position: relative;
+    max-height: 500px; /* Adjust height for consistency */
+    overflow: hidden;
+}
+
+.hero-banner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.6); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.banner-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.banner-content p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.banner-content .btn-custom {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+/* Spacing between sections */
+.spacer {
+    height: 30px; 
+}
+
+/* Featured Products */
+.featured-products .card {
+    height: 550px;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    margin: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featured-products .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.featured-products .card-img-top {
+    height: 300px;  
+    object-fit: cover;  
+    border-bottom: 2px solid #ddd;  
+}
+
+/* Newsletter Subscription */
+.newsletter {
+    background: #f8f9fa; 
+    padding: 20px 0;
+}
+
+.newsletter .btn-custom {
+    background-color: #12372a; 
+    color: #fff;
+}
+
+.newsletter .btn-custom:hover {
+    background-color: #0e2a21;
+}
+
+/* Testimonials Section */
+.testimonials {
+    background: #f9f9f9;
+    padding: 50px 20px;
+}
+
+.testimonials h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.testimonial-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.testimonial-card h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Why Choose Us Section */
+.why-choose-us {
+    padding: 50px 20px;
+    background: #f5f5f5;
+}
+
+.why-choose-us h2 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.feature-box {
+    text-align: center;
+    padding: 20px;
+}
+
+.feature-box i {
+    font-size: 3rem;
+    color: #436850;
+    margin-bottom: 15px;
+}
+
+.feature-box h4 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.feature-box p {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Promo Section */
+.promo-section {
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    padding: 50px 20px;
+}
+
+.promo-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.promo-section p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.promo-section .btn-custom {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.promo-section img{
+ width: 76%;
+ text-align: right;
+}
+
+.promo-img{
+    text-align: center;
+}

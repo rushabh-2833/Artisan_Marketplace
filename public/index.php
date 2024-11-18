@@ -22,42 +22,34 @@ $sql = "
 ";
 $result = $conn->query($sql);
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style/style.css">  
-    <style>
-        /* Product Cards */
-        .card {
-            height: 550px;  
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
-            margin: 10px;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-img-top {
-            height: 300px;  
-            object-fit: cover;  
-            border-bottom: 2px solid #ddd;  
-        }
-    </style>
+    <link rel="stylesheet" href="style/style.css">
+    <title>Artisan Marketplace</title>
 </head>
+<body>
 
-<section class="banner text-center my-5">
-    <div class="container">
-        <h1>Discover Unique Handmade Treasures</h1>
-        <p>Join our community and find your favorite artisans today!</p>
-        <a href="#" class="btn btn-primary btn-custom">Explore</a>
-        <a href="register.php" class="btn btn-outline-secondary">Sign Up</a>
+<!-- Hero Banner -->
+<section class="hero-banner">
+    <div class="container-fluid p-0">
+        <img src="/artisan_marketplace/public/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
+        <div class="banner-content text-center">
+            <h1 class="text-white">Welcome to Artisan Marketplace</h1>
+            <p>Explore a world of handmade treasures crafted by passionate artisans.</p>
+            <a href="shop.php" class="btn btn-primary btn-custom">Shop Now</a>
+            <a href="register.php" class="btn btn-outline-secondary btn-custom">Sign Up</a>
+        </div>
     </div>
 </section>
 
-<!-- Featured Products -->
+<!-- Spacing -->
+<div class="spacer"></div>
+
+<!-- Featured Products Section -->
 <section class="featured-products my-5">
     <div class="container">
         <h2 class="text-center mb-4">Featured Products</h2>
@@ -66,7 +58,7 @@ $result = $conn->query($sql);
                 <?php while ($product = $result->fetch_assoc()): ?>
                     <div class="col-md-4">
                         <div class="card">
-                            <!-- Clickable product card redirecting to product_details.php -->
+                            <!-- Product link -->
                             <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none text-dark">
                                 <img src="<?php echo htmlspecialchars($product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>">
                                 <div class="card-body">
@@ -80,7 +72,6 @@ $result = $conn->query($sql);
                                     </p>
                                 </div>
                             </a>
-                            <!-- Add to Cart Button -->
                             <div class="card-footer text-center">
                                 <a href="add_to_cart.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-custom">Add to Cart</a>
                             </div>
@@ -93,6 +84,57 @@ $result = $conn->query($sql);
         </div>
     </div>
 </section>
+
+<section class="promo-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Image Column -->
+            <div class="col-md-6 promo-img">
+                <img src="/artisan_marketplace/public/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded">
+            </div>
+            <!-- Text Column -->
+            <div class="col-md-6">
+                <h2>Biggest Sale of the Season!</h2>
+                <p>
+                    Don’t miss out on our exclusive discounts! Shop your favorite handmade products now and enjoy up to <strong>50% off</strong> on selected items. Offer valid while supplies last!
+                </p>
+                <a href="shop.php" class="btn btn-primary btn-custom">Shop Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="why-choose-us">
+    <div class="container text-center">
+        <h2>Why Choose Artisan Marketplace?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-gem"></i>
+                    <h4>Unique Products</h4>
+                    <p>Discover one-of-a-kind, handcrafted items you won't find elsewhere.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-handshake"></i>
+                    <h4>Support Artisans</h4>
+                    <p>Empower local artisans and help them grow their businesses.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Secure Transactions</h4>
+                    <p>Shop with confidence knowing your data is protected.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 
 <!-- Newsletter Subscription -->
 <section class="newsletter my-5 text-center">
@@ -108,4 +150,33 @@ $result = $conn->query($sql);
     </div>
 </section>
 
+<section class="testimonials">
+    <div class="container text-center">
+        <h2>What Our Customers Say</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Amazing products! The quality and craftsmanship are exceptional."</p>
+                    <h5>- Sarah M.</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"This platform helped me connect with local artisans and find unique gifts."</p>
+                    <h5>- Alex J.</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Easy to use and such a wide variety of products. Highly recommended!"</p>
+                    <h5>- Emily K.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <?php include '../views/templates/footer.php'; ?>
+</body>
+</html>
