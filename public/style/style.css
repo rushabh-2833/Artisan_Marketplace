@@ -600,3 +600,177 @@ a:hover {
 .artisan-order-table tbody tr:hover {
     background-color: #f1f1f1;
 }
+
+
+/* admin dashboards */
+
+/* Table Styling */
+.admin-user-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+}
+
+.admin-user-table th {
+    background-color: #12372A;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-user-table td {
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-user-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.admin-user-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button Styling */
+.btn-outline-info {
+    border-color: #12372A;
+    color: #ADBC9F;
+}
+
+.btn-outline-info:hover {
+    background-color: #12372A;
+    color: #fff;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+
+/* admin approve products */
+
+/* Table Styling */
+
+h2 {
+    color: #12372A !important;
+    font-weight: 700 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.admin-approval-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.admin-approval-table th {
+    background-color: #12372A;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-approval-table td {
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-approval-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.admin-approval-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button Styling */
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Input Field Styling */
+form input[type="text"] {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+
+/* footer */
+
+
+ 
+
+footer {
+    background-color: #12372A; /* Your footer background color */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 40px;
+}
+
+/* checkout */
+
+/* Order Summary Card Styling */
+.order-summary .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.order-summary .card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-summary .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Shipping Information Styling */
+.card-body h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #12372A;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #436850;
+    transition: 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .order-summary .card {
+        flex-direction: column;
+    }
+}

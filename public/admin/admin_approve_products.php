@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("si", $reason, $product_id);
     }
     $stmt->execute();
-   
+    header("Location: admin_approve_products.php"); // Redirect to refresh the page
+    exit;
 }
 ?>
 
@@ -34,37 +35,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Approve Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../styles/admin_approve_products.css" rel="stylesheet"> <!-- Scoped CSS -->
 </head>
 <body>
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Pending Product Approvals</h2>
 
-    <table class="table table-striped table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Product</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($product = $result->fetch_assoc()): ?>
+    <div class="table-responsive">
+        <table class="table admin-approval-table">
+            <thead>
                 <tr>
-                    <td><?php echo htmlspecialchars($product['name']); ?></td>
-                    <td><?php echo htmlspecialchars($product['description']); ?></td>
-                    <td>
-                        <form method="POST" class="d-flex align-items-center">
-                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm me-2">Approve</button>
-                            <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm me-2">Reject</button>
-                            <input type="text" name="rejection_reason" class="form-control form-control-sm" placeholder="Reason for rejection" style="width: 200px;">
-                        </form>
-                    </td>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Action</th>
                 </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php while ($product = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($product['name']); ?></td>
+                        <td><?php echo htmlspecialchars($product['description']); ?></td>
+                        <td>
+                            <form method="POST" class="d-flex align-items-center gap-2">
+                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                <button type="submit" name="action" value="approve" class="btn btn-outline-success btn-sm">Approve</button>
+                                <button type="submit" name="action" value="reject" class="btn btn-outline-danger btn-sm">Reject</button>
+                                <input type="text" name="rejection_reason" class="form-control form-control-sm" placeholder="Rejection reason" aria-label="Rejection reason">
+                            </form>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>
