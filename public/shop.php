@@ -97,7 +97,7 @@ $result = $stmt->get_result();
                 <input type="number" name="price_max" class="form-control" value="<?php echo htmlspecialchars($price_max); ?>" min="0">
             </div>
             <div class="col-md-4 align-self-end">
-                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                <button type="submit" class="btn btn-custom w-100">Filter</button>
             </div>
         </div>
     </form>
@@ -154,14 +154,18 @@ $result = $stmt->get_result();
 <!-- Styles for the Product Card and Heart Icon -->
 <style>
     .product-card {
-        position: relative;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.3s ease;
-        margin-bottom: 20px;
-        padding-top: 10px;
-    }
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    background: #fff;
+    height: 500px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
 
     .product-image {
         position: relative;
@@ -197,8 +201,14 @@ $result = $stmt->get_result();
 
     /* Heartbeat animation on hover */
     .wishlist-button:hover .heart-icon {
-        animation: heartbeat 0.6s ease infinite; /* Beat animation */
+        animation: heartbeat 0.6s ease infinite;  
     }
+
+    .product-image img {
+            object-fit: contain;  
+            width: 100%;
+            height: 200px;  
+        }
 
     @keyframes heartbeat {
         0%, 100% {

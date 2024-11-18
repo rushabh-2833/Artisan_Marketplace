@@ -1,6 +1,6 @@
-<?php
-include '../views/templates/header.php';
+<?php include '../views/templates/header.php'; ?>
 
+<?php
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'artisan') {
     header("Location: login.php");
     exit;
@@ -21,13 +21,18 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Manage Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../public/style/style.css" rel="stylesheet"> 
+
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Manage Your Products</h2>
-        
-        <table class="table table-bordered">
-            <thead>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h2 class="page-heading">Manage Your Products</h2>
+    </div>
+
+    <div class="card p-4 shadow-sm">
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
                 <tr>
                     <th>Product Name</th>
                     <th>Status</th>
@@ -38,22 +43,30 @@ $result = $stmt->get_result();
                 <?php while ($product = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($product['name']); ?></td>
-                        <td><?php echo ucfirst($product['approval_status']); ?></td>
+                        <td>
+                            <span class="badge bg-<?php echo $product['approval_status'] === 'approved' ? 'success' : ($product['approval_status'] === 'rejected' ? 'danger' : 'warning'); ?>">
+                                <?php echo ucfirst($product['approval_status']); ?>
+                            </span>
+                        </td>
                         <td>
                             <?php if ($product['approval_status'] == 'approved'): ?>
                                 <a href="?view_feedback=true&product_id=<?php echo $product['id']; ?>" class="btn btn-info btn-sm">View Feedback</a>
                             <?php else: ?>
-                                <a href="../public/product_management.php?action=edit&product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="../public/product_management.php?action=edit&product_id=<?php echo $product['id']; ?>" class="btn btn-custom btn-sm">Edit</a>
                                 <a href="delete_product.php?product_id=<?php echo $product['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
                             <?php endif; ?>
                             <?php if ($product['approval_status'] == 'rejected'): ?>
-                                <p class="text-danger">Rejected: <?php echo htmlspecialchars($product['rejection_reason']); ?></p>
+                                <p class="text-danger mt-2"><strong>Reason:</strong> <?php echo htmlspecialchars($product['rejection_reason']); ?></p>
                             <?php endif; ?>
                         </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="../public/artisan/rejected_products.php" class="btn btn-warning">View Rejected Products</a>
     </div>
 
     <?php
@@ -70,11 +83,11 @@ $result = $stmt->get_result();
         $feedback_query->execute();
         $feedback_result = $feedback_query->get_result();
         ?>
-        <div class="container mt-5">
-            <h3>Feedback for Product: <?php echo htmlspecialchars($product['name']); ?></h3>
+        <div class="card p-4 shadow-sm mt-5">
+            <h3 class="text-center mb-4">Feedback for Product: <strong><?php echo htmlspecialchars($product['name']); ?></strong></h3>
             <?php if ($feedback_result->num_rows > 0): ?>
                 <table class="table table-bordered">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th>User</th>
                             <th>Rating</th>
@@ -102,6 +115,6 @@ $result = $stmt->get_result();
             <?php endif; ?>
         </div>
     <?php endif; ?>
+</div>
 
-    <a href="../public/artisan/rejected_products.php" class="btn btn-warning">View Rejected Products</a>
-    <?php include '../views/templates/footer.php'; ?>
+<?php include '../views/templates/footer.php'; ?>

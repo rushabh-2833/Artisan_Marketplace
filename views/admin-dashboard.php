@@ -1,9 +1,9 @@
 <?php
 include '../views/templates/header.php';
-include '../src/helpers/db_connect.php'; // Adjust path as needed
+include '../src/helpers/db_connect.php';  
 
 // Check if a user type is selected
-$userType = $_GET['userType'] ?? ''; // Get the selected user type from the query string
+$userType = $_GET['userType'] ?? '';  
 
 // Fetch users based on user type
 if ($userType === 'artisan') {
@@ -24,50 +24,52 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/artisan_marketplace/public/style/style.css" rel="stylesheet"> <!-- Scoped CSS -->
 </head>
 <body>
-
 <div class="container mt-5">
-    <h2>Admin Dashboard</h2>
-    
+    <h2 class="text-center mb-4">Admin Dashboard</h2>
+
     <!-- Dropdown for selecting user type -->
-    <div class="mb-4">
-        <label for="userType" class="form-label">Select User Type:</label>
-        <form method="GET" action="">
-            <select class="form-select" id="userType" name="userType" onchange="this.form.submit()">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <form method="GET" action="" class="d-flex align-items-center gap-2">
+            <label for="userType" class="form-label mb-0">Filter by Role:</label>
+            <select class="form-select w-auto" id="userType" name="userType" onchange="this.form.submit()">
                 <option value="">All Users</option>
                 <option value="artisan" <?php if ($userType === 'artisan') echo 'selected'; ?>>Artisan</option>
                 <option value="customer" <?php if ($userType === 'customer') echo 'selected'; ?>>Customer</option>
             </select>
         </form>
     </div>
-    
+
     <!-- Table to display users -->
-    <table class="table table-striped" id="userTable">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($user = $result->fetch_assoc()): ?>
+    <div class="table-responsive">
+        <table class="table admin-user-table">
+            <thead>
                 <tr>
-                    <td><?php echo htmlspecialchars($user['first_name']); ?></td>
-                    <td><?php echo htmlspecialchars($user['last_name']); ?></td>
-                    <td><?php echo htmlspecialchars($user['phone_number']); ?></td>
-                    <td><?php echo htmlspecialchars($user['email']); ?></td>
-                    <td>
-                        <a href="user_details.php?id=<?php echo $user['id']; ?>" class="btn btn-info btn-sm">View Details</a>
-                        <button onclick="deleteUser(<?php echo $user['id']; ?>)" class="btn btn-danger btn-sm">Delete</button>
-                    </td>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php while ($user = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($user['first_name']); ?></td>
+                        <td><?php echo htmlspecialchars($user['last_name']); ?></td>
+                        <td><?php echo htmlspecialchars($user['phone_number']); ?></td>
+                        <td><?php echo htmlspecialchars($user['email']); ?></td>
+                        <td>
+                            <a href="user_details.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-info btn-sm">View Details</a>
+                            <button onclick="deleteUser(<?php echo $user['id']; ?>)" class="btn btn-outline-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
