@@ -100,7 +100,7 @@
     border: none ;
     padding: 10px ;
     border-radius: 6px ;
-     
+     s
 }
 
     </style>
