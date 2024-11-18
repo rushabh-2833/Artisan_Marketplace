@@ -466,3 +466,137 @@ a:hover {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+
+/* profile pagee e*/
+
+
+/* Profile Card */
+.profile-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card .card-header {
+    background-color: #12372A; /* Dark green */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.profile-card .card-body {
+    background-color: #f8f9fa; /* Light background */
+    padding: 20px;
+}
+
+.table-borderless th {
+    width: 30%;
+    color: #12372A;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.table-borderless td {
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-primary {
+    background-color: #12372A;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #0d2a20;
+}
+
+.btn-outline-primary {
+    color: #12372A;
+    border: 1px solid #12372A;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+    background-color: #12372A;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 576px) {
+    .profile-card .card-header {
+        font-size: 1.2rem;
+    }
+    .table-borderless th, .table-borderless td {
+        font-size: 0.9rem;
+    }
+    .btn-primary, .btn-outline-primary {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* order histroy*/
+
+
+/* General Table Styling */
+.order-history-table thead th {
+    background-color: #12372A;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.order-history-table tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+.order-history-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.order-history-table td, .order-history-table th {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* artisan order */
+
+/* Order Management Table */
+.artisan-order-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+}
+
+.artisan-order-table thead th {
+    background-color: #12372A;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.artisan-order-table tbody td {
+    text-align: center;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.artisan-order-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.artisan-order-table tbody tr:hover {
+    background-color: #f1f1f1;
+}

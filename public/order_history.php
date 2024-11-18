@@ -38,15 +38,10 @@ $sql = "
         oi.quantity, 
         oi.price, 
         o.status, 
-        o.created_at, 
-        o.cancellation_reason, 
-        o.updated_at AS cancellation_requested,
-        r.rating AS review_rating,
-        r.comment AS review_comment
+        o.created_at
     FROM orders o
     INNER JOIN order_items oi ON o.id = oi.order_id
     INNER JOIN products p ON oi.product_id = p.id
-    LEFT JOIN reviews r ON o.id = r.order_id AND p.id = r.product_id AND r.user_id = ?
     WHERE o.customer_id = ?
 ";
 
@@ -63,9 +58,9 @@ if (!$stmt) {
 
 // Bind parameters based on whether a filter is applied
 if ($status_filter) {
-    $stmt->bind_param("iisii", $user_id, $user_id, $status_filter, $orders_per_page, $offset);
+    $stmt->bind_param("isii", $user_id, $status_filter, $orders_per_page, $offset);
 } else {
-    $stmt->bind_param("iiii", $user_id, $user_id, $orders_per_page, $offset);
+    $stmt->bind_param("iii", $user_id, $orders_per_page, $offset);
 }
 $stmt->execute();
 $result = $stmt->get_result();
@@ -77,21 +72,11 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Order History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        .star {
-            color: #f39c12;
-            margin-right: 2px;
-        }
-        .empty-star {
-            color: #ccc;
-        }
-    </style>
+    <link href="../styles/order_history.css" rel="stylesheet"> <!-- Link to specific CSS -->
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Your Orders</h2>
+    <h2 class="text-center mb-4">Your Order History</h2>
 
     <!-- Feedback Messages -->
     <?php if (isset($_GET['cancel'])): ?>
@@ -117,7 +102,7 @@ $result = $stmt->get_result();
     </form>
 
     <?php if ($result->num_rows > 0): ?>
-        <table class="table table-bordered">
+        <table class="table table-bordered order-history-table">
             <thead>
                 <tr>
                     <th>Order ID</th>
@@ -136,55 +121,17 @@ $result = $stmt->get_result();
                         <td><?php echo htmlspecialchars($row['product_name']); ?></td>
                         <td><?php echo htmlspecialchars($row['quantity']); ?></td>
                         <td>$<?php echo htmlspecialchars($row['price']); ?></td>
-                        <td>
-                            <?php 
-                                if ($row['status'] === 'cancelled') {
-                                    echo '<i class="bi bi-x-circle text-danger" data-bs-toggle="tooltip" title="Order cancelled"></i> Cancelled';
-                                } elseif ($row['status'] === 'pending') {
-                                    echo '<i class="bi bi-hourglass-split text-warning" data-bs-toggle="tooltip" title="Order pending"></i> Pending';
-                                    echo '<a href="cancel_order.php?order_id=' . $row['order_id'] . '" class="btn btn-danger btn-sm ms-2">Cancel Order</a>';
-                                } elseif ($row['status'] === 'accepted') {
-                                    echo '<i class="bi bi-check-circle text-primary" data-bs-toggle="tooltip" title="Order accepted"></i> Accepted';
-                                } elseif ($row['status'] === 'rejected') {
-                                    echo '<i class="bi bi-x-circle text-danger" data-bs-toggle="tooltip" title="Order rejected"></i> Rejected';
-                                } elseif ($row['status'] === 'shipped') {
-                                    echo '<i class="bi bi-truck text-info" data-bs-toggle="tooltip" title="Order shipped"></i> Shipped';
-                                } elseif ($row['status'] === 'completed') {
-                                    echo '<i class="bi bi-check-circle text-success" data-bs-toggle="tooltip" title="Order completed"></i> Completed';
-                                }
-                            ?>
-                        </td>
+                        <td><?php echo ucfirst(htmlspecialchars($row['status'])); ?></td>
                         <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                         <td>
-    <?php
-    // Check if the product has been reviewed by the user
-    $review_check_query = "
-        SELECT rating 
-        FROM reviews 
-        WHERE product_id = ? AND user_id = ?
-        LIMIT 1
-    ";
-    $review_check_stmt = $conn->prepare($review_check_query);
-    $review_check_stmt->bind_param("ii", $row['product_id'], $user_id);
-    $review_check_stmt->execute();
-    $review_check_result = $review_check_stmt->get_result();
-    $user_review = $review_check_result->fetch_assoc();
-
-    if ($user_review): ?>
-        <!-- Display Review Stars -->
-        <span>
-            <?php for ($i = 1; $i <= 5; $i++): ?>
-                <i class="fas fa-star <?= $i <= $user_review['rating'] ? 'star' : 'empty-star'; ?>"></i>
-            <?php endfor; ?>
-        </span>
-    <?php elseif ($row['status'] === 'completed'): ?>
-        <!-- Show Review Button Only if No Review Exists -->
-        <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
-    <?php else: ?>
-        Not Reviewed
-    <?php endif; ?>
-</td>
-
+                            <?php if ($row['status'] === 'pending'): ?>
+                                <a href="cancel_order.php?order_id=<?php echo $row['order_id']; ?>" class="btn btn-danger btn-sm">Cancel Order</a>
+                            <?php elseif ($row['status'] === 'completed'): ?>
+                                <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
+                            <?php else: ?>
+                                No Actions
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -192,30 +139,8 @@ $result = $stmt->get_result();
     <?php else: ?>
         <p>You have no orders matching this status.</p>
     <?php endif; ?>
-
-    <!-- Pagination Controls -->
-    <div class="d-flex justify-content-between mt-4">
-        <?php if ($current_page > 1): ?>
-            <a href="?page=<?php echo $current_page - 1; ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary">Previous</a>
-        <?php else: ?>
-            <button class="btn btn-secondary" disabled>Previous</button>
-        <?php endif; ?>
-
-        <span>Page <?php echo $current_page; ?></span>
-
-        <?php if ($result->num_rows === $orders_per_page): ?>
-            <a href="?page=<?php echo $current_page + 1; ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary">Next</a>
-        <?php else: ?>
-            <button class="btn btn-secondary" disabled>Next</button>
-        <?php endif; ?>
-    </div>
 </div>
-
-<script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
-</script>
 </body>
 </html>
+
+<?php include '../views/templates/footer.php'; ?>
