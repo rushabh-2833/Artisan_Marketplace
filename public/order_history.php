@@ -29,15 +29,6 @@ $offset = ($current_page - 1) * $orders_per_page;
 // Get the status filter from the request
 $status_filter = isset($_GET['status']) && !empty($_GET['status']) ? $_GET['status'] : null;
 
-// Get the total number of orders for pagination
-$total_orders_query = "SELECT COUNT(*) AS total_orders FROM orders WHERE customer_id = ?";
-$total_stmt = $conn->prepare($total_orders_query);
-$total_stmt->bind_param("i", $user_id);
-$total_stmt->execute();
-$total_result = $total_stmt->get_result()->fetch_assoc();
-$total_orders = $total_result['total_orders'];
-$total_pages = ceil($total_orders / $orders_per_page);
-
 // Construct the base SQL query
 $sql = "
     SELECT 
@@ -54,12 +45,7 @@ $sql = "
     FROM orders o
     INNER JOIN order_items oi ON o.id = oi.order_id
     INNER JOIN products p ON oi.product_id = p.id
-    LEFT JOIN (
-        SELECT user_id, product_id, MAX(created_at) as latest_review, rating
-        FROM reviews
-        WHERE user_id = ?
-        GROUP BY user_id, product_id
-    ) r ON o.customer_id = r.user_id AND oi.product_id = r.product_id
+    LEFT JOIN reviews r ON o.id = r.order_id AND p.id = r.product_id AND r.user_id = ?
     WHERE o.customer_id = ?
 ";
 
@@ -94,15 +80,11 @@ $result = $stmt->get_result();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         .star {
-            color: #f39c12; /* Gold color for filled stars */
+            color: #f39c12;
             margin-right: 2px;
         }
         .empty-star {
-            color: #ccc; /* Light gray for empty stars */
-        }
-        .star-rating {
-            display: inline-flex;
-            gap: 2px;
+            color: #ccc;
         }
     </style>
 </head>
@@ -175,11 +157,11 @@ $result = $stmt->get_result();
                         <td>
                             <?php if (!empty($row['review_rating'])): ?>
                                 <!-- Display Review Stars -->
-                                <div class="star-rating">
+                                <span>
                                     <?php for ($i = 1; $i <= 5; $i++): ?>
                                         <i class="fas fa-star <?= $i <= $row['review_rating'] ? 'star' : 'empty-star'; ?>"></i>
                                     <?php endfor; ?>
-                                </div>
+                                </span>
                             <?php elseif ($row['status'] === 'completed'): ?>
                                 <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
                             <?php else: ?>
@@ -196,11 +178,22 @@ $result = $stmt->get_result();
 
     <!-- Pagination Controls -->
     <div class="d-flex justify-content-between mt-4">
-        <a href="?page=<?php echo max(1, $current_page - 1); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?= $current_page <= 1 ? 'disabled' : ''; ?>>Previous</a>
-        <span>Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
-        <a href="?page=<?php echo min($current_page + 1, $total_pages); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?= $current_page >= $total_pages ? 'disabled' : ''; ?>>Next</a>
+        <?php if ($current_page > 1): ?>
+            <a href="?page=<?php echo $current_page - 1; ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary">Previous</a>
+        <?php else: ?>
+            <button class="btn btn-secondary" disabled>Previous</button>
+        <?php endif; ?>
+
+        <span>Page <?php echo $current_page; ?></span>
+
+        <?php if ($result->num_rows === $orders_per_page): ?>
+            <a href="?page=<?php echo $current_page + 1; ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary">Next</a>
+        <?php else: ?>
+            <button class="btn btn-secondary" disabled>Next</button>
+        <?php endif; ?>
     </div>
 </div>
+
 
 <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
