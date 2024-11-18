@@ -1,8 +1,10 @@
+<?php include '../views/templates/header.php'; ?>
+
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
+
 include '../src/helpers/db_connect.php'; // Update path if necessary
 
 if (!isset($_SESSION['user_id'])) {
@@ -117,6 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="order_history.php" class="btn btn-secondary">Back</a>
     </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
