@@ -39,7 +39,7 @@
     <div class="container mt-5">
         <div class="card profile-card shadow">
             <div class="card-header text-center text-white">
-                <h2 class="mb-0">Your Profile Information</h2>
+                <h2 class="mb-0 text-white">Your Profile Information</h2>
             </div>
             <div class="card-body p-4">
                 <table class="table table-borderless">

@@ -120,6 +120,17 @@ h2 {
 .contact-section {
     padding: 50px 0;
 }
+
+.contact-form {
+    max-width: 800px; /* Form width */
+    margin: 0 auto;   /* Center horizontally */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .section-title {
     font-size: 2rem;
     font-weight: bold;
@@ -771,4 +782,8 @@ footer {
     .order-summary .card {
         flex-direction: column;
     }
+}
+
+.profile-card h2{
+    color: white !important ;
 }

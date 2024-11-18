@@ -9,7 +9,17 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Fetch products from the database
-$sql = "SELECT id, name, price, image_url FROM products WHERE approval_status = 'approved' LIMIT 6";
+$sql = "
+    SELECT 
+        p.*, 
+        COALESCE(AVG(r.rating), 0) AS average_rating, 
+        COUNT(r.rating) AS total_reviews 
+    FROM products p
+    LEFT JOIN reviews r ON p.id = r.product_id
+    WHERE p.approval_status = 'approved'
+    GROUP BY p.id
+    LIMIT 6
+";
 $result = $conn->query($sql);
 ?>
 <head>
@@ -19,23 +29,22 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="../style/style.css">  
     <style>
         /* Product Cards */
-.card {
-    height: 550px;  
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
-    margin: 10px;
-    
-}
+        .card {
+            height: 550px;  
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+            margin: 10px;
+        }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
-.card-img-top {
-    height: 300px;  
-    object-fit: cover;  
-    border-bottom: 2px solid #ddd;  
-}
+        .card-img-top {
+            height: 300px;  
+            object-fit: cover;  
+            border-bottom: 2px solid #ddd;  
+        }
     </style>
 </head>
 
@@ -57,10 +66,22 @@ $result = $conn->query($sql);
                 <?php while ($product = $result->fetch_assoc()): ?>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="<?php echo htmlspecialchars($product['image_url']); ?>" class="card-img-top" alt="Product Image">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
-                                <p class="card-text">$<?php echo number_format($product['price'], 2); ?></p>
+                            <!-- Clickable product card redirecting to product_details.php -->
+                            <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none text-dark">
+                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                    <p class="card-text">$<?php echo number_format($product['price'], 2); ?></p>
+                                    <p>
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <i class="fas fa-star <?php echo $i <= $product['average_rating'] ? 'star' : 'empty-star'; ?>"></i>
+                                        <?php endfor; ?>
+                                        (<?php echo number_format($product['average_rating'], 1); ?>)
+                                    </p>
+                                </div>
+                            </a>
+                            <!-- Add to Cart Button -->
+                            <div class="card-footer text-center">
                                 <a href="add_to_cart.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-custom">Add to Cart</a>
                             </div>
                         </div>
