@@ -286,3 +286,43 @@ h2 {
     background-color: #2e5e40 !important;
 }
 
+
+
+/* Login pageee */
+
+/* General CSS */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h2 {
+    color: #12372A;
+    font-weight: 700;
+}
+
+/* Login Page CSS */
+.login-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom {
+    background-color: #12372A !important; 
+    color: white !important;
+    font-weight: 600 !important;
+    border: none !important;
+    padding: 10px !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+    color: white;
+}
+
