@@ -65,6 +65,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/style.css"> <!-- Include custom CSS -->
     <title>Login</title>
+    <style>
+        .btn-custom {
+            background-color: #28a745; /* Green background */
+            color: white; /* White text */
+            border: none; /* No border */
+        }
+
+        .btn-custom:hover {
+            background-color: #218838; /* Darker green on hover */
+            color: white; /* Ensure text remains white */
+        }
+    </style>
 </head>
 <body>
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
@@ -88,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control <?php echo (!empty($login_error)) ? 'is-invalid' : ''; ?>" id="password" name="password" required>
                 </div>
+                <!-- Green Button -->
                 <button type="submit" class="btn btn-custom w-100">Login</button>
             </form>
             <p class="text-center mt-3">Don't have an account? <a href="register.php" class="text-primary fw-bold">Register here</a>.</p>

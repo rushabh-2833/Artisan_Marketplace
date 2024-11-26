@@ -1,6 +1,6 @@
 <?php include '../views/templates/header.php'; ?>
-<?php
 
+<?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -44,6 +44,7 @@ $sql = "
         o.id AS order_id, 
         p.id AS product_id, 
         p.name AS product_name, 
+        p.image_url, 
         oi.quantity, 
         oi.price, 
         o.status, 
@@ -90,114 +91,178 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Order History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        .badge {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .badge-pending {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .badge-completed {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .badge-cancelled {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .badge-shipped {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+        .badge-accepted {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .badge-rejected {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .date-time-container {
+            display: inline-block;
+            text-align: left;
+        }
+        .date-time-container i {
+            margin-right: 5px;
+        }
+        .date-time-container .date {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #6c757d; /* Grayish color */
+        }
+        .date-time-container .time {
+            font-size: 0.9rem;
+            color: #28a745; /* Green color */
+        }
         .star {
-            color: #f39c12; /* Gold color for filled stars */
-            margin-right: 2px;
+            color: #f39c12; /* Gold color for all stars */
         }
-        .empty-star {
-            color: #ccc; /* Light gray for empty stars */
+        .btn-cancel-order {
+            margin-top: 5px;
         }
-        .star-rating {
-            display: inline-flex;
-            gap: 2px;
+        .product-image {
+            width: 80px; /* Adjust width */
+            height: 80px; /* Adjust height */
+            object-fit: cover; /* Ensures the image fits within the specified size */
+            border-radius: 8px; /* Optional: Adds rounded corners */
         }
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Your Orders</h2>
+    <div class="row">
+        <!-- Sidebar -->
+        <?php include '../views/templates/sidebar.php'; ?>
 
-    <!-- Feedback Messages -->
-    <?php if (isset($_GET['review_submitted'])): ?>
-        <div class="alert alert-success">Your review was submitted successfully!</div>
-    <?php elseif (isset($_GET['review_exists'])): ?>
-        <div class="alert alert-warning">You have already reviewed this product!</div>
-    <?php endif; ?>
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h2>Your Orders</h2>
 
-    <!-- Status Filter Dropdown -->
-    <form method="GET" class="mb-3">
-        <label for="status-filter" class="form-label">Filter by Status:</label>
-        <select id="status-filter" name="status" class="form-select" onchange="this.form.submit()">
-            <option value="">All</option>
-            <option value="pending" <?php if ($status_filter === 'pending') echo 'selected'; ?>>Pending</option>
-            <option value="accepted" <?php if ($status_filter === 'accepted') echo 'selected'; ?>>Accepted</option>
-            <option value="rejected" <?php if ($status_filter === 'rejected') echo 'selected'; ?>>Rejected</option>
-            <option value="shipped" <?php if ($status_filter === 'shipped') echo 'selected'; ?>>Shipped</option>
-            <option value="completed" <?php if ($status_filter === 'completed') echo 'selected'; ?>>Completed</option>
-            <option value="cancelled" <?php if ($status_filter === 'cancelled') echo 'selected'; ?>>Cancelled</option>
-        </select>
-    </form>
+            <!-- Feedback Messages -->
+            <?php if (isset($_GET['review_submitted'])): ?>
+                <div class="alert alert-success">Your review was submitted successfully!</div>
+            <?php elseif (isset($_GET['review_exists'])): ?>
+                <div class="alert alert-warning">You have already reviewed this product!</div>
+            <?php endif; ?>
 
-    <?php if ($result->num_rows > 0): ?>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['order_id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['product_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['quantity']); ?></td>
-                        <td>$<?php echo htmlspecialchars($row['price']); ?></td>
-                        <td>
-                            <?php 
-                                if ($row['status'] === 'cancelled') {
-                                    echo '<i class="bi bi-x-circle text-danger" data-bs-toggle="tooltip" title="Order cancelled"></i> Cancelled';
-                                } elseif ($row['status'] === 'pending') {
-                                    echo '<i class="bi bi-hourglass-split text-warning" data-bs-toggle="tooltip" title="Order pending"></i> Pending';
-                                    echo '<a href="cancel_order.php?order_id=' . $row['order_id'] . '" class="btn btn-danger btn-sm ms-2">Cancel Order</a>';
-                                } elseif ($row['status'] === 'accepted') {
-                                    echo '<i class="bi bi-check-circle text-primary" data-bs-toggle="tooltip" title="Order accepted"></i> Accepted';
-                                } elseif ($row['status'] === 'rejected') {
-                                    echo '<i class="bi bi-x-circle text-danger" data-bs-toggle="tooltip" title="Order rejected"></i> Rejected';
-                                } elseif ($row['status'] === 'shipped') {
-                                    echo '<i class="bi bi-truck text-info" data-bs-toggle="tooltip" title="Order shipped"></i> Shipped';
-                                } elseif ($row['status'] === 'completed') {
-                                    echo '<i class="bi bi-check-circle text-success" data-bs-toggle="tooltip" title="Order completed"></i> Completed';
-                                }
-                            ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($row['created_at']); ?></td>
-                        <td>
-                            <?php if ($row['status'] === 'completed' && !empty($row['review_rating'])): ?>
-                                <!-- Display Review Stars -->
-                                <div class="star-rating">
-                                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <i class="fas fa-star <?= $i <= $row['review_rating'] ? 'star' : 'empty-star'; ?>"></i>
-                                    <?php endfor; ?>
-                                </div>
-                            <?php elseif ($row['status'] === 'completed'): ?>
-                                <!-- Allow Review for Completed Orders -->
-                                <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
-                            <?php else: ?>
-                                Not Reviewed
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>You have no orders matching this status.</p>
-    <?php endif; ?>
+            <!-- Status Filter Dropdown -->
+            <form method="GET" class="mb-3">
+                <label for="status-filter" class="form-label">Filter by Status:</label>
+                <select id="status-filter" name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="pending" <?php if ($status_filter === 'pending') echo 'selected'; ?>>Pending</option>
+                    <option value="accepted" <?php if ($status_filter === 'accepted') echo 'selected'; ?>>Accepted</option>
+                    <option value="rejected" <?php if ($status_filter === 'rejected') echo 'selected'; ?>>Rejected</option>
+                    <option value="shipped" <?php if ($status_filter === 'shipped') echo 'selected'; ?>>Shipped</option>
+                    <option value="completed" <?php if ($status_filter === 'completed') echo 'selected'; ?>>Completed</option>
+                    <option value="cancelled" <?php if ($status_filter === 'cancelled') echo 'selected'; ?>>Cancelled</option>
+                </select>
+            </form>
 
-    <!-- Pagination Controls -->
-    <div class="d-flex justify-content-between mt-4">
-        <a href="?page=<?php echo max(1, $current_page - 1); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?= $current_page <= 1 ? 'disabled' : ''; ?>>Previous</a>
-        <span>Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
-        <a href="?page=<?php echo min($current_page + 1, $total_pages); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?= $current_page >= $total_pages ? 'disabled' : ''; ?>>Next</a>
+            <?php if ($result->num_rows > 0): ?>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['order_id']); ?></td>
+                                <td>
+                                    <img src="<?php echo htmlspecialchars($row['image_url']); ?>" alt="Product Image" class="product-image">
+                                </td>
+                                <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['quantity']); ?></td>
+                                <td>$<?php echo htmlspecialchars($row['price']); ?></td>
+                                <td>
+                                    <?php 
+                                        if ($row['status'] === 'cancelled') {
+                                            echo "<span class='badge badge-cancelled'><i class='fas fa-times-circle'></i> Cancelled</span>";
+                                        } elseif ($row['status'] === 'pending') {
+                                            echo "<span class='badge badge-pending'><i class='fas fa-hourglass-half'></i> Pending</span>";
+                                            echo "<br><a href='cancel_order.php?order_id=" . $row['order_id'] . "' class='btn btn-danger btn-sm btn-cancel-order'>Cancel Order</a>";
+                                        } elseif ($row['status'] === 'accepted') {
+                                            echo "<span class='badge badge-accepted'><i class='fas fa-check-circle'></i> Accepted</span>";
+                                        } elseif ($row['status'] === 'shipped') {
+                                            echo "<span class='badge badge-shipped'><i class='fas fa-truck'></i> Shipped</span>";
+                                        } elseif ($row['status'] === 'completed') {
+                                            echo "<span class='badge badge-completed'><i class='fas fa-check-circle'></i> Completed</span>";
+                                        } elseif ($row['status'] === 'rejected') {
+                                            echo "<span class='badge badge-rejected'><i class='fas fa-ban'></i> Rejected</span>";
+                                        }
+                                    ?>
+                                </td>
+                                <td>
+                                    <div class="date-time-container">
+                                        <i class="fas fa-calendar-alt text-primary"></i>
+                                        <span class="date"><?php echo date('F j, Y', strtotime($row['created_at'])); ?></span>
+                                        <br>
+                                        <i class="fas fa-clock text-success"></i>
+                                        <span class="time"><?php echo date('g:i A', strtotime($row['created_at'])); ?></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <?php if ($row['status'] === 'completed' && !empty($row['review_rating'])): ?>
+                                        <div class="star-rating">
+                                            <?php for ($i = 1; $i <= $row['review_rating']; $i++): ?>
+                                                <i class="fas fa-star star"></i>
+                                            <?php endfor; ?>
+                                        </div>
+                                    <?php elseif ($row['status'] === 'completed'): ?>
+                                        <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
+                                    <?php else: ?>
+                                        Not Reviewed
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p>No orders matching this status were found.</p>
+            <?php endif; ?>
+
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href="?page=<?php echo max(1, $current_page - 1); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?php echo $current_page <= 1 ? 'disabled' : ''; ?>>Previous</a>
+                <span>Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
+                <a href="?page=<?php echo min($current_page + 1, $total_pages); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>>Next</a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -207,5 +272,9 @@ $result = $stmt->get_result();
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 </script>
-</body>
+
+</body><br>
+<br> <br>
+<?php include '../views/templates/footer.php'; ?>
+
 </html>
