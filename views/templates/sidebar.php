@@ -53,7 +53,7 @@
         }
     </style>
     <div class="sidebar card shadow-sm">
-        <div class="card-header">Navigation</div>
+
         <div class="list-group">
             <a href="profile.php" class="list-group-item list-group-item-action <?php echo basename($_SERVER['PHP_SELF']) === 'profile.php' ? 'active' : ''; ?>">
                 <i class="fas fa-user me-2"></i> Personal Information

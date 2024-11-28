@@ -224,41 +224,48 @@ if ($user_logged_in) {
                         </li>
                         <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/login.php">Login</a></li>
                     <?php endif; ?>
-
                     <?php if ($user_logged_in): ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                style="margin-top: 6px;">
-                                <i class="fas fa-user-circle"></i> Account
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                                <li><a class="dropdown-item" href="/artisan_marketplace/public/profile.php">Personal
-                                        Information</a></li>
-                                <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment
-                                        Methods</a></li>
-                                        <li>
-    <a class="dropdown-item" href="notifications.php">
-        Notifications
-        <span id="notification-badge" class="badge bg-danger d-none"><?php echo $unread_count; ?></span>
-    </a>
-</li>
-<li>
-    <a class="dropdown-item" href="order_history.php">
-        Order History
-        <?php if ($pending_orders_count > 0): ?>
-            <span class="badge bg-warning"><?php echo $pending_orders_count; ?></span>
-        <?php endif; ?>
-    </a>
-</li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            style="margin-top: 6px;">
+            <i class="fas fa-user-circle"></i> Account
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+            <li><a class="dropdown-item" href="/artisan_marketplace/public/profile.php">Personal Information</a></li>
+            <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment Methods</a></li>
+            
+            <!-- Notifications for Customers and Artisans -->
+            <?php if ($user_role === 'artisan'): ?>
+                <li>
+                    <a class="dropdown-item" href="/artisan_marketplace/public/artisan/artisan_notifications.php">
+                        Notifications
+                        <?php if ($notification_count > 0): ?>
+                            <span class="badge bg-danger ms-1"><?php echo $notification_count; ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+            <?php elseif ($user_role === 'customer'): ?>
+                <li>
+                    <a class="dropdown-item" href="/artisan_marketplace/public/notifications.php">
+                        Notifications
+                        <?php if ($notification_count > 0): ?>
+                            <span class="badge bg-danger ms-1"><?php echo $notification_count; ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+            <?php endif; ?>
 
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign
-                                        Out</a></li>
-                            </ul>
-                        </li>
-                    <?php endif; ?>
+            <li><a class="dropdown-item" href="/artisan_marketplace/public/order_history.php">Order History</a></li>
+            
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign Out</a></li>
+        </ul>
+    </li>
+<?php endif; ?>
+
                 </ul>
             </div>
         </div>

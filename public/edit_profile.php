@@ -1,6 +1,14 @@
-<?php include '../views/templates/header.php'; ?>
 <?php
-session_start();
+// Start output buffering
+ob_start();
+
+// Include header file
+include '../views/templates/header.php';
+
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 include '../src/helpers/db_connect.php'; // Include your database connection file
 
 // Check if the user is logged in
@@ -85,10 +93,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $address, $hashed_password, $user_id);
         
         if ($stmt->execute()) {
-            header("Location: profile.php"); // Redirect back to profile page after update
+            // Redirect back to profile page after successful update
+            header("Location: profile.php");
             exit;
         } else {
-            echo "Error updating information.";
+            echo "Error updating profile: " . $stmt->error; // Show database error
         }
 
         $stmt->close();
@@ -104,66 +113,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="style/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Edit Profile</title>
+    <style>
+        .edit-profile-card {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
-        <div class="card edit-pro shadow-sm">
-            <div class="card-header text-center text-white">
-                <h2>Edit Your Profile Information</h2>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="edit_profile.php">
-                    <div class="mb-3">
-                        <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control <?php echo isset($errors['first_name']) ? 'is-invalid' : ''; ?>" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>">
-                        <?php if (isset($errors['first_name'])): ?>
-                            <div class="invalid-feedback"><?php echo htmlspecialchars($errors['first_name']); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control <?php echo isset($errors['last_name']) ? 'is-invalid' : ''; ?>" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>">
-                        <?php if (isset($errors['last_name'])): ?>
-                            <div class="invalid-feedback"><?php echo htmlspecialchars($errors['last_name']); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control <?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>">
-                        <?php if (isset($errors['email'])): ?>
-                            <div class="invalid-feedback"><?php echo htmlspecialchars($errors['email']); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone_number" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control <?php echo isset($errors['phone_number']) ? 'is-invalid' : ''; ?>" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($phone_number); ?>">
-                        <?php if (isset($errors['phone_number'])): ?>
-                            <div class="invalid-feedback"><?php echo htmlspecialchars($errors['phone_number']); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control <?php echo isset($errors['address']) ? 'is-invalid' : ''; ?>" id="address" name="address" rows="3"><?php echo htmlspecialchars($address); ?></textarea>
-                        <?php if (isset($errors['address'])): ?>
-                            <div class="invalid-feedback"><?php echo htmlspecialchars($errors['address']); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">New Password (Leave blank to keep current)</label>
-                        <input type="password" class="form-control <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>" id="password" name="password">
-                        <?php if (isset($errors['password'])): ?>
-                            <div class="invalid-feedback"><?php echo htmlspecialchars($errors['password']); ?></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
-                        <a href="profile.php" class="btn btn-secondary btn-custom">Back to Profile</a>
-                    </div>
-                </form>
-            </div>
+    <div class="card edit-profile-card shadow-sm">
+        <div class="card-header text-center">
+            <h2>Edit Your Profile Information</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="edit_profile.php">
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control <?php echo isset($errors['first_name']) ? 'is-invalid' : ''; ?>" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>">
+                    <?php if (isset($errors['first_name'])): ?>
+                        <div class="invalid-feedback"><?php echo htmlspecialchars($errors['first_name']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control <?php echo isset($errors['last_name']) ? 'is-invalid' : ''; ?>" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>">
+                    <?php if (isset($errors['last_name'])): ?>
+                        <div class="invalid-feedback"><?php echo htmlspecialchars($errors['last_name']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control <?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>">
+                    <?php if (isset($errors['email'])): ?>
+                        <div class="invalid-feedback"><?php echo htmlspecialchars($errors['email']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control <?php echo isset($errors['phone_number']) ? 'is-invalid' : ''; ?>" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($phone_number); ?>">
+                    <?php if (isset($errors['phone_number'])): ?>
+                        <div class="invalid-feedback"><?php echo htmlspecialchars($errors['phone_number']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control <?php echo isset($errors['address']) ? 'is-invalid' : ''; ?>" id="address" name="address" rows="3"><?php echo htmlspecialchars($address); ?></textarea>
+                    <?php if (isset($errors['address'])): ?>
+                        <div class="invalid-feedback"><?php echo htmlspecialchars($errors['address']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">New Password (Leave blank to keep current)</label>
+                    <input type="password" class="form-control <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>" id="password" name="password">
+                    <?php if (isset($errors['password'])): ?>
+                        <div class="invalid-feedback"><?php echo htmlspecialchars($errors['password']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-custom">Update Profile</button>
+                    <a href="profile.php" class="btn btn-secondary">Back to Profile</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS from CDN -->
-   
-    <?php include '../views/templates/footer.php'; ?>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<?php include '../views/templates/footer.php'; ?>
+</body>
+</html>
+
+<?php
+// End output buffering
+ob_end_flush();
+?>
