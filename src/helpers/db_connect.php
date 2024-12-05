@@ -1,13 +1,16 @@
 <?php
-// Load environment variables
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+// Specify the directory containing the .env file
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
-// Access database connection details from .env
-$servername = getenv('DB_HOST');
-$username = getenv('DB_USERNAME');
-$password = getenv('DB_PASSWORD');
-$dbname = getenv('DB_NAME');
+$servername = "artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com";
+$username = "admin";
+$password = "Cap-Project24";
+$dbname = "artisan_marketplace";
  // Use the created database
 
 // Connect to the database
