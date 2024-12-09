@@ -105,7 +105,7 @@ if ($user_logged_in) {
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">Artisan Marketplace</a>
+            <a class="navbar-brand" href="<?php echo getenv('APP_URL'); ?>/index.php">Artisan Marketplace</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -114,12 +114,12 @@ if ($user_logged_in) {
                 <ul class="navbar-nav ms-auto">
                     <?php if ($user_role === 'admin'): ?>
                         <li class="nav-item"><a class="nav-link"
-                                href="/artisan_marketplace/views/admin-dashboard.php">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a>
+                                href="<?php echo getenv('APP_URL'); ?>/admin/admin-dashboard.php">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/shop.php">Product</a>
                         </li>
                         <li class="nav-item"><a class="nav-link"
-                                href="/artisan_marketplace/public/admin/admin_approve_products.php">Product Approval</a>
+                                href="<?php echo getenv('APP_URL'); ?>/admin/admin_approve_products.php">Product Approval</a>
                         </li>
                     <?php elseif ($user_role === 'customer'): ?>
                         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -133,19 +133,19 @@ if ($user_logged_in) {
                                     <ul class="navbar-nav ms-auto">
                                         <!-- Navigation Links -->
                                         <li class="nav-item"><a class="nav-link"
-                                                href="/artisan_marketplace/public/index.php">Home</a></li>
+                                                href="<?php echo getenv('APP_URL'); ?>/index.php">Home</a></li>
                                         <li class="nav-item"><a class="nav-link"
-                                                href="/artisan_marketplace/public/shop.php">Product</a></li>
+                                                href="<?php echo getenv('APP_URL'); ?>/shop.php">Product</a></li>
                                         <li class="nav-item"><a class="nav-link"
-                                                href="/artisan_marketplace/public/about.php">About</a></li>
+                                                href="<?php echo getenv('APP_URL'); ?>/about.php">About</a></li>
                                         <li class="nav-item"><a class="nav-link"
-                                                href="/artisan_marketplace/public/contact.php">Contact</a></li>
+                                                href="<?php echo getenv('APP_URL'); ?>/contact.php">Contact</a></li>
                                         <li class="nav-item"><a class="nav-link"
-                                                href="/artisan_marketplace/public/wishlist.php">Wishlist</a></li>
+                                                href="<?php echo getenv('APP_URL'); ?>/wishlist.php">Wishlist</a></li>
 
                                         <!-- Cart Icon with Item Count -->
 <li class="nav-item position-relative cart-icon">
-    <a class="nav-link" href="/artisan_marketplace/public/cart.php">
+    <a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/cart.php">
         <i class="fas fa-shopping-cart"></i>
         <?php
         // Display the cart count if items are present
@@ -180,7 +180,7 @@ if ($user_logged_in) {
                                                     <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
                                                     <li><a class="dropdown-item" href="payment_methods.php">Payment Methods</a>
                                                     <li>
-    <a class="dropdown-item" href="notifications.php">
+    <a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/notifications.php">
         Notifications
         <?php if ($unread_count > 0): ?>
             <span class="badge bg-danger"><?php echo $unread_count; ?></span>
@@ -191,7 +191,7 @@ if ($user_logged_in) {
                                                     <li>
                                                         <hr class="dropdown-divider">
                                                     </li>
-                                                    <li><a class="dropdown-item text-danger" href="logout.php">Sign Out</a></li>
+                                                    <li><a class="dropdown-item text-danger" href="<?php echo getenv('APP_URL'); ?>/logout.php">Sign Out</a></li>
                                                 </ul>
                                             </li>
                                         <?php endif; ?>

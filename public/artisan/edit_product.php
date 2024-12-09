@@ -135,7 +135,7 @@ $conn->close();
             </div>
             <button type="submit" class="btn btn-primary w-100">Update Product</button>
         </form>
-        <a href="/artisan_marketplace/public/product_management.php" class="btn btn-primary btn-sm me-2">Back</a>
+        <a href="<?php echo getenv('APP_URL'); ?>/product_management.php" class="btn btn-primary btn-sm me-2">Back</a>
 
     </div>
 </body>
