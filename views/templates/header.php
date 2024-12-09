@@ -216,13 +216,13 @@ if ($user_logged_in) {
     </li>
 
                         <li class="nav-item"><a class="nav-link"
-                                href="/artisan_marketplace/views/artisan-dashboard.php">Dashboard</a></li>
+                                href="<?php echo getenv('APP_URL'); ?>/artisan/artisan-dashboard.php">Dashboard</a></li>
                     <?php else: ?>
                         <!-- Default Links for Visitors (Not Logged In) -->
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/shop.php">Product</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/login.php">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/login.php">Login</a></li>
                     <?php endif; ?>
 
                     <?php if ($user_logged_in): ?>
@@ -233,18 +233,18 @@ if ($user_logged_in) {
                                 <i class="fas fa-user-circle"></i> Account
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                                <li><a class="dropdown-item" href="/artisan_marketplace/public/profile.php">Personal
+                                <li><a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/profile.php">Personal
                                         Information</a></li>
-                                <li><a class="dropdown-item" href="/artisan_marketplace/public/payment_methods.php">Payment
+                                <li><a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/payment_methods.php">Payment
                                         Methods</a></li>
                                         <li>
-    <a class="dropdown-item" href="notifications.php">
+    <a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/notifications.php">
         Notifications
         <span id="notification-badge" class="badge bg-danger d-none"><?php echo $unread_count; ?></span>
     </a>
 </li>
 <li>
-    <a class="dropdown-item" href="order_history.php">
+    <a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/order_history.php">
         Order History
         <?php if ($pending_orders_count > 0): ?>
             <span class="badge bg-warning"><?php echo $pending_orders_count; ?></span>
@@ -254,7 +254,7 @@ if ($user_logged_in) {
 
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item text-danger" href="/artisan_marketplace/public/logout.php">Sign
+                                <li><a class="dropdown-item text-danger" href="<?php echo getenv('APP_URL'); ?>/logout.php">Sign
                                         Out</a></li>
                             </ul>
                         </li>
