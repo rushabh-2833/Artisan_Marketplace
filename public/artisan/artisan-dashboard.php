@@ -1,15 +1,31 @@
 
 <?php
-
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    die('Error: User is not logged in.');
+}
 
 $artisan_id = $_SESSION['user_id'];
 $conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
+if ($conn->connect_error) {
+    die('Database connection failed: ' . $conn->connect_error);
+}
+
 $sql = "SELECT * FROM products WHERE artisan_id = ?";
 $stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    die('Error preparing statement: ' . $conn->error);
+}
+
 $stmt->bind_param("i", $artisan_id);
 $stmt->execute();
 $result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo "<p class='text-warning'>No products found for artisan ID: " . htmlspecialchars($artisan_id) . "</p>";
+}
 ?>
+
 <?php include '../views/templates/header.php'; ?>
 
 <!DOCTYPE html>
