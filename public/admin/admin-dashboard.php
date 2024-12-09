@@ -62,7 +62,7 @@ $result = $conn->query($sql);
                         <td><?php echo htmlspecialchars($user['phone_number']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td>
-                            <a href="user_details.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-info btn-sm">View Details</a>
+                            <a href="<?php echo getenv('APP_URL'); ?>/admin/user_details.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-info btn-sm">View Details</a>
                             <button onclick="deleteUser(<?php echo $user['id']; ?>)" class="btn btn-outline-danger btn-sm">Delete</button>
                         </td>
                     </tr>
