@@ -1,4 +1,3 @@
-<?php include '../views/templates/header.php'; ?>
 
 <?php
 
@@ -11,6 +10,7 @@ $stmt->bind_param("i", $artisan_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
+<?php include '../views/templates/header.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">

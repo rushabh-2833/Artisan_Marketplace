@@ -1,10 +1,7 @@
 <?php 
 include 'C:/xampp/htdocs/Artisan_Marketplace/views/templates/header.php'; 
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: login.php");
-    exit;
-}
+
 
 $conn = new mysqli('artisan-marketplace.cfao628yky31.us-east-1.rds.amazonaws.com', 'admin', 'Cap-Project24', 'artisan_marketplace');
 $sql = "SELECT * FROM products WHERE approval_status = 'pending'";
