@@ -1,6 +1,7 @@
 <?php
-include '../views/templates/header.php';
-include '../src/helpers/db_connect.php';
+include __DIR__ . '/../../views/templates/header.php';
+include __DIR__ . '/../../src/helpers/db_connect.php';
+
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -36,7 +37,7 @@ $result = $conn->query($sql);
 <!-- Hero Banner -->
 <section class="hero-banner">
     <div class="container-fluid p-0">
-        <img src="/artisan_marketplace/public/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
+        <img src="/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
         <div class="banner-content text-center">
             <h1 class="text-white">Welcome to Artisan Marketplace</h1>
             <p>Explore a world of handmade treasures crafted by passionate artisans.</p>
@@ -90,7 +91,7 @@ $result = $conn->query($sql);
         <div class="row align-items-center">
             <!-- Image Column -->
             <div class="col-md-6 promo-img">
-                <img src="/artisan_marketplace/public/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded">
+                <img src="/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded">
             </div>
             <!-- Text Column -->
             <div class="col-md-6">

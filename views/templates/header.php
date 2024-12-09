@@ -178,8 +178,7 @@ if ($user_logged_in) {
                                                
                                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                                     <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
-                                                    <li><a class="dropdown-item" href="payment_methods.php">Payment Methods</a>
-                                                    <li>
+                                                    
     <a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/notifications.php">
         Notifications
         <?php if ($unread_count > 0): ?>
