@@ -9,7 +9,7 @@ $user_logged_in = isset($_SESSION['user_id']);
 $initials = $_SESSION['user_initials'] ?? '';
 
 // Include the database connection
-$baseDir = $_SERVER['DOCUMENT_ROOT'] . '/Artisan_Marketplace/';
+$baseDir = $_SERVER['DOCUMENT_ROOT'] . '/../';
 include $baseDir . 'src/helpers/db_connect.php'; // Ensure the path is correct
 
 // Fetch notification count only if the user is logged in
@@ -201,13 +201,13 @@ if ($user_logged_in) {
                         </nav>
 
                     <?php elseif ($user_role === 'artisan'): ?>
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/index.php">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/artisan_marketplace/public/shop.php">Product</a>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/shop.php">Product</a>
                         </li>
                         <li class="nav-item"><a class="nav-link"
-                                href="/artisan_marketplace/public/product_management.php">Product Management</a></li>
+                                href="<?php echo getenv('APP_URL'); ?>/product_management.php">Product Management</a></li>
                                     <li class="nav-item">
-        <a class="nav-link" href="/artisan_marketplace/public/artisan/artisan_orders.php">
+        <a class="nav-link" href="<?php echo getenv('APP_URL'); ?>/artisan/artisan_orders.php">
             Order Management
             <?php if ($notification_count > 0): ?>
                 <span class="badge bg-danger"><?php echo $notification_count; ?></span>
