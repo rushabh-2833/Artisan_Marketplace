@@ -4,10 +4,7 @@ include __DIR__ . '/../../src/helpers/db_connect.php';
 
 
 // Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+
 
 // Fetch products from the database
 $sql = "
@@ -37,7 +34,7 @@ $result = $conn->query($sql);
 <!-- Hero Banner -->
 <section class="hero-banner">
     <div class="container-fluid p-0">
-        <img src="/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
+        <img src="<?php echo getenv('APP_URL'); ?>/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
         <div class="banner-content text-center">
             <h1 class="text-white">Welcome to Artisan Marketplace</h1>
             <p>Explore a world of handmade treasures crafted by passionate artisans.</p>
