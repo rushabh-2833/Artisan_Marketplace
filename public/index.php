@@ -3,7 +3,6 @@ include __DIR__ . '/../../views/templates/header.php';
 include __DIR__ . '/../../src/helpers/db_connect.php';
 
 
-// Check if the user is logged in
 
 
 // Fetch products from the database
@@ -34,8 +33,8 @@ $result = $conn->query($sql);
 <!-- Hero Banner -->
 <section class="hero-banner">
     <div class="container-fluid p-0">
-        <img src="<?php echo getenv('APP_URL'); ?>/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
-        <div class="banner-content text-center">
+    <img src="<?php echo getenv('APP_URL'); ?>/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
+    <div class="banner-content text-center">
             <h1 class="text-white">Welcome to Artisan Marketplace</h1>
             <p>Explore a world of handmade treasures crafted by passionate artisans.</p>
             <a href="shop.php" class="btn btn-primary btn-custom">Shop Now</a>
