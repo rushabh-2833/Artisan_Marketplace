@@ -1,6 +1,12 @@
 <?php
-include __DIR__ . '/../../views/templates/header.php';
-include __DIR__ . '/../../src/helpers/db_connect.php';
+// Include the header and database connection
+include __DIR__ . '/../views/templates/header.php'; // Adjusted file path
+include __DIR__ . '/../src/helpers/db_connect.php'; // Adjusted file path
+
+// Ensure the database connection is initialized
+if (!isset($conn) || !$conn) {
+    die('Error: Database connection is not established.');
+}
 
 // Fetch products from the database
 $sql = "
@@ -15,6 +21,10 @@ $sql = "
     LIMIT 6
 ";
 $result = $conn->query($sql);
+
+if (!$result) {
+    die('Error executing query: ' . $conn->error);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +33,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome -->
     <title>Artisan Marketplace</title>
 </head>
 <body>
@@ -30,8 +41,8 @@ $result = $conn->query($sql);
 <!-- Hero Banner -->
 <section class="hero-banner">
     <div class="container-fluid p-0">
-    <img src="<?php echo getenv('APP_URL'); ?>/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
-    <div class="banner-content text-center">
+        <img src="<?php echo getenv('APP_URL'); ?>/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
+        <div class="banner-content text-center">
             <h1 class="text-white">Welcome to Artisan Marketplace</h1>
             <p>Explore a world of handmade treasures crafted by passionate artisans.</p>
             <a href="shop.php" class="btn btn-primary btn-custom">Shop Now</a>
@@ -82,11 +93,9 @@ $result = $conn->query($sql);
 <section class="promo-section py-5">
     <div class="container">
         <div class="row align-items-center">
-            <!-- Image Column -->
             <div class="col-md-6 promo-img">
-                <img src="/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded">
+                <img src="<?php echo getenv('APP_URL'); ?>/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded">
             </div>
-            <!-- Text Column -->
             <div class="col-md-6">
                 <h2>Biggest Sale of the Season!</h2>
                 <p>
@@ -97,7 +106,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 </section>
-
 
 <section class="why-choose-us">
     <div class="container text-center">
@@ -127,8 +135,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 </section>
-
-
 
 <!-- Newsletter Subscription -->
 <section class="newsletter my-5 text-center">
@@ -170,7 +176,6 @@ $result = $conn->query($sql);
     </div>
 </section>
 
-
-<?php include '../views/templates/footer.php'; ?>
+<?php include __DIR__ . '/../views/templates/footer.php'; ?>
 </body>
 </html>
