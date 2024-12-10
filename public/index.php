@@ -2,9 +2,6 @@
 include __DIR__ . '/../../views/templates/header.php';
 include __DIR__ . '/../../src/helpers/db_connect.php';
 
-
-
-
 // Fetch products from the database
 $sql = "
     SELECT 
