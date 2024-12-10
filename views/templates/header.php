@@ -209,7 +209,7 @@ if ($user_logged_in) {
     <!-- Navbar -->
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="<?php echo getenv('APP_URL'); ?>/index.php">Artisan Marketplace</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -275,7 +275,7 @@ if ($user_logged_in) {
                                                 }
                                                 ?>
                                                 <?php if ($cart_count > 0): ?>
-                                                    <span class="badge bg-danger"><?php echo $cart_count; ?></span>
+                                                    <span id="cart-badge" class="badge bg-danger"><?php echo $cart_count; ?></span>
                                                 <?php endif; ?>
                                             </a>
                                         </li>
@@ -283,28 +283,25 @@ if ($user_logged_in) {
 
                                         <!-- Profile Dropdown for Customers -->
                                         <?php if ($user_logged_in): ?>
-                                            <li class="nav-item dropdown">
-
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                                    <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
-
-                                                    <a class="dropdown-item"
-                                                        href="<?php echo getenv('APP_URL'); ?>/notifications.php">
-                                                        Notifications
-                                                        <?php if ($unread_count > 0): ?>
-                                                            <span class="badge bg-danger"><?php echo $unread_count; ?></span>
-                                                        <?php endif; ?>
-                                                    </a>
-                                            </li>
-                                            </li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item text-danger"
-                                                    href="<?php echo getenv('APP_URL'); ?>/logout.php">Sign Out</a></li>
-                                        </ul>
-                                        </li>
-                                    <?php endif; ?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <div class="profile-icon">A</div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                    <li><a class="dropdown-item" href="profile.php">Personal Info</a></li>
+                                    <li><a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/notifications.php">
+                                            Notifications
+                                            <?php if ($unread_count > 0): ?>
+                                                <span class="badge bg-danger"><?php echo $unread_count; ?></span>
+                                            <?php endif; ?>
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="<?php echo getenv('APP_URL'); ?>/logout.php">Sign Out</a></li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -401,28 +398,53 @@ if ($user_logged_in) {
     // Call it once on page load
     updateNotificationCount();
 
-    function triggerCartAnimation() {
-        const badge = document.querySelector('.cart-icon .badge');
-        badge.classList.add('updated');
-        setTimeout(() => badge.classList.remove('updated'), 300);
+    // Update cart count and trigger animation
+function updateCartCount(newCount) {
+    const cartBadge = document.getElementById('cart-badge');
+    if (cartBadge) {
+        cartBadge.textContent = newCount;
+        triggerCartAnimation(); // Call the bounce animation
     }
+}
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+// Trigger bounce animation for cart badge
+function triggerCartAnimation() {
+    const cartBadge = document.getElementById('cart-badge');
+    if (cartBadge) {
+        cartBadge.classList.add('updated');
+        setTimeout(() => cartBadge.classList.remove('updated'), 300);
+    }
+}
+
+// Update notification count and trigger shake animation
+function updateNotificationCount(newCount) {
+    const notificationBadge = document.getElementById('notification-badge');
+    if (notificationBadge) {
+        notificationBadge.textContent = newCount;
+        notificationBadge.classList.remove('d-none'); // Show badge if hidden
+        triggerNotificationShake(); // Call the shake animation
+    }
+}
+
+// Trigger shake animation for notification badge
+function triggerNotificationShake() {
+    const notificationBadge = document.getElementById('notification-badge');
+    if (notificationBadge) {
+        notificationBadge.classList.add('shake');
+        setTimeout(() => notificationBadge.classList.remove('shake'), 500);
+    }
+}
+
+
+// Initialize counts on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount(<?php echo $cart_count; ?>);
+    updateNotificationCount(<?php echo $unread_count; ?>);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+        updateNotificationCount(<?php echo $unread_count; ?>);
     });
-
-
-    function triggerNotificationShake() {
-        const badge = document.querySelector('#notification-badge');
-        badge.classList.add('shake');
-        setTimeout(() => badge.classList.remove('shake'), 500);
-    }
-
 </script>
 
 </html>
