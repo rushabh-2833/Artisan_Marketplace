@@ -28,12 +28,22 @@ if ($conn->connect_error) {
 $price_min = $_GET['price_min'] ?? 0;
 $price_max = $_GET['price_max'] ?? 1000;
 
-// Fetch products with approval status 'approved' and within the price range
-$sql = "SELECT * FROM products WHERE approval_status = 'approved' AND price BETWEEN ? AND ?";
+// Fetch products with approval status 'approved' and within the price range, including average rating and review count
+$sql = "
+    SELECT 
+        p.*, 
+        COALESCE(AVG(r.rating), 0) AS average_rating, 
+        COUNT(r.rating) AS total_reviews 
+    FROM products p
+    LEFT JOIN reviews r ON p.id = r.product_id
+    WHERE p.approval_status = 'approved' AND p.price BETWEEN ? AND ?
+    GROUP BY p.id
+";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("dd", $price_min, $price_max);
 $stmt->execute();
 $result = $stmt->get_result();
+
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +55,14 @@ $result = $stmt->get_result();
     <style>
         .product-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
         .product-image img { max-width: 100%; height: auto; }
+
+        .star {
+    color: #f39c12;
+}
+.empty-star {
+    color: #ccc;
+}
+
     </style>
 </head>
 <body>
@@ -79,43 +97,55 @@ $result = $stmt->get_result();
                 <input type="number" name="price_max" class="form-control" value="<?php echo htmlspecialchars($price_max); ?>" min="0">
             </div>
             <div class="col-md-4 align-self-end">
-                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                <button type="submit" class="btn btn-custom w-100">Filter</button>
             </div>
         </div>
     </form>
 
     <div class="row">
-    <?php if ($result->num_rows > 0): ?>
-        <?php while ($product = $result->fetch_assoc()): ?>
-            <div class="col-md-4">
-                <div class="product-card text-center">
+<?php if ($result->num_rows > 0): ?>
+    <?php while ($product = $result->fetch_assoc()): ?>
+        <div class="col-md-4">
+            <!-- Wrap the entire card with a clickable link -->
+            <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none">
+                <div class="product-card text-center" style="cursor: pointer;">
                     <!-- Product Image with Heart Icon -->
-                    <div class="product-image">
-                        <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                        <form action="toggle_wishlist.php" method="POST" class="wishlist-form">
+                    <div class="product-image position-relative">
+                        <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="img-fluid">
+                        <form action="toggle_wishlist.php" method="POST" class="wishlist-form position-absolute top-0 end-0 p-2">
                             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                            <button type="submit" class="wishlist-button">
+                            <button type="submit" class="wishlist-button bg-transparent border-0">
                                 <i class="fas fa-heart heart-icon <?php echo in_array($product['id'], $wishlist_product_ids) ? 'filled' : ''; ?>"></i>
                             </button>
                         </form>
                     </div>
-                    <h5 class="mt-3"><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <h5 class="mt-3 text-dark"><?php echo htmlspecialchars($product['name']); ?></h5>
                     <p class="text-muted">$<?php echo number_format($product['price'], 2); ?></p>
-                    
-                    <!-- Add to Cart Button -->
-                    <form action="add_to_cart.php" method="POST">
-                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                        <button type="submit" class="btn btn-success">Add to Cart</button>
-                    </form>
+
+                    <p>
+    <?php for ($i = 1; $i <= 5; $i++): ?>
+        <i class="fas fa-star <?php echo $i <= $product['average_rating'] ? 'star' : 'empty-star'; ?>"></i>
+    <?php endfor; ?>
+    (<?php echo number_format($product['average_rating'], 1); ?>)
+</p>
+
+
+                    <form action="add_to_cart.php" method="POST" class="mt-2">
+                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+            </form>
                 </div>
-            </div>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <div class="col-12 text-center">
-            <p>No products found in this price range. Please adjust your filter.</p>
+            </a>
+            <!-- Keep the "Add to Cart" button outside the clickable card -->
+            
         </div>
-    <?php endif; ?>
-</div>
+    <?php endwhile; ?>
+<?php else: ?>
+    <div class="col-12 text-center">
+        <p>No products found in this price range. Please adjust your filter.</p>
+    </div>
+<?php endif; ?>
+    </div>
 
 
 <!-- Font Awesome for Icons -->
@@ -124,14 +154,18 @@ $result = $stmt->get_result();
 <!-- Styles for the Product Card and Heart Icon -->
 <style>
     .product-card {
-        position: relative;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.3s ease;
-        margin-bottom: 20px;
-        padding-top: 10px;
-    }
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    background: #fff;
+    height: 500px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
 
     .product-image {
         position: relative;
@@ -167,8 +201,14 @@ $result = $stmt->get_result();
 
     /* Heartbeat animation on hover */
     .wishlist-button:hover .heart-icon {
-        animation: heartbeat 0.6s ease infinite; /* Beat animation */
+        animation: heartbeat 0.6s ease infinite;  
     }
+
+    .product-image img {
+            object-fit: contain;  
+            width: 100%;
+            height: 200px;  
+        }
 
     @keyframes heartbeat {
         0%, 100% {
@@ -231,6 +271,5 @@ $result = $stmt->get_result();
 $stmt->close();
 $conn->close();
 ?>
-</body>
-</html>
+<?php include '../views/templates/footer.php'; ?>
             

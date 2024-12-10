@@ -4,12 +4,133 @@
 .wishlist-button.filled {
     color: red; 
 }
+/* Login */
+
+/* Login Page Styling */
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+/* genral css */
+
+/* General CSS */
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #12372A;
+}
+
+a {
+    color: #12372A;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #436850;
+}
+
+.btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    border-radius: 6px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+.btn-primary:hover {
+    background-color: #436850;
+}
+
+.btn-outline-primary {
+    color: #12372A;
+    border: 2px solid #12372A;
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: #12372A;
+    color: white;
+}
+
+
+
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif;
+}
+
+.form-label {
+    color: #34495e;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #bdc3c7;
+}
+
+.btn-primary {
+    background-color: #436850;
+    border: none;
+    font-size: 0.8rem;
+    padding: 5px 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+ 
+
+.btn-primary:hover {
+    background-color: #2e5e40;
+}
+
+.register-link {
+    color: #1abc9c;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.register-link:hover {
+    color: #16a085;
+}
 
 
 /* General Styling */
 .contact-section {
     padding: 50px 0;
 }
+
+.contact-form {
+    max-width: 800px; /* Form width */
+    margin: 0 auto;   /* Center horizontally */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .section-title {
     font-size: 2rem;
     font-weight: bold;
@@ -45,4 +166,810 @@
 .contact-form button {
     width: 100%;
     font-weight: bold;
+}
+/* General Styling */
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #34495E;
+}
+
+/* About Section */
+.about-section {
+    background-color: #F9F9F9;
+}
+
+/* Services Section */
+.services-section .service-card {
+    background-color: #FFFFFF;
+    transition: transform 0.3s ease;
+}
+
+.services-section .service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #12372A;
+}
+
+.service-description {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: #FFFFFF;
+}
+
+/* Team Section */
+.team-section {
+    background-color: #F9F9F9;
+}
+
+.team-img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #12372A;
+}
+
+.card-text {
+    color: #777;
+}
+
+.btn-primary {
+    background-color: #436850;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #2C3E50;
+}
+
+/* Profile Page */
+.profile-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card .card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #2e5e40;
+}
+
+.profile-card .table th {
+    width: 40%;
+    color: #436850;
+    font-weight: 500;
+    padding: 15px;
+}
+
+.profile-card .table td {
+    font-size: 1rem;
+    color: #555;
+}
+
+.profile-card .btn-primary {
+    background-color: #436850;
+    border: none;
+    font-weight: bold;
+}
+
+.profile-card .btn-primary:hover {
+    background-color: #2C3E50;
+}
+
+.profile-card .btn-warning {
+    background-color: #ffbb33;
+    font-weight: bold;
+}
+
+.profile-card .btn-warning:hover {
+    background-color: #ffa500;
+}
+
+.card-body .d-flex .btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+}
+
+.card-header {
+    background-color: #2e5e40 !important;
+}
+
+
+
+/* Login pageee */
+
+/* General CSS */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h2 {
+    color: #12372A;
+    font-weight: 700;
+}
+
+/* Login Page CSS */
+.login-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom {
+    background-color: #12372A !important; 
+    color: white !important;
+    font-weight: 600 !important;
+    border: none !important;
+    padding: 10px !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+    color: white;
+}
+
+/* Register pageee */
+
+/* Form Styles */
+.register-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #12372A;
+}
+
+.form-control {
+    border-radius: 6px;
+}
+
+.form-control:focus {
+    border-color: #12372A;
+    box-shadow: none;
+}
+
+.invalid-feedback {
+    font-size: 0.9rem;
+}
+
+/* Button Styles */
+.btn-custom {
+    background-color: #12372A;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+    color: white;
+}
+
+/* Password Strength Indicator */
+#password-strength {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#strength-bar {
+    height: 10px;
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+#strength-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 5px;
+    transition: width 0.3s;
+}
+
+/* Links */
+a {
+    color: #12372A;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #436850;
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media only screen and (max-width: 768px) {
+    .register-card {
+        padding: 20px;
+    }
+}
+
+
+/* Product management */
+
+/* Page Heading */
+.page-heading {
+    font-size: 2rem !important;
+    font-weight: bold !important;
+    color: #12372A !important;
+    margin-bottom: 20px !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Buttons */
+.btn-custom {
+    background-color: #12372A;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-custom:hover {
+    background-color: #436850;
+    transform: scale(1.05);
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+
+
+
+/* Table Styles */
+.table {
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-bordered th, .table-bordered td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 0.8rem;
+    padding:  5px 15px;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* profile pagee e*/
+
+
+/* Profile Card */
+.profile-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card .card-header {
+    background-color: #12372A; /* Dark green */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.profile-card .card-body {
+    background-color: #f8f9fa; /* Light background */
+    padding: 20px;
+}
+
+.table-borderless th {
+    width: 30%;
+    color: #12372A;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.table-borderless td {
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-primary {
+    background-color: #12372A;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #0d2a20;
+}
+
+.btn-outline-primary {
+    color: #12372A;
+    border: 1px solid #12372A;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+    background-color: #12372A;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 576px) {
+    .profile-card .card-header {
+        font-size: 1.2rem;
+    }
+    .table-borderless th, .table-borderless td {
+        font-size: 0.9rem;
+    }
+    .btn-primary, .btn-outline-primary {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* order histroy*/
+
+
+/* General Table Styling */
+.order-history-table thead th {
+    background-color: #12372A;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.order-history-table tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+.order-history-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.order-history-table td, .order-history-table th {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* artisan order */
+
+/* Order Management Table */
+.artisan-order-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+}
+
+.artisan-order-table thead th {
+    background-color: #12372A;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.artisan-order-table tbody td {
+    text-align: center;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.artisan-order-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.artisan-order-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* admin dashboards */
+
+/* Table Styling */
+.admin-user-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+}
+
+.admin-user-table th {
+    background-color: #12372A;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-user-table td {
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-user-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.admin-user-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button Styling */
+.btn-outline-info {
+    border-color: #12372A;
+    color: #ADBC9F;
+}
+
+.btn-outline-info:hover {
+    background-color: #12372A;
+    color: #fff;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+
+/* admin approve products */
+
+/* Table Styling */
+
+h2 {
+    color: #12372A !important;
+    font-weight: 700 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.admin-approval-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.admin-approval-table th {
+    background-color: #12372A;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-approval-table td {
+    text-align: center;
+    padding: 10px;
+}
+
+.admin-approval-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.admin-approval-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button Styling */
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Input Field Styling */
+form input[type="text"] {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+
+/* footer */
+
+
+ 
+
+footer {
+    background-color: #12372A; /* Your footer background color */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 40px;
+}
+
+/* checkout */
+
+/* Order Summary Card Styling */
+.order-summary .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.order-summary .card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-summary .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Shipping Information Styling */
+.card-body h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #12372A;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #436850;
+    transition: 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .order-summary .card {
+        flex-direction: column;
+    }
+}
+
+.profile-card h2{
+    color: white !important ;
+}
+
+
+/* index.php */
+
+/* Hero Banner */
+.hero-banner {
+    position: relative;
+    max-height: 500px; /* Adjust height for consistency */
+    overflow: hidden;
+}
+
+.hero-banner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.6); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.banner-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.banner-content p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.banner-content .btn-custom {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+/* Spacing between sections */
+.spacer {
+    height: 30px; 
+}
+
+/* Featured Products */
+.featured-products .card {
+    height: 550px;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    margin: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featured-products .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.featured-products .card-img-top {
+    height: 300px;  
+    object-fit: cover;  
+    border-bottom: 2px solid #ddd;  
+}
+
+/* Newsletter Subscription */
+.newsletter {
+    background: #f8f9fa; 
+    padding: 20px 0;
+}
+
+.newsletter .btn-custom {
+    background-color: #12372a; 
+    color: #fff;
+}
+
+.newsletter .btn-custom:hover {
+    background-color: #0e2a21;
+}
+
+/* Testimonials Section */
+.testimonials {
+    background: #f9f9f9;
+    padding: 50px 20px;
+}
+
+.testimonials h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.testimonial-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.testimonial-card h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Why Choose Us Section */
+.why-choose-us {
+    padding: 50px 20px;
+    background: #f5f5f5;
+}
+
+.why-choose-us h2 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.feature-box {
+    text-align: center;
+    padding: 20px;
+}
+
+.feature-box i {
+    font-size: 3rem;
+    color: #436850;
+    margin-bottom: 15px;
+}
+
+.feature-box h4 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.feature-box p {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Promo Section */
+.promo-section {
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    padding: 50px 20px;
+}
+
+.promo-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.promo-section p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.promo-section .btn-custom {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.promo-section img{
+ width: 76%;
+ text-align: right;
+}
+
+.promo-img{
+    text-align: center;
 }

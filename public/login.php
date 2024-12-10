@@ -1,7 +1,7 @@
 <?php include '../views/templates/header.php'; ?>
 <?php
 
-include '../src/helpers/db_connect.php';
+include '../src/helpers/db_connect.php'; // Include your database connection file
 
 $login_error = '';
 
@@ -34,23 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
                 $_SESSION['user_role'] = $user['role'];
 
-                // Load cart items from the database
-                $stmt = $conn->prepare("SELECT product_id, quantity FROM cart WHERE user_id = ?");
-                $stmt->bind_param("i", $user['id']);
-                $stmt->execute();
-                $cartItems = $stmt->get_result();
-
-                // Initialize session cart array
-                $_SESSION['cart'] = [];
-                while ($item = $cartItems->fetch_assoc()) {
-                    $_SESSION['cart'][$item['product_id']] = [
-                        'quantity' => $item['quantity']
-                    ];
-                }
-
                 // Redirect based on user role
                 if ($user['role'] === 'admin') {
-                    header("Location: ../views/admin-dashboard.php");
+                    header("Location: ../admin/admin-dashboard.php");
                 } elseif ($user['role'] === 'customer') {
                     header("Location: index.php");
                 } elseif ($user['role'] === 'artisan') {
@@ -77,39 +63,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style/style.css"> <!-- Include custom CSS -->
     <title>Login</title>
+    <style>
+        .btn-custom {
+            background-color: #28a745; /* Green background */
+            color: white; /* White text */
+            border: none; /* No border */
+        }
+
+        .btn-custom:hover {
+            background-color: #218838; /* Darker green on hover */
+            color: white; /* Ensure text remains white */
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="text-center mb-4">Login to Your Account</h2>
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="login-card col-md-6">
+            <h2 class="text-center mb-4">Log in</h2>
 
-                <!-- Display error message -->
-                <?php if (!empty($login_error)) : ?>
-                    <div class="alert alert-danger">
-                        <?php echo $login_error; ?>
-                    </div>
-                <?php endif; ?>
+            <!-- Display error message -->
+            <?php if (!empty($login_error)) : ?>
+                <div class="alert alert-danger">
+                    <?php echo $login_error; ?>
+                </div>
+            <?php endif; ?>
 
-                <!-- Login form -->
-                <form action="login.php" method="POST" novalidate>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control <?php echo (!empty($login_error)) ? 'is-invalid' : ''; ?>" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control <?php echo (!empty($login_error)) ? 'is-invalid' : ''; ?>" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-                <p class="text-center mt-3">Don't have an account? <a href="register.php">Register here</a>.</p>
-            </div>
+            <!-- Login form -->
+            <form action="login.php" method="POST" novalidate>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control <?php echo (!empty($login_error)) ? 'is-invalid' : ''; ?>" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control <?php echo (!empty($login_error)) ? 'is-invalid' : ''; ?>" id="password" name="password" required>
+                </div>
+                <!-- Green Button -->
+                <button type="submit" class="btn btn-custom w-100">Login</button>
+            </form>
+            <p class="text-center mt-3">Don't have an account? <a href="register.php" class="text-primary fw-bold">Register here</a>.</p>
         </div>
     </div>
 
     <!-- Bootstrap JS from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <?php include '../views/templates/footer.php'; ?>
 </body>
 </html>

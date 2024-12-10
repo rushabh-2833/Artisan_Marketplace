@@ -8,3 +8,16 @@ bin/*
 .kitchen/
 .kitchen.local.yml
 .env
+.vagrant
+/cookbooks
+
+# Bundler
+bin/*
+.bundle/*
+
+.kitchen/
+.kitchen.local.yml
+.env
+
+# Ignore vendor directory (Composer dependencies)
+/vendor/

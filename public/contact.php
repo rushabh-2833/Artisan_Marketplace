@@ -27,7 +27,7 @@
     </section>
 
     <!-- Section 3: Contact Form -->
-    <section class="contact-section">
+    <section class="contact-section form-contact-section">
         <h2 class="section-title">Get in Touch</h2>
         <form action="process_contact.php" method="POST" class="contact-form">
             <div class="mb-3">
