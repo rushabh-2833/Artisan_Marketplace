@@ -59,8 +59,9 @@ if (!$result) {
 
 .hero-banner .banner-content {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 20%;
+    left: 20%;
+    right: 20%;
     transform: translate(-50%, -50%);
     z-index: 2; /* Place the content above the overlay */
 }
@@ -110,6 +111,75 @@ if (!$result) {
     transform: translateY(0);
 }
 
+/* Section Title */
+.featured-products h2 {
+    font-weight: bold;
+    color: #2c3e50;
+    letter-spacing: 1px;
+}
+
+/* Card Styling */
+.product-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Image Styling */
+.card-img-wrapper {
+    overflow: hidden;
+}
+
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card-img-wrapper:hover .card-img-top {
+    transform: scale(1.1); /* Zoom-in effect */
+}
+
+/* Typography */
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn-add-to-cart {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 25px;
+    background-color: #007bff;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #0056b3;
+    color: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 
 </style>
 <body>
@@ -136,37 +206,36 @@ if (!$result) {
 <section class="featured-products my-5">
     <div class="container">
         <h2 class="text-center mb-4">Featured Products</h2>
-        <div class="row">
-            <?php if ($result->num_rows > 0): ?>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <?php 
+            $sql = "SELECT * FROM products LIMIT 4"; // Fetch only 4 products
+            $result = $conn->query($sql);
+
+            if ($result && $result->num_rows > 0): ?>
                 <?php while ($product = $result->fetch_assoc()): ?>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <!-- Product link -->
-                            <a href="product_details.php?id=<?php echo $product['id']; ?>" class="text-decoration-none text-dark">
-                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
-                                    <p class="card-text">$<?php echo number_format($product['price'], 2); ?></p>
-                                    <p>
-                                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                                            <i class="fas fa-star <?php echo $i <= $product['average_rating'] ? 'star' : 'empty-star'; ?>"></i>
-                                        <?php endfor; ?>
-                                        (<?php echo number_format($product['average_rating'], 1); ?>)
-                                    </p>
-                                </div>
-                            </a>
+                    <div class="col">
+                        <div class="card product-card h-100">
+                            <div class="card-img-wrapper">
+                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="card-img-top">
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                <p class="card-text text-muted">$<?php echo number_format($product['price'], 2); ?></p>
+                                
+                            </div>
                             <div class="card-footer text-center">
-                                <a href="add_to_cart.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-custom">Add to Cart</a>
+                                <a href="add_to_cart.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-add-to-cart">Add to Cart</a>
                             </div>
                         </div>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <p class="text-center">No products available at the moment.</p>
+                <p class="text-center">No products found.</p>
             <?php endif; ?>
         </div>
     </div>
 </section>
+
 
 <section class="promo-section py-5">
     <div class="container">
