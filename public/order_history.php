@@ -93,64 +93,63 @@ $result = $stmt->get_result();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        .badge {
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .badge-pending {
-            background-color: #ffc107;
-            color: #000;
-        }
-        .badge-completed {
-            background-color: #28a745;
-            color: #fff;
-        }
-        .badge-cancelled {
-            background-color: #dc3545;
-            color: #fff;
-        }
-        .badge-shipped {
-            background-color: #17a2b8;
-            color: #fff;
-        }
-        .badge-accepted {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .badge-rejected {
-            background-color: #6c757d;
-            color: #fff;
-        }
-        .date-time-container {
-            display: inline-block;
-            text-align: left;
-        }
-        .date-time-container i {
-            margin-right: 5px;
-        }
-        .date-time-container .date {
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #6c757d; /* Grayish color */
-        }
-        .date-time-container .time {
-            font-size: 0.9rem;
-            color: #28a745; /* Green color */
-        }
-        .star {
-            color: #f39c12; /* Gold color for all stars */
-        }
-        .btn-cancel-order {
-            margin-top: 5px;
-        }
-        .product-image {
-            width: 80px; /* Adjust width */
-            height: 80px; /* Adjust height */
-            object-fit: cover; /* Ensures the image fits within the specified size */
-            border-radius: 8px; /* Optional: Adds rounded corners */
-        }
+        .table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.table th {
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+}
+
+.table tbody tr {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.badge {
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    padding: 5px 10px;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}
+
+.img-thumbnail {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    font-weight: bold;
+    border: none;
+}
+
     </style>
 </head>
 <body>
