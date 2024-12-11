@@ -67,9 +67,7 @@
                     <span class="badge float-end"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </a>
-            <a href="payment_methods.php" class="list-group-item list-group-item-action <?php echo basename($_SERVER['PHP_SELF']) === 'payment_methods.php' ? 'active' : ''; ?>">
-                <i class="fas fa-credit-card me-2"></i> Payment Methods
-            </a>
+            
             <a href="logout.php" class="list-group-item list-group-item-action text-danger">
                 <i class="fas fa-sign-out-alt me-2"></i> Sign Out
             </a>

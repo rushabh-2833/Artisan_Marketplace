@@ -78,7 +78,7 @@ if ($user_logged_in) {
         .profile-icon {
             width: 40px;
             height: 40px;
-            background-color: #ffffff;
+            background-color: #007bff;
             color: #fff;
             border-radius: 50%;
             display: flex;
@@ -86,15 +86,79 @@ if ($user_logged_in) {
             justify-content: center;
             margin-left: 15px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            border: 2px solid #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Navbar customization */
+        .navbar {
+            background: linear-gradient(90deg, #1c1c1c, #3a3a3a);
+            border-bottom: 2px solid #fff;
+        }
+
+        .navbar-brand {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar-dark .nav-link {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0 10px;
+            color: #f8f9fa;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-dark .nav-link:hover {
+            color: #ffc107;
         }
 
         /* Badge styling for cart count */
+        .cart-icon {
+            position: relative;
+        }
+
         .cart-icon .badge {
             position: absolute;
             top: -5px;
             right: -10px;
             background-color: #dc3545;
             color: white;
+            font-size: 0.8rem;
+            padding: 2px 5px;
+            border-radius: 50%;
+        }
+
+        /* Dropdown styling */
+        .dropdown-menu {
+            background-color: #343a40;
+            border: none;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+        .dropdown-item {
+            color: #fff;
+        }
+
+        .dropdown-item:hover {
+            background-color: #ffc107;
+            color: #343a40;
         }
     </style>
 </head>
@@ -122,7 +186,7 @@ if ($user_logged_in) {
                                 href="<?php echo getenv('APP_URL'); ?>/admin/admin_approve_products.php">Product Approval</a>
                         </li>
                     <?php elseif ($user_role === 'customer'): ?>
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                        <nav class="navbar-expand-lg navbar-dark bg-dark">
                             <div class="container">
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -234,9 +298,7 @@ if ($user_logged_in) {
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                                 <li><a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/profile.php">Personal
                                         Information</a></li>
-                                <li><a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/payment_methods.php">Payment
-                                        Methods</a></li>
-                                        <li>
+                                
     <a class="dropdown-item" href="<?php echo getenv('APP_URL'); ?>/notifications.php">
         Notifications
         <span id="notification-badge" class="badge bg-danger d-none"><?php echo $unread_count; ?></span>
