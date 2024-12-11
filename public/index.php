@@ -140,7 +140,7 @@ if (!$result) {
 
 .card-img-top {
     height: 180px;
-    object-fit: cover;
+    object-fit: fill;
     transition: transform 0.3s ease;
 }
 
@@ -179,6 +179,181 @@ if (!$result) {
     color: #ffffff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+/* Promo Section */
+.promo-section {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Vibrant gradient */
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    padding: 3rem 1.5rem;
+    color: #ffffff;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+/* Promo Image */
+.promo-img img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.promo-img img:hover {
+    transform: scale(1.05); /* Subtle zoom effect */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Promo Title */
+.promo-title {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Promo Text */
+.promo-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #f8f8f8;
+    margin-bottom: 2rem;
+}
+
+.promo-text .highlight {
+    font-weight: bold;
+    color: black; /* Golden color for emphasis */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Promo Button */
+.btn-promo {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ff7e5f;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
+}
+
+.btn-promo:hover {
+    background-color: #ffe0b3;
+    color: #ff7e5f;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .promo-title {
+        font-size: 2.2rem;
+    }
+
+    .promo-text {
+        font-size: 1rem;
+    }
+
+    .btn-promo {
+        font-size: 1rem;
+        padding: 0.7rem 1.5rem;
+    }
+}
+
+/* Why Choose Us Section */
+.why-choose-us {
+    background: linear-gradient(to right, #f9f9f9, #ffffff);
+    padding: 3rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+/* Feature Box Styling */
+.feature-box {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Icons */
+.icon-wrapper {
+    font-size: 3rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.feature-box:hover .icon-wrapper {
+    color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* Feature Titles */
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Feature Descriptions */
+.feature-description {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .icon-wrapper {
+        font-size: 2.5rem;
+    }
+
+    .feature-title {
+        font-size: 1.3rem;
+    }
+
+    .feature-description {
+        font-size: 0.9rem;
+    }
+}
+
+
 
 
 </style>
@@ -240,48 +415,59 @@ if (!$result) {
 <section class="promo-section py-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6 promo-img">
-                <img src="<?php echo getenv('APP_URL'); ?>/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded">
+            <!-- Promo Image -->
+            <div class="col-md-6 promo-img text-center">
+                <img src="<?php echo getenv('APP_URL'); ?>/img/sale-banner.jpg" alt="Sale Banner" class="img-fluid rounded promo-banner">
             </div>
-            <div class="col-md-6">
-                <h2>Biggest Sale of the Season!</h2>
-                <p>
-                    Don’t miss out on our exclusive discounts! Shop your favorite handmade products now and enjoy up to <strong>50% off</strong> on selected items. Offer valid while supplies last!
+            <!-- Promo Content -->
+            <div class="col-md-6 text-md-start text-center">
+                <h2 class="promo-title">Biggest Sale of the Season!</h2>
+                <p class="promo-text">
+                    Don’t miss out on our exclusive discounts! Shop your favorite handmade products now and enjoy up to 
+                    <span class="highlight">50% off</span> on selected items. Offer valid while supplies last!
                 </p>
-                <a href="shop.php" class="btn btn-primary btn-custom">Shop Now</a>
+                <a href="shop.php" class="btn btn-promo">Shop Now</a>
             </div>
         </div>
     </div>
 </section>
 
-<section class="why-choose-us">
+
+<section class="why-choose-us py-5">
     <div class="container text-center">
-        <h2>Why Choose Artisan Marketplace?</h2>
+        <h2 class="section-title mb-4">Why Choose Artisan Marketplace?</h2>
         <div class="row">
             <div class="col-md-4">
-                <div class="feature-box">
-                    <i class="fas fa-gem"></i>
-                    <h4>Unique Products</h4>
-                    <p>Discover one-of-a-kind, handcrafted items you won't find elsewhere.</p>
+                <div class="feature-box p-4">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h4 class="feature-title">Unique Products</h4>
+                    <p class="feature-description">Discover one-of-a-kind, handcrafted items you won't find elsewhere.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-box">
-                    <i class="fas fa-handshake"></i>
-                    <h4>Support Artisans</h4>
-                    <p>Empower local artisans and help them grow their businesses.</p>
+                <div class="feature-box p-4">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4 class="feature-title">Support Artisans</h4>
+                    <p class="feature-description">Empower local artisans and help them grow their businesses.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-box">
-                    <i class="fas fa-shield-alt"></i>
-                    <h4>Secure Transactions</h4>
-                    <p>Shop with confidence knowing your data is protected.</p>
+                <div class="feature-box p-4">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="feature-title">Secure Transactions</h4>
+                    <p class="feature-description">Shop with confidence knowing your data is protected.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Newsletter Subscription -->
 <section class="newsletter my-5 text-center">
