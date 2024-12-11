@@ -159,7 +159,7 @@ $result = $stmt->get_result();
     margin-bottom: 2rem;
 }
 
-wishlist-divider {
+.wishlist-divider {
     width: 0;
     height: 4px;
     background-color: #3498db;

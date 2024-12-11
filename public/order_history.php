@@ -161,108 +161,109 @@ $result = $stmt->get_result();
 
         <!-- Main Content -->
         <div class="col-md-9">
-            <h2>Your Orders</h2>
+    <h2 class="mb-4">Your Orders</h2>
 
-            <!-- Feedback Messages -->
-            <?php if (isset($_GET['review_submitted'])): ?>
-                <div class="alert alert-success">Your review was submitted successfully!</div>
-            <?php elseif (isset($_GET['review_exists'])): ?>
-                <div class="alert alert-warning">You have already reviewed this product!</div>
-            <?php endif; ?>
+    <!-- Feedback Messages -->
+    <?php if (isset($_GET['review_submitted'])): ?>
+        <div class="alert alert-success">Your review was submitted successfully!</div>
+    <?php elseif (isset($_GET['review_exists'])): ?>
+        <div class="alert alert-warning">You have already reviewed this product!</div>
+    <?php endif; ?>
 
-            <!-- Status Filter Dropdown -->
-            <form method="GET" class="mb-3">
-                <label for="status-filter" class="form-label">Filter by Status:</label>
-                <select id="status-filter" name="status" class="form-select" onchange="this.form.submit()">
-                    <option value="">All</option>
-                    <option value="pending" <?php if ($status_filter === 'pending') echo 'selected'; ?>>Pending</option>
-                    <option value="accepted" <?php if ($status_filter === 'accepted') echo 'selected'; ?>>Accepted</option>
-                    <option value="rejected" <?php if ($status_filter === 'rejected') echo 'selected'; ?>>Rejected</option>
-                    <option value="shipped" <?php if ($status_filter === 'shipped') echo 'selected'; ?>>Shipped</option>
-                    <option value="completed" <?php if ($status_filter === 'completed') echo 'selected'; ?>>Completed</option>
-                    <option value="cancelled" <?php if ($status_filter === 'cancelled') echo 'selected'; ?>>Cancelled</option>
-                </select>
-            </form>
+    <!-- Status Filter Dropdown -->
+    <form method="GET" class="mb-4">
+        <label for="status-filter" class="form-label fw-bold">Filter by Status:</label>
+        <select id="status-filter" name="status" class="form-select w-25" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="pending" <?php if ($status_filter === 'pending') echo 'selected'; ?>>Pending</option>
+            <option value="accepted" <?php if ($status_filter === 'accepted') echo 'selected'; ?>>Accepted</option>
+            <option value="rejected" <?php if ($status_filter === 'rejected') echo 'selected'; ?>>Rejected</option>
+            <option value="shipped" <?php if ($status_filter === 'shipped') echo 'selected'; ?>>Shipped</option>
+            <option value="completed" <?php if ($status_filter === 'completed') echo 'selected'; ?>>Completed</option>
+            <option value="cancelled" <?php if ($status_filter === 'cancelled') echo 'selected'; ?>>Cancelled</option>
+        </select>
+    </form>
 
-            <?php if ($result->num_rows > 0): ?>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['order_id']); ?></td>
-                                <td>
-                                    <img src="<?php echo htmlspecialchars($row['image_url']); ?>" alt="Product Image" class="product-image">
-                                </td>
-                                <td><?php echo htmlspecialchars($row['product_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['quantity']); ?></td>
-                                <td>$<?php echo htmlspecialchars($row['price']); ?></td>
-                                <td>
-                                    <?php 
-                                        if ($row['status'] === 'cancelled') {
-                                            echo "<span class='badge badge-cancelled'><i class='fas fa-times-circle'></i> Cancelled</span>";
-                                        } elseif ($row['status'] === 'pending') {
-                                            echo "<span class='badge badge-pending'><i class='fas fa-hourglass-half'></i> Pending</span>";
-                                            echo "<br><a href='cancel_order.php?order_id=" . $row['order_id'] . "' class='btn btn-danger btn-sm btn-cancel-order'>Cancel Order</a>";
-                                        } elseif ($row['status'] === 'accepted') {
-                                            echo "<span class='badge badge-accepted'><i class='fas fa-check-circle'></i> Accepted</span>";
-                                        } elseif ($row['status'] === 'shipped') {
-                                            echo "<span class='badge badge-shipped'><i class='fas fa-truck'></i> Shipped</span>";
-                                        } elseif ($row['status'] === 'completed') {
-                                            echo "<span class='badge badge-completed'><i class='fas fa-check-circle'></i> Completed</span>";
-                                        } elseif ($row['status'] === 'rejected') {
-                                            echo "<span class='badge badge-rejected'><i class='fas fa-ban'></i> Rejected</span>";
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <div class="date-time-container">
-                                        <i class="fas fa-calendar-alt text-primary"></i>
-                                        <span class="date"><?php echo date('F j, Y', strtotime($row['created_at'])); ?></span>
-                                        <br>
-                                        <i class="fas fa-clock text-success"></i>
-                                        <span class="time"><?php echo date('g:i A', strtotime($row['created_at'])); ?></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <?php if ($row['status'] === 'completed' && !empty($row['review_rating'])): ?>
-                                        <div class="star-rating">
-                                            <?php for ($i = 1; $i <= $row['review_rating']; $i++): ?>
-                                                <i class="fas fa-star star"></i>
-                                            <?php endfor; ?>
-                                        </div>
-                                    <?php elseif ($row['status'] === 'completed'): ?>
-                                        <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-primary btn-sm">Review Product</a>
-                                    <?php else: ?>
-                                        Not Reviewed
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No orders matching this status were found.</p>
-            <?php endif; ?>
+    <?php if ($result->num_rows > 0): ?>
+        <table class="table table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td>#<?php echo htmlspecialchars($row['order_id']); ?></td>
+                        <td>
+                            <img src="<?php echo htmlspecialchars($row['image_url']); ?>" alt="Product" class="img-thumbnail" style="width: 60px; height: auto;">
+                        </td>
+                        <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+                        <td><?php echo htmlspecialchars($row['quantity']); ?></td>
+                        <td class="fw-bold">$<?php echo htmlspecialchars($row['price']); ?></td>
+                        <td>
+                            <?php
+                                $status = $row['status'];
+                                $badgeClass = '';
+                                if ($status === 'pending') $badgeClass = 'badge-warning';
+                                elseif ($status === 'completed') $badgeClass = 'badge-success';
+                                elseif ($status === 'cancelled') $badgeClass = 'badge-danger';
+                                echo "<span class='badge $badgeClass px-3 py-2'>" . ucfirst($status) . "</span>";
+                            ?>
+                            <?php if ($status === 'pending'): ?>
+                                <a href="cancel_order.php?order_id=<?php echo $row['order_id']; ?>" class="btn btn-sm btn-danger">Cancel</a>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <div class="text-muted">
+                                <i class="fas fa-calendar-alt"></i> <?php echo date('M d, Y', strtotime($row['created_at'])); ?><br>
+                                <i class="fas fa-clock"></i> <?php echo date('h:i A', strtotime($row['created_at'])); ?>
+                            </div>
+                        </td>
+                        <td>
+                            <?php if ($status === 'completed' && !empty($row['review_rating'])): ?>
+                                <div class="star-rating">
+                                    <?php for ($i = 1; $i <= $row['review_rating']; $i++): ?>
+                                        <i class="fas fa-star text-warning"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            <?php elseif ($status === 'completed'): ?>
+                                <a href="review_product.php?order_id=<?php echo $row['order_id']; ?>&product_id=<?php echo $row['product_id']; ?>" class="btn btn-sm btn-primary">Review</a>
+                            <?php else: ?>
+                                <span class="text-muted">Not Reviewed</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p class="text-center text-muted">No orders found for the selected status.</p>
+    <?php endif; ?>
 
-            <!-- Pagination Controls -->
-            <div class="d-flex justify-content-between mt-4">
-                <a href="?page=<?php echo max(1, $current_page - 1); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?php echo $current_page <= 1 ? 'disabled' : ''; ?>>Previous</a>
-                <span>Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
-                <a href="?page=<?php echo min($current_page + 1, $total_pages); ?>&status=<?php echo $status_filter; ?>" class="btn btn-primary" <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>>Next</a>
-            </div>
-        </div>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php echo $current_page <= 1 ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $current_page - 1; ?>&status=<?php echo $status_filter; ?>">Previous</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
+            </li>
+            <li class="page-item <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $current_page + 1; ?>&status=<?php echo $status_filter; ?>">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
     </div>
 </div>
 
