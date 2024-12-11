@@ -53,54 +53,227 @@ $result = $stmt->get_result();
     <title>Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .product-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
-        .product-image img { max-width: 100%; height: auto; }
+/* Section Title */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
 
-        .star {
-    color: #f39c12;
+/* Search Box */
+.search-input {
+    padding: 0.8rem 1rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
-.empty-star {
+
+.search-input:focus {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+/* Suggestions Dropdown */
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Success Alert */
+.fade-out-alert {
+    animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Filter Form */
+.filter-form .form-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.filter-form .form-control {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.filter-form .form-control:focus {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.btn-filter {
+    background: #2c3e50;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 0.8rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-filter:hover {
+    background: #1a252f;
+    transform: translateY(-2px);
+}
+
+/* Product Card */
+.product-card {
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Product Image */
+.product-image img {
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Heart Icon */
+.heart-icon {
+    font-size: 1.5rem;
     color: #ccc;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
+
+.heart-icon.filled {
+    color: #ff4d4d;
+}
+
+.wishlist-button:hover .heart-icon {
+    transform: scale(1.2);
+    color: #ff4d4d;
+}
+
+/* Product Title */
+.product-card h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #2c3e50;
+}
+
+/* Product Price */
+.product-card p {
+    margin: 0;
+    font-size: 1rem;
+    color: #7f8c8d;
+}
+
+/* Rating Stars */
+.fa-star {
+    color: #ffd700;
+}
+
+.empty-star {
+    color: #e0e0e0;
+}
+
+/* Add to Cart Button */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .product-card {
+        padding: 10px;
+    }
+
+    .product-image img {
+        max-height: 150px;
+    }
+
+    .product-card h5 {
+        font-size: 1rem;
+    }
+
+    .btn-success {
+        padding: 8px 15px;
+    }
+}
+
+
 
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Our Products</h2>
+<h2 class="text-center mb-4 section-title">Our Products</h2>
 
-      <!-- Search Box -->
-      <div class="mb-4">
-        <input type="text" id="searchBox" class="form-control" placeholder="Search products..." oninput="fetchSuggestions()">
-        <div id="suggestions" class="list-group" style="display: none;"></div>
+<!-- Search Box -->
+<div class="mb-4 position-relative">
+    <input type="text" id="searchBox" class="form-control search-input" placeholder="Search products..." oninput="fetchSuggestions()">
+    <div id="suggestions" class="list-group suggestions-dropdown" style="display: none;"></div>
+</div>
+
+<!-- Display success message if product was added -->
+<?php if (isset($_SESSION['message'])): ?>
+    <div class="alert alert-success text-center fade-out-alert">
+        <?php
+        echo $_SESSION['message'];
+        unset($_SESSION['message']); // Clear the message after displaying
+        ?>
     </div>
+<?php endif; ?>
 
-    <!-- Display success message if product was added -->
-    <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-success text-center">
-            <?php
-            echo $_SESSION['message'];
-            unset($_SESSION['message']); // Clear the message after displaying
-            ?>
+<!-- Filter Form -->
+<form method="GET" action="shop.php" class="mb-4 filter-form">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label for="price_min" class="form-label">Min Price</label>
+            <input type="number" name="price_min" class="form-control" value="<?php echo htmlspecialchars($price_min); ?>" min="0">
         </div>
-    <?php endif; ?>
+        <div class="col-md-4">
+            <label for="price_max" class="form-label">Max Price</label>
+            <input type="number" name="price_max" class="form-control" value="<?php echo htmlspecialchars($price_max); ?>" min="0">
+        </div>
+        <div class="col-md-4 align-self-end">
+            <button type="submit" class="btn btn-filter w-100">Filter</button>
+        </div>
+    </div>
+</form>
 
-    <!-- Filter Form -->
-    <form method="GET" action="shop.php" class="mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="price_min">Min Price</label>
-                <input type="number" name="price_min" class="form-control" value="<?php echo htmlspecialchars($price_min); ?>" min="0">
-            </div>
-            <div class="col-md-4">
-                <label for="price_max">Max Price</label>
-                <input type="number" name="price_max" class="form-control" value="<?php echo htmlspecialchars($price_max); ?>" min="0">
-            </div>
-            <div class="col-md-4 align-self-end">
-                <button type="submit" class="btn btn-custom w-100">Filter</button>
-            </div>
-        </div>
-    </form>
 
     <div class="row">
 <?php if ($result->num_rows > 0): ?>
@@ -150,75 +323,6 @@ $result = $stmt->get_result();
 
 <!-- Font Awesome for Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-<!-- Styles for the Product Card and Heart Icon -->
-<style>
-    .product-card {
-    position: relative;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 20px;
-    background: #fff;
-    height: 500px; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-}
-
-    .product-image {
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Heart Icon Style */
-    .wishlist-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-    }
-
-    .heart-icon {
-        font-size: 24px;
-        color: #ccc; /* Default color for empty heart */
-        transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .heart-icon.filled {
-        color: red; /* Color when filled */
-    }
-
-    /* Hover effect for the card */
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Heartbeat animation on hover */
-    .wishlist-button:hover .heart-icon {
-        animation: heartbeat 0.6s ease infinite;  
-    }
-
-    .product-image img {
-            object-fit: contain;  
-            width: 100%;
-            height: 200px;  
-        }
-
-    @keyframes heartbeat {
-        0%, 100% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.2);
-        }
-    }
-</style>
 
 <!-- Script for Wishlist Toggle Animation -->
 <script>
