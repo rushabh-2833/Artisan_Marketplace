@@ -186,7 +186,7 @@ if ($user_logged_in) {
                                 href="<?php echo getenv('APP_URL'); ?>/admin/admin_approve_products.php">Product Approval</a>
                         </li>
                     <?php elseif ($user_role === 'customer'): ?>
-                        <nav class="navbar-expand-lg navbar-dark bg-dark">
+                        <nav class="navbar-expand-lg navbar-dark">
                             <div class="container">
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -292,7 +292,7 @@ if ($user_logged_in) {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                style="margin-top: 6px;">
+                                >
                                 <i class="fas fa-user-circle"></i> Account
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">

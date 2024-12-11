@@ -36,20 +36,98 @@ if (!$result) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome -->
     <title>Artisan Marketplace</title>
 </head>
+<style>
+    /* Hero Banner */
+.hero-banner {
+    position: relative;
+}
+
+.hero-banner .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 1;
+}
+
+.hero-banner img {
+    position: relative;
+    z-index: 0; /* Place the image below the overlay */
+}
+
+.hero-banner .banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Place the content above the overlay */
+}
+
+.hero-banner .banner-content h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 3rem;
+    letter-spacing: 1px;
+}
+
+.hero-banner .banner-content p {
+    font-size: 1.2rem;
+    color: #e8e8e8;
+}
+
+.btn-custom {
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.banner-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+
+.banner-content.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+</style>
 <body>
 
 <!-- Hero Banner -->
-<section class="hero-banner">
+<section class="hero-banner position-relative">
     <div class="container-fluid p-0">
+        <div class="banner-overlay"></div> <!-- Overlay added -->
         <img src="<?php echo getenv('APP_URL'); ?>/img/banner.jpg" class="img-fluid w-100" alt="Hero Banner">
         <div class="banner-content text-center">
-            <h1 class="text-white">Welcome to Artisan Marketplace</h1>
-            <p>Explore a world of handmade treasures crafted by passionate artisans.</p>
-            <a href="shop.php" class="btn btn-primary btn-custom">Shop Now</a>
-            <a href="register.php" class="btn btn-outline-secondary btn-custom">Sign Up</a>
+            <h1 class="text-white display-4 fw-bold mb-3">Welcome to Artisan Marketplace</h1>
+            <p class="text-light mb-4">Explore a world of handmade treasures crafted by passionate artisans.</p>
+            <a href="shop.php" class="btn btn-primary btn-custom me-2">Shop Now</a>
+            <a href="register.php" class="btn btn-outline-light btn-custom">Sign Up</a>
         </div>
     </div>
 </section>
+
 
 <!-- Spacing -->
 <div class="spacer"></div>
@@ -178,4 +256,10 @@ if (!$result) {
 
 <?php include __DIR__ . '/../views/templates/footer.php'; ?>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.banner-content').classList.add('active');
+});
+
+</script>
 </html>
