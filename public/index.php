@@ -353,6 +353,104 @@ if (!$result) {
     }
 }
 
+/* Newsletter Section */
+.newsletter {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Vibrant Gradient Background */
+    color: #ffffff;
+    padding: 3rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Newsletter Title */
+.newsletter-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Newsletter Subtitle */
+.newsletter-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+/* Input Group */
+.newsletter-input-group {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.newsletter-input-group .form-control {
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 0;
+    flex: 1;
+}
+
+.newsletter-input-group .btn-newsletter {
+    background: #ffffff;
+    color: #ff7e5f;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border: none;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.newsletter-input-group .btn-newsletter:hover {
+    background: #ffe0b3;
+    color: #ff7e5f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+.newsletter {
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .newsletter-title {
+        font-size: 2rem;
+    }
+
+    .newsletter-subtitle {
+        font-size: 1rem;
+    }
+
+    .newsletter-input-group .form-control {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+
+    .newsletter-input-group .btn-newsletter {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+
 
 
 
@@ -470,44 +568,46 @@ if (!$result) {
 
 
 <!-- Newsletter Subscription -->
-<section class="newsletter my-5 text-center">
-    <div class="container">
-        <h2>Subscribe to our newsletter</h2>
-        <p>Get the latest updates on features and releases</p>
+<section class="newsletter py-5">
+    <div class="container text-center">
+        <h2 class="newsletter-title mb-3">Subscribe to Our Newsletter</h2>
+        <p class="newsletter-subtitle mb-4">Get the latest updates, offers, and artisan stories delivered to your inbox.</p>
         <form>
-            <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Enter your email">
-                <button class="btn btn-primary btn-custom" type="submit">Join</button>
+            <div class="input-group newsletter-input-group">
+                <input type="email" class="form-control" placeholder="Enter your email" required>
+                <button class="btn btn-newsletter" type="submit">Join</button>
             </div>
         </form>
     </div>
 </section>
 
-<section class="testimonials">
+
+<section class="testimonials py-5">
     <div class="container text-center">
-        <h2>What Our Customers Say</h2>
-        <div class="row">
+        <h2 class="section-title mb-5">What Our Customers Say</h2>
+        <div class="row g-4">
             <div class="col-md-4">
-                <div class="testimonial-card">
+                <div class="testimonial-card p-4">
                     <p class="testimonial-text">"Amazing products! The quality and craftsmanship are exceptional."</p>
-                    <h5>- Sarah M.</h5>
+                    <h5 class="testimonial-name">- Sarah M.</h5>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="testimonial-card">
+                <div class="testimonial-card p-4">
                     <p class="testimonial-text">"This platform helped me connect with local artisans and find unique gifts."</p>
-                    <h5>- Alex J.</h5>
+                    <h5 class="testimonial-name">- Alex J.</h5>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="testimonial-card">
+                <div class="testimonial-card p-4">
                     <p class="testimonial-text">"Easy to use and such a wide variety of products. Highly recommended!"</p>
-                    <h5>- Emily K.</h5>
+                    <h5 class="testimonial-name">- Emily K.</h5>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <?php include __DIR__ . '/../views/templates/footer.php'; ?>
 </body>
